@@ -1,6 +1,8 @@
 # project
 
 > An electron-vue project
+>
+> 基于electron-vue 的终端桌面应用
 
 #### Build Setup
 
