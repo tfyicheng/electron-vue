@@ -8,8 +8,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
    .bod {
       background-color: rgb(255, 0, 128);
+      margin-top: 80px;
    }
 </style>

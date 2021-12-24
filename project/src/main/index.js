@@ -1,4 +1,4 @@
-import { app, BrowserWindow,Tray, Menu,ipcMain} from 'electron'
+import { app, BrowserWindow, Tray, Menu, ipcMain } from 'electron'
 import path from 'path'
 import '../renderer/store'
 
@@ -10,12 +10,12 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow,tray= null,trayIcon = null
+let mainWindow, tray = null, trayIcon = null
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow () {
+function createWindow() {
   /**
    * Initial window options
    */
@@ -23,12 +23,15 @@ function createWindow () {
     height: 372,
     useContentSize: true,
     width: 300,
-    frame:false,
-    resizable:false
+    frame: false,
+    resizable: false,
+    show: false
   })
 
   mainWindow.loadURL(winURL)
-
+  mainWindow.on('ready-to-show', () => {
+    mainWindow.show()
+  })
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -53,20 +56,20 @@ const createTray = () => {
   trayIcon = path.join(__dirname, './');
   tray = new Tray(path.join(trayIcon, 'zd.png'));
   const contextMenu = Menu.buildFromTemplate([
-      {
-          label: '忽略', click: function () {
-              trayInit()
-          }
-      },
-      {
-          label: '退出', click: function () {
-              app.quit()
-          }
+    {
+      label: '忽略', click: function () {
+        trayInit()
       }
+    },
+    {
+      label: '退出', click: function () {
+        app.quit()
+      }
+    }
   ])
   tray.on('click', () => {
-      mainWindow.show()
-      trayInit()
+    mainWindow.show()
+    trayInit()
   })
   tray.setToolTip('终端')
   tray.setTitle('终端')
@@ -77,33 +80,31 @@ const createTray = () => {
 let show = false, timer = null;
 //图标初始化
 const trayInit = () => {
-    if (null !== timer) {
-        clearInterval(timer)
-        timer = null
-        tray.setImage(path.join(trayIcon, 'zd.png'))
-    }
+  if (null !== timer) {
+    clearInterval(timer)
+    timer = null
+    tray.setImage(path.join(trayIcon, 'zd.png'))
+  }
 }
 //图标闪烁
 const trayFlashing = () => {
-    timer = setInterval(function () {
-        if (show) {
-            tray.setImage(path.join(trayIcon, 'zd.png'))
-        } else {
-            tray.setImage(path.join(trayIcon, 'zd2.png'))
-        }
-        show = !show
-    }, 600);
+  timer = setInterval(function () {
+    if (show) {
+      tray.setImage(path.join(trayIcon, 'zd.png'))
+    } else {
+      tray.setImage(path.join(trayIcon, 'zd2.png'))
+    }
+    show = !show
+  }, 600);
 }
 //通知闪烁
 ipcMain.on('new-msg', (event, params) => {
-    console.log('收到新消息：',params)
-    trayFlashing()
-    return true
+  console.log('收到新消息：', params)
+  trayFlashing()
+  return true
 })
 //退出
 ipcMain.on('login-window', () => {
-  // remote.getCurrentWindow().setContentSize(300, 372)
-
   mainWindow.setContentSize(300, 372)
   mainWindow.center()
 

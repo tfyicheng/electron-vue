@@ -114,11 +114,11 @@
 	-webkit-app-region: no-drag;
   width: 160px;
   height: 37px;
-  margin-top: 13px !important;
+  margin-top: 13px;
   /* background: -webkit-gradient(linear,100% 0%, 0% 0%,from(#2b99ff),to()#59c2fd)!important; */
-  background: linear-gradient(to right,#a4ebff,#67aefb) !important;
+  background: linear-gradient(to right,#a4ebff,#67aefb);
   color: #fff;
-  font-size: 18px !important;
-  border: none !important;
+  font-size: 20px;
+  border: none;
 }
 </style>

@@ -19,17 +19,20 @@
     </div>
     <div class="option">
       <div
+        id="op"
         class="iconfont icon-option-one"
-        @click.stop="showOptions = !showOptions"
+        @click="show"
         :modal="false"
-      ></div>
-      <div v-if="showOptions" class="optionslist">
-        <ul>
-          <li>意见反馈</li>
-          <li>备份与恢复</li>
-          <li>设置</li>
-          <li @click="logoutDialog = true">退出账号</li>
-        </ul>
+        tabindex="-1"
+      >
+        <div class="optionslist" style="display: none">
+          <ul>
+            <li>意见反馈</li>
+            <li>备份与恢复</li>
+            <li>设置</li>
+            <li @click.stop="logoutDialog = true">退出账号</li>
+          </ul>
+        </div>
       </div>
     </div>
     <el-dialog
@@ -51,14 +54,13 @@
 
 <script>
 import { remote, ipcRenderer } from "electron";
-
+import Vue from "vue";
 export default {
   name: "leftbar",
   data() {
     return {
       now: 0,
       logoutDialog: false,
-      showOptions: false,
       menus: [
         {
           icon: "iconfont icon-xinicon_huabanfuben",
@@ -88,6 +90,25 @@ export default {
     };
   },
   methods: {
+    show() {
+      const opl = document.querySelector(".optionslist"); //子菜单列表
+      const op = document.getElementById("op"); //菜单按钮
+      switch (
+        opl.style.display //切换隐藏
+      ) {
+        case "block":
+          opl.style.display = "none";
+          break;
+        case "none":
+          opl.style.display = "block";
+          break;
+      }
+      op.onblur = function () {
+        //失去焦点控制隐藏
+        opl.style.display = "none";
+      };
+    },
+
     to(path) {
       if (path !== null && path !== undefined) {
         // console.log("=> /main/" + path);
@@ -96,9 +117,12 @@ export default {
       }
     },
     logout() {
-      ipcRenderer.send('login-window')
+      ipcRenderer.send("login-window");
       this.$router.push("/");
-      this.$message({ message: "请重新登录", center: true,customClass:"loginmessage" });
+      this.$message({
+        message: "请重新登录",
+        center: true,
+      });
     },
   },
 };
@@ -136,6 +160,7 @@ export default {
 }
 .option > .iconfont {
   font-size: 30px;
+  outline: none;
 }
 .optionslist {
   position: fixed;
@@ -161,11 +186,9 @@ li {
 li:hover {
   background-color: #2f529c;
 }
-
 </style>
 <style>
-  .el-button {
-    width: 80px;
-  }
-
+.el-button {
+  width: 80px;
+}
 </style>

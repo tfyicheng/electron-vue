@@ -11,5 +11,6 @@ export default {
 <style scoped>
    .bod{
       background: rgb(0, 255, 157);
+      margin-top: 80px;
    }
 </style>
