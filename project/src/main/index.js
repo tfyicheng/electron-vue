@@ -65,7 +65,16 @@ const createTray = () => {
       label: '退出', click: function () {
         app.quit()
       }
-    }
+
+    },
+    // {
+    //   label: '重新启动', click: function () {
+    //     // app.relaunch({args: process.argv.slice(1).concat(['--relaunch'])})
+    //     // app.exit(0)
+    //     app.relaunch()
+    //     app.quit()
+    //   }
+    // },
   ])
   tray.on('click', () => {
     mainWindow.show()

@@ -59,7 +59,7 @@ export default {
   name: "leftbar",
   data() {
     return {
-      now: 0,
+      now: 1,//默认页面
       logoutDialog: false,
       menus: [
         {

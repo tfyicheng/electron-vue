@@ -6,20 +6,19 @@
         <i class="el-icon-plus"></i>
       </div>
     </div>
-    <div>聊天列表</div>
+    <!-- <div>聊天列表</div> -->
   </div>
 </template>
 
 <script>
 export default {
-  name: "group",
+  name: "grouptop",
 };
 </script>
 
 <style scoped>
 .groupbody {
   background-color: #f7f7f7;
-  height: 100%;
 }
 .gtop {
   height: 80px;
@@ -46,20 +45,20 @@ export default {
 .gtopp >>> .el-icon-plus {
   padding: 11px;
   margin: 10px;
+  color: #a3a3a3;
   background-color: #eee;
 }
-span.gtopp :hover {
-  background-color: rgb(208, 206, 205);
-}
 .gtop >>> .gtopp :hover {
-  background-color: rgb(184, 181, 179);
+  background-color: rgb(223, 223, 223);
 }
-</style>
-<style>
-input::-webkit-input-placeholder {
-       /* placeholder颜色  */
-       color: rgb(233, 69, 69);
-       /* placeholder字体大小  */
-       font-size: 16px;
-    }
+.el-input >>> input::-webkit-input-placeholder {
+  color: #a3a3a3 ;
+  font-weight: bold;
+  font-size: 15px;
+  padding-left: 4px;
+}
+ .el-input /deep/ .el-icon-search::before {
+  color: #a3a3a3;
+  font-size: 18px;
+}
 </style>
