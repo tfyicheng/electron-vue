@@ -45,7 +45,7 @@ export default {
                     type: 'user',
                     msgs: [{
                         isMe: false,
-                        content: '天王盖地虎',
+                        content: '天王盖地虎,天王盖地虎天王盖地虎天王盖地虎天王盖地虎,天王盖地虎天王盖地虎',
                         time: new Date().getTime()
                     }, {
                         isMe: true,
@@ -264,9 +264,10 @@ export default {
 <style scoped>
     .body {
         /* float: left; */
-        margin-top: 80px;
+        /* margin-top: 80px; */
          /* width: 100%; */
-             /* height: 100%; */
+             height: 100%;
+             /* height: 1040px; */
     }
     .group {
         width: 440px;
@@ -282,7 +283,9 @@ export default {
     }
 
     .group ul {
-        	height: 944px;
+        	/* height: 944px; */
+            /* height: 100vh; */
+            height: 100%;
 			width: 100%;
 			padding: 0;
 			margin: 0 0;
@@ -301,14 +304,20 @@ export default {
                 /* width: 600px; */
     }
      .content {
-          display: inline-block; 
-         left: 440px;
+          /* display: inline-block;  */
+         /* left: 440px; */
+         padding-left: 440px;
          position: relative;
+         /* position: fixed; */
         height: 100%;
+        /* height: 1024px; */
+        background-color: #f3f3f3;
         /* width: 500px; */
-        width: 100%;
-      
-        border-top: 1px solid #ddd;
+        /* width: 100%; */
+
+        /* top: 80px; */
+     
+        /* overflow: hidden !important; */
     } 
 
 /* 滚动槽 */

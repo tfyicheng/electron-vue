@@ -13,7 +13,7 @@
       <top></top>
     </div> 
     <!-- 方案三：固定主体的top栏，绝对定位透明  -->
-    <router-view style="margin-left: 120px" />
+    <router-view style="margin-left: 120px;" />
   </div>
 </template>
 
@@ -41,7 +41,7 @@ export default {
 
 <style scoped>
 .main {
-  height: 100%;
+  height: 100vh;
   position: relative;
   min-width: 700px;
   overflow-x: hidden;

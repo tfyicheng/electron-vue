@@ -1,22 +1,23 @@
 <template>
-<div>
-    <div class="chattop">标题</div>
+<div class="chatmain">
+    <div class="chattop">{{chat.name}}</div>
      <div class="chatbody" v-if="chat !== null" @click="showBrow = false">
       
     <div class="msg" id="msg">
       <ul>
+          <!-- style="min-height: 100px" -->
         <li v-for="c in chat.msgs">
-          <div v-if="c.isMe" style="min-height: 37px">
-            <div class="me" v-html="c.content"></div>
-            <img
-              class="me-img"
+          <div v-if="c.isMe" class="content" style="min-height: 55px">      
+                <div class="me" v-html="c.content"></div>                     
+                 <img
+             class="me-img"
               src="../../../assets/tx.png"
-              width="33"
-              height="33"
-            />
+              width="50"
+              height="50"
+            />         
           </div>
-          <div v-else>
-            <img :src="chat.img" width="33" height="33" />
+          <div v-else  class="content">
+            <img :src="chat.img" width="50" height="50" class="other-img" />
             <div class="other" v-html="c.content"></div>
           </div>
         </li>
@@ -25,13 +26,7 @@
     <!--   -->
     <div id="drag"
       @mousedown="resize"
-      style="
-       width: calc(100% + 64px);
-        cursor: n-resize;
-        border: 2px solid #fff;
-        position: absolute;
-        bottom: 150px;
-      "
+   
     ></div>
     <div class="send" id="send">
       <div class="brows" v-if="showBrow" @click.stop="showBrowWin">
@@ -235,21 +230,29 @@ export default {
     },
     resize(ev) {
       let initY = 0,
-        tph = 0,
+         tph = 0,
         bth = 0;
       let tp = document.getElementById("msg");
       let bt = document.getElementById("send");
       let drag = document.getElementById("drag");
+       let inp = document.getElementById("input");
       tph = tp.offsetHeight;
       bth = bt.offsetHeight;
+    //   inp.style.height=btn+120+"px";
       initY = (ev || event).clientY;
       document.onmousemove = function (ev2) {
+          if(drag.style.bottom>="800px"&&drag.style.bottom <="120px" ) {
+              console.log("ok")
+            return false
+         }
         //tp.style.cursor = 's-resize'
         var y = (ev2 || event).clientY - initY;
         bt.style.height = bth - y + "px";
         drag.style.bottom = bth - y + "px";
+        inp.style.height= bth -65 - y + "px";//控制输入框高度
         tp.style.height = "calc(100% - " + (bth - y) + "px)";
-      };
+        // console.log(bth)
+      }; 
     },
     setPasteImg() {
       document.addEventListener("paste", function (event) {
@@ -317,40 +320,158 @@ export default {
 </script>
 
 <style scoped>
+.chatmain {
+    /* height: 880px; */
+    /* height: 100%; */
+     width: 100%; 
+    overflow: hidden;
+ }
 .chattop {
-    position: fixed;
-    top: 30px;
-    margin-left: 50px;
+    /* position: fixed; */
+    height: 80px;
+    line-height: 80px;
+    /* top: 30px; */
+    /* margin-left: 50px; */
+    font-size: 24px;
+    background-color: #f3f3f3;
+    width: 100%;
+    padding-left: 30px;
+       border-bottom: 1px solid #ddd;
 }
   .chatbody {
   font-family: 微软雅黑, serif;
-  height: 100%;
+  /* height: calc(100%-80px); */
+  height: 920px;
   width: 100%;
-  /* position: relative; */
+  position: relative;
 }
 .chatbody .msg {
-  /* border-top: 1px solid rgb(116, 21, 36); */
-  /* padding: 0 30px; */
-  background-color: rgb(250, 250, 250);
-  /* position: absolute; */
-  /* height: calc(-50%); */
-  /* height: 800px; */
+  background-color: #f3f3f3;
+  height: 716px;
   width: 100%;
-  overflow-y: auto;
+   overflow-y: auto;
+}
+.chatbody .msg ul {
+  margin: 0;
+  padding: 0 20px;
+ list-style-type: none;
+  position: relative;
+}
+.chatbody .msg ul li {
+  position: relative;
+  margin: 20px 0;
+  height: 100%;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.chatbody .msg ul li .content{
+    display: inline-block;
+    width: 100%;
+}
+.chatbody .msg ul li .content .other-img {
+    float: left;
+}
+.chatbody .msg ul li .content .other {
+  padding: 15px 10px 20px 10px;
+  float: left;
+  max-width: 50%;
+    margin-left: 15px;
+  background-color: #fff;
+  font-size: 15px;
+  border-radius: 2px;
+}
+ .chatbody .msg ul li .content .me-img {
+  position: absolute;
+  right: 0;
+} 
+
+.chatbody .msg ul li .content .me {
+  max-width: 50%;
+    float: right;
+  margin-right: 65px;
+  font-size: 15px;
+  border-radius: 2px;
+ padding: 15px 10px 20px 10px;
+  background-color: #9BCCFF;
 }
 #drag {
-     /* width: calc(100% + 64px); */
+     width: calc(100% + 64px);
         cursor: n-resize;
-        border: 2px solid rgb(216, 32, 32);
+        border: 2px solid #e8e8e8;
         position: absolute;
-        bottom: 150px;
+        bottom: 200px;
 }
 .chatbody .send {
-  padding: 0 30px;
-  height: 150px;
+  /* padding: 0 30px; */
+  height: 200px;
   width: 100%;
-  bottom: 0;
+  bottom: 1px;
   position: absolute;
-  background-color: #fff;
+  background-color: #f3f3f3;
+}
+.chatbody .send .tool-bar {
+  height: 50px;
+  line-height: 50px;
+  background-color: #f3f3f3;
+}
+.chatbody .send .tool-bar i {
+  cursor: pointer;
+  margin-left: 15px;
+  font-size: large;
+  color: #666;
+}
+.chatbody .send .btn {
+  cursor: pointer;
+  /* float: right; */
+ bottom: 10px;
+  right: 20px;
+  position:fixed; 
+  /* position: absolute; */
+  width: 80px;
+  height: 26px;
+  font-size: 14px;
+  font-family: 微软雅黑, serif;
+  color: #606060;
+  border: 1px solid #e5e5e5;
+  background-color: #f5f5f5;
+}
+ #input {
+     background-color: #f3f3f3;
+    height: 120px;
+    overflow-y: auto;
+    width: 100%;
+    word-wrap: break-word;
+  word-break: break-all;
+  overflow-x: hidden;
+  /* outline: none; */
+}
+
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  /* border-radius: 10px; */
+   background: transparent;
+   /* background-color: rgba(216, 16, 16, 0.1);   */
+    /* opacity: 0; */
+    /* display: none; */
+}
+
+::-webkit-scrollbar{
+    width: 5px;
+    height: 5px; 
+    /* background: rgba(250, 249, 249, 0.9); */
+     /* background-color: transparent ; */
+      /* opacity: 0.1; */
+     /* display: none; */
+  
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb{
+    border-radius: 8px;
+    /* -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2); */
+    background: rgba(58, 57, 54, 0.5);
+       /* opacity:0.50; */
+   /* filter:alpha(opacity=50); */
 }
 </style>
