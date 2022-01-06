@@ -241,18 +241,32 @@ export default {
     //   inp.style.height=btn+120+"px";
       initY = (ev || event).clientY;
       document.onmousemove = function (ev2) {
-          if(drag.style.bottom>="800px"&&drag.style.bottom <="120px" ) {
-              console.log("ok")
-            return false
-         }
-        //tp.style.cursor = 's-resize'
-        var y = (ev2 || event).clientY - initY;
-        bt.style.height = bth - y + "px";
-        drag.style.bottom = bth - y + "px";
-        inp.style.height= bth -65 - y + "px";//控制输入框高度
-        tp.style.height = "calc(100% - " + (bth - y) + "px)";
-        // console.log(bth)
+           var y = (ev2 || event).clientY - initY;     
+               //tp.style.cursor = 's-resize'
+        bt.style.height = bth - y + "px";//发送框高度
+        drag.style.bottom = bth - y + "px";//拖拽条底部
+        inp.style.height= bth -65 - y + "px";//输入框高度
+        tp.style.height = "calc(100% - " + (bth - y) + "px)";//对话框高度
+        // console.log(bt.style.height)
+        // console.log( drag.style.bottom)
+        //  console.log(inp.style.height)
+        //  console.log(tp.style.height)
+        //  console.log(inp.clientHeight)
+      if(inp.clientHeight>500){
+         bt.style.height="565px"
+         drag.style.bottom="565px"
+         tp.style.height = "calc(100% - " + 565 + "px)"
+       inp.style.height="500px"
+      }else if(inp.clientHeight<100){
+           bt.style.height="165px"
+         drag.style.bottom="165px"
+          tp.style.height = "calc(100% - " + 165 + "px)"
+       inp.style.height="100px"
+      }
+
       }; 
+      
+      
     },
     setPasteImg() {
       document.addEventListener("paste", function (event) {
@@ -333,6 +347,7 @@ export default {
     /* top: 30px; */
     /* margin-left: 50px; */
     font-size: 24px;
+    font-weight: bold;
     background-color: #f3f3f3;
     width: 100%;
     padding-left: 30px;
@@ -349,7 +364,10 @@ export default {
   background-color: #f3f3f3;
   height: 716px;
   width: 100%;
-   overflow-y: auto;
+   overflow: hidden;
+}
+.chatbody .msg:hover {
+      overflow-y:overlay;
 }
 .chatbody .msg ul {
   margin: 0;
@@ -381,6 +399,18 @@ export default {
   font-size: 15px;
   border-radius: 2px;
 }
+.chatbody .msg ul li .content .other::before {
+content: "";
+position: absolute;
+left: 50px;
+top: 8px;
+width: 0;
+height: 0;
+border: 8px solid rgb(255, 255, 255);
+border-top-color: transparent;
+border-left-color: transparent;
+border-bottom-color: transparent;
+} 
  .chatbody .msg ul li .content .me-img {
   position: absolute;
   right: 0;
@@ -395,6 +425,18 @@ export default {
  padding: 15px 10px 20px 10px;
   background-color: #9BCCFF;
 }
+.chatbody .msg ul li .content .me::after {
+content: "";
+position: absolute;
+right: 50px;
+top: 8px;
+width: 0;
+height: 0;
+border: 8px solid #9BCCFF;
+border-top-color: transparent;
+border-right-color: transparent;
+border-bottom-color: transparent;
+} 
 #drag {
      width: calc(100% + 64px);
         cursor: n-resize;
@@ -444,7 +486,11 @@ export default {
     word-wrap: break-word;
   word-break: break-all;
   overflow-x: hidden;
+  overflow-y: hidden;
   /* outline: none; */
+}
+#input:hover{
+    overflow-y:overlay;
 }
 
 
@@ -455,16 +501,12 @@ export default {
    /* background-color: rgba(216, 16, 16, 0.1);   */
     /* opacity: 0; */
     /* display: none; */
+    
 }
 
 ::-webkit-scrollbar{
     width: 5px;
-    height: 5px; 
-    /* background: rgba(250, 249, 249, 0.9); */
-     /* background-color: transparent ; */
-      /* opacity: 0.1; */
-     /* display: none; */
-  
+    height: 5px;  
 }
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb{
