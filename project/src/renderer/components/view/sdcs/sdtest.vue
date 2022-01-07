@@ -260,12 +260,8 @@ export default {
 </script>
 
 <style scoped>
-    .body {
-        /* float: left; */
-        /* margin-top: 80px; */
-         /* width: 100%; */
+    .body {   
              height: 100%;
-             /* height: 1040px; */
     }
     .group {
         width: 440px;
@@ -296,13 +292,8 @@ export default {
 			width: 100%;
 			padding: 0;
 			margin: 0 0;
-			background-color: #f7f7f7;
-          
+			background-color: #f7f7f7;         
     }
-    /* .group  ul :hover {
-     overflow-y: auto;
-
-    } */
     .group li {
 				color: rgb(153, 153, 153);
 				/* padding: 5px 10px; */
@@ -337,5 +328,4 @@ export default {
        /* opacity:0.50; */
    /* filter:alpha(opacity=50); */
 }
-
 </style>
