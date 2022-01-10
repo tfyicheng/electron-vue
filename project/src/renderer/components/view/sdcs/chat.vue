@@ -68,8 +68,8 @@
             <el-button size="small" type="primary" ref="upFile"></el-button>
           </el-upload>
         </i>
-        <i class="el-icon-scissors"></i>
-        <i class="el-icon-chat-dot-round"></i>
+        <i class="el-icon-microphone yuyin"@click="yuyin"></i>
+        <i class="el-icon-video-camera"></i>
         <i class="el-icon-phone-outline"></i>
       </div>
       <div id="input" ref="ip" contenteditable="true" @click="db">
@@ -96,6 +96,7 @@
 </template>
 
 <script>
+    import { remote, ipcRenderer } from "electron";
 export default {
   name: "chat",
   props: ["chat"],
@@ -163,6 +164,11 @@ export default {
     };
   },
   methods: {
+      yuyin(){
+           ipcRenderer.send('openchildwindow','open');
+   
+
+      },
     send() {
       if (this.$refs.ip.innerHTML.length > 0) {
         let msg = {
@@ -335,8 +341,6 @@ export default {
 
 <style scoped>
 .chatmain {
-    /* height: 880px; */
-    /* height: 100%; */
      width: 100%; 
     overflow: hidden;
  }
@@ -360,6 +364,7 @@ export default {
   width: 100%;
   position: relative;
 }
+/* 消息框 */
 .chatbody .msg {
   background-color: #f3f3f3;
   height: 716px;
@@ -437,6 +442,7 @@ border-top-color: transparent;
 border-right-color: transparent;
 border-bottom-color: transparent;
 } 
+/*拖拽条 */
 #drag {
      width: calc(100% + 64px);
         cursor: n-resize;
@@ -444,6 +450,7 @@ border-bottom-color: transparent;
         position: absolute;
         bottom: 200px;
 }
+/* 发送框 */
 .chatbody .send {
   /* padding: 0 30px; */
   height: 200px;
@@ -463,13 +470,56 @@ border-bottom-color: transparent;
   font-size: large;
   color: #666;
 }
+/* //表情包 */
+.chatbody .send .brows {
+  position: absolute;
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px #7f7f7f;
+  top: -290px;
+  left: 10px;
+  width: 400px;
+  height: 290px;
+  padding: 0 8px;
+  background-color: #fff;
+  border: 0.5px solid #bbbbbb;
+}
+.chatbody .send .brows .brow {
+  height: 210px;
+  padding-left: 5px;
+  margin-top: 20px;
+  overflow-y: auto;
+}
+.chatbody .send .brows .select ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chatbody .send .brows .select ul li {
+  cursor: pointer;
+  padding: 10px 17.5px;
+}
+.chatbody .send .brows .select ul li:hover {
+  background: #f5f5f5;
+}
+.chatbody .send .brows ul {
+  padding: 5px 5px;
+  margin: 0;
+   list-style: none;
+}
+.chatbody .send .brows ul li {
+  cursor: default;
+  float: left;
+  font-size: large;
+}
+.chatbody .send .brows ul li:hover {
+  background-color: #e7e7e7;
+}
+/* 按钮 */
 .chatbody .send .btn {
   cursor: pointer;
-  /* float: right; */
  bottom: 10px;
   right: 20px;
   position:fixed; 
-  /* position: absolute; */
   width: 80px;
   height: 26px;
   font-size: 14px;
@@ -478,6 +528,7 @@ border-bottom-color: transparent;
   border: 1px solid #e5e5e5;
   background-color: #f5f5f5;
 }
+/* 输入框 */
  #input {
      background-color: #f3f3f3;
     height: 120px;
@@ -492,18 +543,50 @@ border-bottom-color: transparent;
 #input:hover{
     overflow-y:overlay;
 }
-
-
+/* 文件 */
+.chatbody #input .file {
+  cursor: default;
+  height: 45px;
+  padding: 5px 10px;
+  width: 300px;
+  position: relative;
+  border: 0.5px solid #d0d0d0;
+  border-radius: 3px;
+}
+.chatbody #input .file:hover {
+  background: #d0cecd;
+}
+.chatbody #input .file .el-icon-close {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  cursor: pointer;
+  color: #969696;
+}
+.chatbody #input .file .el-icon-close:hover {
+  color: #6b6b6b;
+}
+.chatbody #input .file .el-icon-document {
+  color: #969696;
+  font-size: 40px;
+  float: left;
+}
+.chatbody #input .file .info {
+  margin-left: 15px;
+  font-size: small;
+  float: left;
+}
+.chatbody #input .file .info p {
+  margin: 0;
+}
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
   /* border-radius: 10px; */
    background: transparent;
    /* background-color: rgba(216, 16, 16, 0.1);   */
     /* opacity: 0; */
-    /* display: none; */
-    
+    /* display: none; */   
 }
-
 ::-webkit-scrollbar{
     width: 5px;
     height: 5px;  

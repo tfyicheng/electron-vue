@@ -16,7 +16,6 @@
         <div class="content">
 			<chat :chat="select" @send="send"></chat>
 		</div>
-  
     <!-- <chat class="chat"></chat> -->
     </div>
 </template>
@@ -277,11 +276,6 @@ export default {
            overflow: hidden;
     }
   .group  .gul {
-      /* height: 100%; */
-      /* padding-bottom: 80px; */
-     /* height: 100vh; */
-     /* min-height: 100vh; */
-      /* height: calc(100%-80px); */
       height: 944px;
       overflow-y: hidden;;
   }

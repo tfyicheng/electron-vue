@@ -26,7 +26,7 @@ const router = new Router({
         {
           path: '/sdtest',
           name: 'sdtest',
-          component: require('@/components/view/sdcs/sdtest').default
+          component: require('@/components/view/sdcs/sdtest').default,
         },
         {
           path: '/zdsb',
@@ -37,9 +37,13 @@ const router = new Router({
           path: '/sjcj',
           name: 'sjcj',
           component: require('@/components/view/sjcj').default
-        }
+        },  {
+          path: '/yy',
+          name: 'yy',
+          component: require('@/components/gn/yy').default
+        },
       ]
-    }
+    }, 
   ]
 })
 router.beforeEach((to, from, next) => {

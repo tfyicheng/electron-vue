@@ -17,7 +17,7 @@
           ref="multipleTable"
           :data="tableData"
           tooltip-effect="dark"
-           :header-cell-style="{background:'#f7f9ff',borderColor:'#CECECE',borderTop:'1px solid #ddd'}"
+           :header-cell-style="{color:'#171717',background:'#f7f9ff',borderColor:'#CECECE',borderTop:'1px solid #ddd'}"
           style="width: 100%"
           @selection-change="handleSelectionChange"
         >
@@ -25,19 +25,19 @@
           <el-table-column label="编号" width="100">
             <template slot-scope="scope">{{ scope.row.date }}</template>
           </el-table-column>
-          <el-table-column prop="name" label="工作模式" width="100">
+          <el-table-column prop="name" label="任务名称" width="100">
           </el-table-column>
-          <el-table-column prop="address" label="频段" show-overflow-tooltip>
+          <el-table-column prop="address" label="所属网络" show-overflow-tooltip>
           </el-table-column>
            <el-table-column prop="address" label="开始时间" show-overflow-tooltip>
           </el-table-column>
            <el-table-column prop="address" label="结束时间" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="带宽" show-overflow-tooltip>
+           <el-table-column prop="address" label="业务类型" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="速率" show-overflow-tooltip>
+           <el-table-column prop="address" label="接收端" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="功率" show-overflow-tooltip>
+           <el-table-column prop="address" label="状态" show-overflow-tooltip>
           </el-table-column>
         </el-table>
         <div style="margin-top: 20px">

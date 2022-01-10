@@ -116,8 +116,42 @@ ipcMain.on('new-msg', (event, params) => {
 ipcMain.on('login-window', () => {
   mainWindow.setContentSize(300, 372)
   mainWindow.center()
-
 })
+
+// const childURL = `../renderer/components/gn/yy.vue`
+// const childURL =path.join('file://', __dirname, '../renderer/components/gn/yy.html')
+// const childURL ="https://bilibili.com/"
+let childWindow=null
+ipcMain.on('openchildwindow',(event,arg)=>{
+  // window.open('https://bilibili.com/','子窗口标题', 'width=300,height=300');
+		if(childWindow){
+			childWindow.show()
+		}else{
+	 		childWindow = new BrowserWindow({
+                useContentSize: true,
+                height: 500,
+                width: 300,
+                resizable: true,
+                show: false,
+                // frame:false,
+                // titleBarStyle:'hidden-inset',
+                // titleBarOverlay: true,
+                parent: mainWindow,
+                webPreferences: {
+                  webSecurity: false
+                }
+            })
+            // childWindow.loadURL(childURL)
+            childWindow.loadURL(winURL+"#/index#/sjcs")
+            childWindow.once('ready-to-show', () => {
+                childWindow.show()
+            })
+            childWindow.on('closed', () => {
+                childWindow = null
+            })
+		}
+})
+
 /**
  * Auto Updater
  *

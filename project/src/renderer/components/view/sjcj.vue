@@ -17,7 +17,7 @@
           ref="multipleTable"
           :data="tableData"
           tooltip-effect="dark"
-           :header-cell-style="{background:'#f7f9ff',borderColor:'#CECECE',borderTop:'1px solid #ddd'}"
+           :header-cell-style="{color:'#171717',background:'#f7f9ff',borderColor:'#CECECE',borderTop:'1px solid #ddd'}"
           style="width: 100%"
           @selection-change="handleSelectionChange"
         >
