@@ -7,6 +7,7 @@ Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 const router = new Router({
+  mode: 'hash',
   routes: [
     {
       path: '/',
@@ -37,13 +38,14 @@ const router = new Router({
           path: '/sjcj',
           name: 'sjcj',
           component: require('@/components/view/sjcj').default
-        },  {
-          path: '/yy',
-          name: 'yy',
-          component: require('@/components/gn/yy').default
-        },
+        }, 
       ]
     }, 
+     {
+      path: '/yy',
+      name: 'yy',
+      component: require('@/components/gn/yy').default
+    },
   ]
 })
 router.beforeEach((to, from, next) => {

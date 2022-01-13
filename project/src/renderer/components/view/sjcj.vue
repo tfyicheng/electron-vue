@@ -22,22 +22,26 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column>
-          <el-table-column label="编号" width="100">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+          <el-table-column label="编号" width="100"prop="number">
+            <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
           </el-table-column>
           <el-table-column prop="name" label="任务名称" width="100">
           </el-table-column>
-          <el-table-column prop="address" label="业务类型" show-overflow-tooltip>
+          <el-table-column prop="type" label="业务类型" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="开始时间" show-overflow-tooltip>
+           <el-table-column prop="startdate" label="开始时间" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="结束时间" show-overflow-tooltip>
+           <el-table-column prop="enddate" label="结束时间" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="业务方向" show-overflow-tooltip>
+           <el-table-column prop="direction" label="业务方向" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="源" show-overflow-tooltip>
+           <el-table-column prop="source" label="源" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="状态" show-overflow-tooltip>
+           <el-table-column prop="status" label="状态" show-overflow-tooltip>
+              <template slot-scope="scope">
+               <span v-if="scope.row.status===1" style="color:#07C15F">成功</span>
+               <span v-else style="color:#FF6464">失败</span>
+              </template>
           </el-table-column>
         </el-table>
         <div style="margin-top: 20px">
@@ -54,25 +58,33 @@ export default {
     return {
       tableData: [
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        }],   
+          number:1,        
+          name: "任务一",
+          type: "语音",
+          startdate: "2016-05-03",
+           enddate: "2016-05-03",
+           source:"单位一",
+           direction:"发起",
+           status:1,
+        },{
+          number:1,        
+          name: "任务一",
+          type: "语音",
+          startdate: "2016-05-03",
+           enddate: "2016-05-03",
+           source:"单位一",
+           direction:"发起",
+           status:0,
+        },{
+          number:1,        
+          name: "任务一",
+          type: "语音",
+          startdate: "2016-05-03",
+           enddate: "2016-05-03",
+           source:"单位一",
+           direction:"发起",
+           status:1,
+        },],   
          multipleSelection: [] 
     }
   },

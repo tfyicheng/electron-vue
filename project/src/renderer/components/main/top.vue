@@ -46,13 +46,15 @@ export default {
   -webkit-app-region: drag;
 } */
 .btn {
-  -webkit-app-region: no-drag;
-  cursor: pointer;
+  -webkit-app-region: no-drag; 
   position: fixed;
   top: 0px;
   right: 0px;
   /* width: 100%; */
   text-align: right;
+}
+.btn i {
+cursor: pointer;
 }
 .iconfont {
     /* display: inline-block; */

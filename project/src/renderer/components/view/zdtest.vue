@@ -22,22 +22,27 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column  type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column>
-          <el-table-column label="编号" width="100">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+          <el-table-column label="编号" width="100"prop="number">
+            <!-- <template slot-scope="scope">{{ scope.row.number }}</template> -->
           </el-table-column>
           <el-table-column prop="name" label="任务名称" width="100">
           </el-table-column>
-          <el-table-column prop="address" label="所属网络" show-overflow-tooltip>
+          <el-table-column prop="belong" label="所属网络" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="开始时间" show-overflow-tooltip>
+           <el-table-column prop="startdate" label="开始时间" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="结束时间" show-overflow-tooltip>
+           <el-table-column prop="enddate" label="结束时间" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="业务类型" show-overflow-tooltip>
+           <el-table-column prop="type" label="业务类型" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="接收端" show-overflow-tooltip>
+           <el-table-column prop="receiver" label="接收端" show-overflow-tooltip>
           </el-table-column>
-           <el-table-column prop="address" label="状态" show-overflow-tooltip>
+           <el-table-column prop="status" label="状态" show-overflow-tooltip>            
+             <template slot-scope="scope">
+               <span v-if="scope.row.status===1" style="color:#07C15F">已完成</span>
+               <span v-else-if="scope.row.status===2" style="color:#FEAA65">进行中</span>
+               <span v-else style="color:#676767">未完成</span>
+              </template>
           </el-table-column>
         </el-table>
         <div style="margin-top: 20px">
@@ -49,31 +54,51 @@
 </template>
 
 <script>
+
 export default {
    name:"zdtest",
+
   data() {
     return {
       tableData: [
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
+          number:1,
+          startdate:"2016-05-03",
+          enddate: "2016-05-03",
+          name: "任务一",
+          type: "语音",
+          receiver:"单位一",
+          status:1,
+          belong:"接入网1",
+        },{
+          number:1,
+          startdate:"2016-05-03",
+          enddate: "2016-05-03",
+          name: "任务一",
+          type: "语音",
+          receiver:"单位一",
+          status:2,
+          belong:"接入网1",
+        },{
+          number:1,
+          startdate:"2016-05-03",
+          enddate: "2016-05-03",
+          name: "任务一",
+          type: "语音",
+          receiver:"单位一",
+          status:3,
+          belong:"接入网1",
+        },{
+          number:1,
+          startdate:"2016-05-03",
+          enddate: "2016-05-03",
+          name: "任务一",
+          type: "语音",
+          receiver:"单位一",
+          status:2,
+          belong:"接入网1",
         },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        }],   
+        ],   
          multipleSelection: [] 
     }
   },

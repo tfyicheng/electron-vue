@@ -29,13 +29,20 @@ function createWindow() {
   })
 
   mainWindow.loadURL(winURL)
-  mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+  //屏蔽窗口菜单（-webkit-app-region:drag）
+  mainWindow.hookWindowMessage(278, function (e) {
+  mainWindow.setEnabled(false)
+  setTimeout(()=> {mainWindow.setEnabled(true)
+  }, 100)
+ return true
   })
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
-  createTray()// 创建图标托盘
+mainWindow.on('ready-to-show', () => {
+  mainWindow.show()
+})
+mainWindow.on('closed', () => {
+  mainWindow = null
+})
+createTray()// 创建图标托盘
 }
 
 app.on('ready', createWindow)
@@ -118,39 +125,7 @@ ipcMain.on('login-window', () => {
   mainWindow.center()
 })
 
-// const childURL = `../renderer/components/gn/yy.vue`
-// const childURL =path.join('file://', __dirname, '../renderer/components/gn/yy.html')
-// const childURL ="https://bilibili.com/"
-let childWindow=null
-ipcMain.on('openchildwindow',(event,arg)=>{
-  // window.open('https://bilibili.com/','子窗口标题', 'width=300,height=300');
-		if(childWindow){
-			childWindow.show()
-		}else{
-	 		childWindow = new BrowserWindow({
-                useContentSize: true,
-                height: 500,
-                width: 300,
-                resizable: true,
-                show: false,
-                // frame:false,
-                // titleBarStyle:'hidden-inset',
-                // titleBarOverlay: true,
-                parent: mainWindow,
-                webPreferences: {
-                  webSecurity: false
-                }
-            })
-            // childWindow.loadURL(childURL)
-            childWindow.loadURL(winURL+"#/index#/sjcs")
-            childWindow.once('ready-to-show', () => {
-                childWindow.show()
-            })
-            childWindow.on('closed', () => {
-                childWindow = null
-            })
-		}
-})
+
 
 /**
  * Auto Updater

@@ -54,7 +54,26 @@ export default {
                         content: '宝塔镇河妖',
                         time: new Date().getTime()
                     }],
-                    groupId: 4,
+                    groupId: 2,
+                    unRead: 5
+                }, {
+                    img: require('../../../assets/tx.png'),
+                    name: '王力宏',
+                    type: 'group',
+                    msgs: [{
+                        isMe: false,
+                        content: '今天是部门培训会议，你什么时候过来吖',
+                        time: new Date().getTime()
+                    }, {
+                        isMe: true,
+                        content: '我现在马上过来',
+                        time: new Date().getTime()
+                    },{
+                        isMe: false,
+                        content: '今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖',
+                        time: new Date().getTime()
+                    }],
+                    groupId: 3,
                     unRead: 5
                 }, {
                     img: require('../../../assets/tx.png'),
@@ -92,7 +111,7 @@ export default {
                         content: '今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖',
                         time: new Date().getTime()
                     }],
-                    groupId: 4,
+                    groupId: 5,
                     unRead: 5
                 }, {
                     img: require('../../../assets/tx.png'),
@@ -111,7 +130,7 @@ export default {
                         content: '今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖',
                         time: new Date().getTime()
                     }],
-                    groupId: 4,
+                    groupId: 6,
                     unRead: 5
                 }, {
                     img: require('../../../assets/tx.png'),
@@ -130,7 +149,7 @@ export default {
                         content: '今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖',
                         time: new Date().getTime()
                     }],
-                    groupId: 4,
+                    groupId: 7,
                     unRead: 5
                 }, {
                     img: require('../../../assets/tx.png'),
@@ -149,7 +168,7 @@ export default {
                         content: '今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖',
                         time: new Date().getTime()
                     }],
-                    groupId: 4,
+                    groupId:8,
                     unRead: 5
                 }, {
                     img: require('../../../assets/tx.png'),
@@ -168,7 +187,7 @@ export default {
                         content: '今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖',
                         time: new Date().getTime()
                     }],
-                    groupId: 4,
+                    groupId: 9,
                     unRead: 5
                 }, {
                     img: require('../../../assets/tx.png'),
@@ -187,26 +206,7 @@ export default {
                         content: '今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖',
                         time: new Date().getTime()
                     }],
-                    groupId: 4,
-                    unRead: 5
-                }, {
-                    img: require('../../../assets/tx.png'),
-                    name: '王力宏',
-                    type: 'group',
-                    msgs: [{
-                        isMe: false,
-                        content: '今天是部门培训会议，你什么时候过来吖',
-                        time: new Date().getTime()
-                    }, {
-                        isMe: true,
-                        content: '我现在马上过来',
-                        time: new Date().getTime()
-                    },{
-                        isMe: false,
-                        content: '今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖',
-                        time: new Date().getTime()
-                    }],
-                    groupId: 4,
+                    groupId: 10,
                     unRead: 5
                 }, {
                     img: require('../../../assets/tx.png'),
@@ -220,7 +220,7 @@ export default {
                         content: '<img src="https://s1.ax1x.com/2020/08/14/dC2uw9.jpg"/><p>溜了溜了</p>',
                         time: new Date().getTime()
                     }],
-                    groupId: 6,
+                    groupId: 11,
                     type: 'user',
                     unRead: 3
                 }, {
@@ -235,7 +235,7 @@ export default {
                         content: '你什么时候过来吖',
                         time: new Date().getTime()
                     }, ],
-                    groupId: 7,
+                    groupId: 12,
                     type: 'user',
                     unRead: 2
                 },
@@ -319,7 +319,5 @@ export default {
     border-radius: 8px;
     /* -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2); */
     background: rgba(58, 57, 54, 0.5);
-       /* opacity:0.50; */
-   /* filter:alpha(opacity=50); */
 }
 </style>
