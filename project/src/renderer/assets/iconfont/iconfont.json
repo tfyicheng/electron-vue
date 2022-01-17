@@ -6,6 +6,118 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "376690",
+      "name": "确认",
+      "font_class": "queren",
+      "unicode": "e6bd",
+      "unicode_decimal": 59069
+    },
+    {
+      "icon_id": "853093",
+      "name": "电话",
+      "font_class": "dianhua",
+      "unicode": "e6d4",
+      "unicode_decimal": 59092
+    },
+    {
+      "icon_id": "1263284",
+      "name": "文件",
+      "font_class": "wenjian",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "2180829",
+      "name": "取消",
+      "font_class": "quxiao",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "4228384",
+      "name": "接听",
+      "font_class": "jieting",
+      "unicode": "e7b8",
+      "unicode_decimal": 59320
+    },
+    {
+      "icon_id": "4598258",
+      "name": "加号",
+      "font_class": "jiahao",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "4611765",
+      "name": "对勾",
+      "font_class": "duigou",
+      "unicode": "ebe6",
+      "unicode_decimal": 60390
+    },
+    {
+      "icon_id": "5093344",
+      "name": "摄像头",
+      "font_class": "shexiangtou",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "6265034",
+      "name": "语音-实色",
+      "font_class": "voice-s",
+      "unicode": "e641",
+      "unicode_decimal": 58945
+    },
+    {
+      "icon_id": "8387381",
+      "name": "语音",
+      "font_class": "yuyin",
+      "unicode": "e6d9",
+      "unicode_decimal": 59097
+    },
+    {
+      "icon_id": "9253625",
+      "name": "语音",
+      "font_class": "yuyin1",
+      "unicode": "e790",
+      "unicode_decimal": 59280
+    },
+    {
+      "icon_id": "11061561",
+      "name": "语音",
+      "font_class": "saying",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "16399024",
+      "name": "视频",
+      "font_class": "shipin",
+      "unicode": "e85f",
+      "unicode_decimal": 59487
+    },
+    {
+      "icon_id": "19518247",
+      "name": "下载",
+      "font_class": "xiazai",
+      "unicode": "e72a",
+      "unicode_decimal": 59178
+    },
+    {
+      "icon_id": "21703166",
+      "name": "设 置",
+      "font_class": "shezhi",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "22369437",
+      "name": "关闭摄像头",
+      "font_class": "guanbishexiangtou",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
       "icon_id": "11291325",
       "name": "挂断",
       "font_class": "guaduan",

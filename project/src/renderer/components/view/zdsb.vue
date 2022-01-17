@@ -5,7 +5,10 @@
     </div>
     <div class="zdmain">
       <div class="mainmenu">
-        <el-button type="primary" icon="el-icon-circle-plus-outline"
+        <el-button
+          type="primary"
+          icon="el-icon-circle-plus-outline"
+          @click="dialogFormVisible = true"
           >添加</el-button
         >
         <el-button type="primary" icon="el-icon-search" style="float: right"
@@ -71,14 +74,48 @@
           </template>
         </el-table-column>
       </el-table>
+
       <div style="margin-top: 20px">
         <el-button @click="toggleSelection()">取消选择</el-button>
       </div>
+
+      <el-dialog
+      v-dialogDrag
+        title="用户信息"
+        :visible.sync="dialogFormVisible"
+        :modal-append-to-body="false"
+        :close-on-click-modal="false"
+      >
+        <el-form :model="form">
+          <el-form-item label="头像" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"placeholder="选择文件"></el-input>
+          </el-form-item>
+           <el-form-item label="活动名称" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item label="所属角色" :label-width="formLabelWidth">
+            <el-select v-model="form.region" placeholder="请选择">
+              <el-option label="超级管理员" value="shanghai"></el-option>
+              <el-option label="普通用户" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="密码" :label-width="formLabelWidth">
+            <el-input v-model="form.name" autocomplete="off"placeholder="请输入"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button  icon="iconfont icon-quxiao" @click="dialogFormVisible = false">取消</el-button>
+          <el-button  icon="iconfont icon-queren"  type="primary" @click="dialogFormVisible = false"
+            >确认</el-button
+          >
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
+import '../../../common/drag'
 export default {
   name: "zdsb",
   data() {
@@ -114,6 +151,18 @@ export default {
         },
       ],
       multipleSelection: [],
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
+      formLabelWidth: "120px",
     };
   },
   methods: {
@@ -200,4 +249,88 @@ export default {
 .el-table >>> .el-table__cell {
   padding: 0;
 }
+
+/* 对话框 */
+.el-dialog__wrapper >>>.el-dialog {
+  width: 440px;
+  height: 340px;
+}
+.el-dialog__wrapper >>> .el-dialog__body {
+  padding: 10px;
+}
+.el-dialog__wrapper >>>.el-dialog__header { 
+  padding: 10px 20px 20px;
+}
+.el-dialog__wrapper >>> .el-dialog__title {
+  color:#000;
+  font-weight: bold;
+}
+.el-dialog__wrapper >>> .el-dialog__title::before {
+  content: "\00a0 ";
+  border-left: 5px solid #4da0ff;
+}
+.el-dialog__wrapper >>> .el-dialog__headerbtn .el-dialog__close {
+  color:#000;
+  font-size: 25px;
+  line-height: 2px;
+}
+/* 对话框表单 */
+.el-form {
+  /* padding-left: 20px; */
+  width:360px;
+  margin:0 auto;
+}
+.el-dialog__body .el-form .el-form-item {
+  margin-bottom: 15px;
+}
+.el-form >>> .el-form-item__content .el-input {
+  height: 35px;
+  width: 240px;
+}
+.el-form >>> .el-form-item__content {
+   line-height: 35px;
+}
+.el-form >>> .el-form-item__label {
+  background-color: #86BDFF;
+  color:#fff;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  padding:0;
+}
+.el-form >>> .el-form-item__label::before {
+  content: "*";
+  color:red;
+}
+/* 对话框按钮 */
+.el-dialog__footer {
+  padding: auto;
+}
+.dialog-footer {
+  /* width: 190px; */
+  margin:0 auto;
+  text-align: center;
+}
+.dialog-footer >>> .el-button {
+  width: 82px;
+  height: 35px;
+  border-radius: 3px;
+}
+.dialog-footer .el-button--default {
+  background-color: #999;
+  color: #fff;
+  margin-right: 10px;
+}
+.dialog-footer >>> i {
+  padding-right: 5px;
+}
+/* 模态框 margin-left: 120px; */
+.el-dialog__wrapper {
+  
+  z-index: 9!important;
+}
+.zdmain >>> .v-modal {
+   z-index: 8!important;
+}
+
 </style>
