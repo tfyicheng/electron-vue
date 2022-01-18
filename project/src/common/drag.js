@@ -14,35 +14,40 @@ Vue.directive('dialogDrag', {
  
     // 鼠标按下事件
     dialogHeaderEl.onmousedown = (e) => {
-      // 鼠标按下，计算当前元素距离可视区的距离 (鼠标点击位置距离可视窗口的距离)
-      const disX = e.clientX - dialogHeaderEl.offsetLeft;
-      const disY = e.clientY - dialogHeaderEl.offsetTop;
+      // 鼠标按下，计算当前鼠标在拖拽元素可视距离的方位
+      const disX = e.clientX - dragDom.offsetLeft;
+      const disY = e.clientY -  dragDom.offsetTop;
+    //   console.log("元素距离左边位置 offsetTop："+dragDom.offsetTop)
+      // 获取到的值带px 正则匹配替换  
 
-      // 获取到的值带px 正则匹配替换
-      let styL, styT;
- 
+    //   let styL, styT;
       // 注意在ie中 第一次获取到的值为组件自带50% 移动之后赋值为px
-      if (sty.left.includes('%')) {
-        styL = +document.body.clientWidth * (+sty.left.replace(/\%/g, '') / 100);
-        styT = +document.body.clientHeight * (+sty.top.replace(/\%/g, '') / 100);
-      } else {
-        styL = +sty.left.replace(/\px/g, '');
-        styT = +sty.top.replace(/\px/g, '');
-      };
+    //   if (sty.left.includes('%')) {
+    //     styL = +document.body.clientWidth * (+sty.left.replace(/\%/g, '') / 100);
+    //     styT = +document.body.clientHeight * (+sty.top.replace(/\%/g, '') / 100);
+    //   } else {
+    //     styL = +sty.left.replace(/\px/g, '');
+    //     styT = +sty.top.replace(/\px/g, '');
+    //   };
  
       // 鼠标拖拽事件
       document.onmousemove = function (e) {
-        // 通过事件委托，计算移动的距离 （开始拖拽至结束拖拽的距离）
+        // 通过事件委托，计算拖拽元素距离整个可视区域的距离，即拖拽元素的x，y的0点。
         const l = e.clientX - disX;
         const t = e.clientY - disY;
 
-        let finallyL = l + styL
-        let finallyT = t + styT
-
+        let finallyL = l  
+        let finallyT = t 
+        // console.log("元素距离左边偏移的位置 styL："+styL)
+        console.log("移动距离 t："+t)
+        console.log("最终元素的位置 finallt："+finallyT)   
+        console.log("鼠标距离边x距离 e.client："+e.clientY)  
+        console.log( "鼠标在拖拽元素的位置 dist："+disY)      
+        console.log("----------")
         // 边界值判定 注意clientWidth scrollWidth区别 要减去之前的top left值
         // dragDom.offsetParent表示弹窗阴影部分
-        if (finallyL < 0) {
-          finallyL = 0
+        if (finallyL < 120) {
+          finallyL = 120
         } else if (finallyL > dragDom.offsetParent.clientWidth - dragDom.clientWidth - dragDom.offsetParent.offsetLeft) {
           finallyL = dragDom.offsetParent.clientWidth - dragDom.clientWidth - dragDom.offsetParent.offsetLeft
         }
@@ -53,7 +58,7 @@ Vue.directive('dialogDrag', {
           finallyT = dragDom.offsetParent.clientHeight - dragDom.clientHeight - dragDom.offsetParent.offsetLeft
         )
  
-        // 移动当前元素
+        // 移动当前元素，这里赋值的位置是相对拖拽元素的父元素，不是可视区域
         dragDom.style.left = `${finallyL}px`;
         dragDom.style.top = `${finallyT}px`;
  

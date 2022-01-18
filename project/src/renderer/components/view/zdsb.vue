@@ -8,7 +8,7 @@
         <el-button
           type="primary"
           icon="el-icon-circle-plus-outline"
-          @click="dialogFormVisible = true"
+          @click="addForm"
           >添加</el-button
         >
         <el-button type="primary" icon="el-icon-search" style="float: right"
@@ -178,6 +178,13 @@ export default {
     handleClick(row) {
       console.log(row);
     },
+    addForm() {
+      this.dialogFormVisible = true;
+      const dragDom = document.querySelector('.el-dialog')
+      // dragDom.style.left = 120+ dragDom.offsetParent.clientWidth/2+"px"
+      dragDom.style.left =" 120px"
+      console.log( dragDom.style.left)
+    }
   },
 };
 </script>
@@ -254,6 +261,10 @@ export default {
 .el-dialog__wrapper >>>.el-dialog {
   width: 440px;
   height: 340px;
+   /* left: 15vw; */
+   left: 40%;
+   top: 20vh; 
+  margin: 0 !important;
 }
 .el-dialog__wrapper >>> .el-dialog__body {
   padding: 10px;
@@ -302,6 +313,16 @@ export default {
   content: "*";
   color:red;
 }
+.el-form >>>.el-input__inner {
+  background-color: #f3f3f3;
+  border:none;
+  height: 35px;
+}
+.el-form >>>.el-input__inner::-webkit-input-placeholder {
+  /* color: #000!important; */
+  color: #999;
+  font-weight: bold;
+}
 /* 对话框按钮 */
 .el-dialog__footer {
   padding: auto;
@@ -326,7 +347,6 @@ export default {
 }
 /* 模态框 margin-left: 120px; */
 .el-dialog__wrapper {
-  
   z-index: 9!important;
 }
 .zdmain >>> .v-modal {

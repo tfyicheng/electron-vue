@@ -49,7 +49,7 @@
         </div>
         <div class="tool-bar">
           <i class="el-icon-eleme" @click.stop="showBrow = !showBrow"></i>
-          <i class="el-icon-folder-opened" @click="uploadFile">
+          <i class="iconfont icon-wenjian" @click="uploadFile">
             <el-upload
               style="display: none"
               :limit="1"
@@ -64,9 +64,9 @@
               <el-button size="small" type="primary" ref="upFile"></el-button>
             </el-upload>
           </i>
-          <i class="el-icon-microphone yuyin" @click="yuyin"></i>
-          <i class="el-icon-video-camera"></i>
-          <i class="el-icon-phone-outline"></i>
+          <i class="iconfont icon-dianhua yuyin" @click="yuyin"></i>
+          <i class="iconfont icon-shipin"></i>
+          <i class="iconfont icon-yuyin"></i>
         </div>
         <div id="input" ref="ip" contenteditable="true" @click="db">
           <div
