@@ -289,17 +289,20 @@ export default {
         //  console.log(inp.style.height)
         //  console.log(tp.style.height)
         //  console.log(inp.clientHeight)
+        //  console.log(tp.clientHeight)
         if (inp.clientHeight > 500) {
           bt.style.height = "565px";
           drag.style.bottom = "565px";
           tp.style.height = "calc(100% - " + 565 + "px)";
           inp.style.height = "500px";
-        } else if (inp.clientHeight < 100) {
+          // document.onmousemove = null; 
+        } else if ( tp.clientHeight > 755 ) {
           bt.style.height = "165px";
           drag.style.bottom = "165px";
           tp.style.height = "calc(100% - " + 165 + "px)";
           inp.style.height = "100px";
-        }
+          //  document.onmousemove = null;
+        } 
       };
     },
     setPasteImg() {

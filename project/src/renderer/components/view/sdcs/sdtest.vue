@@ -7,7 +7,7 @@
                      <ul  >
 		    	<li v-for="g in groups" @click="selects(g)"
 		    	    :style="(select !== null && g.groupId === select.groupId) ? 'background-color: #eee;':''">
-		    		<list :group="g" :select="select"></list>
+		    		<list :group="g" :select="select"@deleteIndex="del"></list>
 		    	</li>
 		    </ul> 
             </div>
@@ -254,6 +254,12 @@ export default {
                 this.select = s
                 this.$store.commit('setSelectSession', s)
             },
+             del(e) {
+            if (e !== 0) {
+                this.groups.splice(e, 1);
+                console.log(e)
+            }
+        },
 	    }
 }
 </script>

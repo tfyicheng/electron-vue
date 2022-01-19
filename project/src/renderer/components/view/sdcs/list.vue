@@ -1,5 +1,5 @@
 <template>
-  <div class="cp-group">
+  <div class="cp-group" @contextmenu="menu(group.groupId)">
     <div>
       <div class="img">
         <el-badge
@@ -25,18 +25,19 @@
        
       </div>
     </div>
-  
   </div>
 </template>
 
 <script>
+  import menu from '../../../../common/rightClick'
 export default {
   name: "list",
   props: ["group", "select"],
   data() {
-    return {};
+    return {
+    };
   },
-
+   
   components: {},
 
   beforeMount() {},
@@ -79,6 +80,21 @@ export default {
       }
       return "";
     },
+    // menu(e){
+    //  e.preventDefault();
+    // // 执行代码块
+    //  console.log(e)
+    //  console.log(this)
+    // console.log(e.offsetX)
+    // console.log(e.offsetY)
+    // const menu = document.getElementsByClassName("menu")
+    // console.log(menu)
+    // // menu.style.left=e.offsetX
+    // // menu.offsetY=e.offsetY
+    // },
+    menu
+   
+    
   },
 };
 </script>
