@@ -7,7 +7,7 @@
           <!-- style="min-height: 100px" -->
           <li v-for="c in chat.msgs">
             <div v-if="c.isMe" class="content" style="min-height: 55px">
-              <div class="me" v-html="c.content"></div>
+              <div class="me" v-html="c.content"@contextmenu="menu(2)"></div>
               <img
                 class="me-img"
                 src="../../../assets/tx.png"
@@ -17,7 +17,7 @@
             </div>
             <div v-else class="content">
               <img :src="chat.img" width="50" height="50" class="other-img" />
-              <div class="other" v-html="c.content"></div>
+              <div class="other" v-html="c.content"@contextmenu="menu(2)"></div>
             </div>
           </li>
         </ul>
@@ -68,7 +68,7 @@
           <i class="iconfont icon-shipin"></i>
           <i class="iconfont icon-yuyin"></i>
         </div>
-        <div id="input" ref="ip" contenteditable="true" @click="db">
+        <div id="input" ref="ip" contenteditable="true" @click="db" @contextmenu="menu(3)">
           <div
             v-if="fileList.length > 0"
             class="file"
@@ -91,6 +91,7 @@
 </template>
 
 <script>
+import menu from '../../../../common/rightClick'
 import { remote, ipcRenderer } from "electron";
 const BrowserWindow = remote.BrowserWindow;
 // const  { BrowserWindow }  =  require ( '@electron/remote' )
@@ -163,6 +164,7 @@ export default {
     };
   },
   methods: {
+    menu,
     yuyin() {
       const childURL =
         process.env.NODE_ENV === "development"

@@ -13,14 +13,18 @@
             </div>
        
         </div>
-        <div class="content">
-			<chat :chat="select" @send="send"></chat>
+        <div class="content" >
+			<chat :chat="select" @send="send" v-show="hidden"></chat>
 		</div>
     <!-- <chat class="chat"></chat> -->
     </div>
 </template>
 
 <script>
+window.addEventListener('contextmenu',function(e){
+  e.preventDefault();
+  console.log(e)
+});
 import chat from './chat.vue'
 import grouptop from './grouptop.vue'
 import list from './list.vue'
@@ -29,6 +33,7 @@ export default {
         data(){
             return{
                 select:null,
+                hidden: 1,
 	            haha:require('../../../assets/tx.png'),
                 groups: [{
                     img: require('../../../assets/tx.png'),
@@ -251,16 +256,24 @@ export default {
                 })
             },
             selects(s) {
-                this.select = s
+                this.select = s,
+                this.hidden= s.groupId
                 this.$store.commit('setSelectSession', s)
             },
              del(e) {
             if (e !== 0) {
-                this.groups.splice(e, 1);
-                console.log(e)
+                 this.groups.splice( this.groups.findIndex(item => item.groupId=== e), 1)
+                console.log("被父元素获取的e："+e)
+                // const chats = document.getElementsByClassName("chatmain")
+                // chats.parentNode.removeChild(chats)
+                // this.selects(null)
+                this.hidden=0
             }
         },
-	    }
+	    },
+        watch:{
+
+        }
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="cp-group" @contextmenu="menu(group.groupId)">
+  <div class="cp-group" @contextmenu="menu(1,group.groupId)">
     <div>
       <div class="img">
         <el-badge
