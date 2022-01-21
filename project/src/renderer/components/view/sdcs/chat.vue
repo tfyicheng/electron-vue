@@ -64,8 +64,8 @@
               <el-button size="small" type="primary" ref="upFile"></el-button>
             </el-upload>
           </i>
-          <i class="iconfont icon-dianhua yuyin" @click="yuyin"></i>
-          <i class="iconfont icon-shipin"></i>
+          <i class="iconfont icon-dianhua yuyin" @click="gn(1)"></i>
+          <i class="iconfont icon-shipin" @click="gn(2)"></i>
           <i class="iconfont icon-yuyin"></i>
         </div>
         <div id="input" ref="ip" contenteditable="true" @click="db" @contextmenu="menu(3)">
@@ -165,11 +165,13 @@ export default {
   },
   methods: {
     menu,
-    yuyin() {
+    gn(type) {
+       console.log(window.location.href)
+      console.log(type)
       const childURL =
         process.env.NODE_ENV === "development"
-          ? "http://localhost:9080" + "#/yy"
-          : path.join("file://", __dirname, "../renderer/components/gn/yy.vue");
+          ? "http://localhost:9080" + "#/gn?type="+type
+          : path.join("file://", __dirname, "../renderer/components/gn/gn.vue");
       // 判读是否已经存在子窗口
       if (childWindow) {
         childWindow.show();
@@ -202,6 +204,43 @@ export default {
         ipcRenderer.send("yydata", this.chat);
       }, 2000);
     },
+//      shipin() {
+//       const childURL =
+//         process.env.NODE_ENV === "development"
+//           ? "http://localhost:9080" + "#/spth"
+//           : path.join("file://", __dirname, "../renderer/components/gn/spth.vue");
+//       // 判读是否已经存在子窗口
+//       if (childWindow) {
+//         childWindow.show();
+//       } else {
+//         childWindow = new BrowserWindow({
+//           useContentSize: true,
+//           height: 600,
+//           width: 360,
+//           resizable: true,
+//           show: false,
+//           frame:false,
+//           // titleBarStyle:'hidden-inset',
+//           // titleBarOverlay: true,
+//           parent: remote.mainWindow,
+//           webPreferences: {
+//             webSecurity: false,
+//           },
+//         });
+
+//         childWindow.loadURL(childURL);
+//         childWindow.once("ready-to-show", () => {
+//           childWindow.show();
+//         });
+//         childWindow.on("closed", () => {
+//           childWindow = null;
+//         });
+//       }     
+// // 定时发送目的是等待子窗口完成渲染才能监听数据
+//       setTimeout(() => {
+//         ipcRenderer.send("yydata", this.chat);
+//       }, 2000);
+//     },
     send() {
       if (this.$refs.ip.innerHTML.length > 0) {
         let msg = {

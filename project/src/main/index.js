@@ -30,11 +30,11 @@ function createWindow() {
 
   mainWindow.loadURL(winURL)
   //屏蔽窗口菜单（-webkit-app-region:drag）
-  mainWindow.hookWindowMessage(278, function (e) {
+  mainWindow.hookWindowMessage(278, function (e) { 
   mainWindow.setEnabled(false)
   setTimeout(()=> {mainWindow.setEnabled(true)
   }, 100)
- return true
+ return true 
   })
 mainWindow.on('ready-to-show', () => {
   mainWindow.show()

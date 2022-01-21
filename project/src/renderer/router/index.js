@@ -9,6 +9,14 @@ Router.prototype.push = function push(location) {
 const router = new Router({
   mode: 'hash',
   routes: [
+ {
+      path: '/gn',
+      name: 'gn',
+      component: require('@/components/gn/gn').default,
+      children: [
+       
+      ]
+    },
     {
       path: '/',
       name: 'login',
@@ -16,9 +24,9 @@ const router = new Router({
     },
     {
       path: '/index',
-      name:'main',
-      component:require('@/components/main/main').default,
-      children:[
+      name: 'main',
+      component: require('@/components/main/main').default,
+      children: [
         {
           path: '/zdtest',
           name: 'zdtest',
@@ -38,14 +46,20 @@ const router = new Router({
           path: '/sjcj',
           name: 'sjcj',
           component: require('@/components/view/sjcj').default
-        }, 
+        },
+       
       ]
-    }, 
-     {
+    }, {
+      path: '/spth',
+      name: 'spth',
+      component: require('@/components/gn/spth').default
+    }, {
       path: '/yy',
       name: 'yy',
       component: require('@/components/gn/yy').default
     },
+   
+   
   ]
 })
 router.beforeEach((to, from, next) => {
