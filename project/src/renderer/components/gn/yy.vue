@@ -182,5 +182,6 @@ img {
   /* padding-top: 30px; */
   font-size: 12px;
   color: #fff;
+  line-height: 30px;
 }
 </style>

@@ -12,8 +12,8 @@
     <img :src="img" width="150" height="150" />
     <div class="name">{{ name }}</div>
     <div class="time">{{ time }}</div>
-     <div class="bbtn"> 
-      <div class="mute" @click="go"  >
+    <div class="bbtn">
+      <div class="mute" @click="go">
         <i class="iconfont icon-jingyin"></i>
         <span>gn测试</span>
       </div>
@@ -42,9 +42,8 @@ export default {
   components: {},
 
   beforeCreate() {
-        
-     console.log("999")
-    
+    console.log("999");
+
     // remote.getCurrentWebContents().closeDevTools();
     //     remote.getCurrentWindow().setSize(1440, 1024);
     //     remote.getCurrentWindow().center();
@@ -54,38 +53,33 @@ export default {
       this.img = arg.img;
       console.log(arg.name);
       console.log("778");
-       console.log(this.$route.query.type)
+      console.log(this.$route.query.type);
     });
   },
 
   beforeMount() {
-     
+      this.call();
   },
 
   mounted() {
-      this.ni()
+    
   },
 
   methods: {
-     ni(){
-            console.log("886"+this.$route.query.type)
-            if(this.$route.query.type==1){
-                 this.$router.push('/yy')
-            }else {
-                this.$router.push('/spth')
-            }
-    //      switch (this.$route.query.type) {
-    //      case 1:
-    //          this.$router.push('/yy')
-    //           console.log("88")
-    //          break;
-    //       case 2:
-    //          this.$router.push('/spth')
-    //          break;
-    //      default:
-    //          break;
-    //  }
-     },
+    call() {
+      console.log("886" + this.$route.query.type);
+
+      switch (this.$route.query.type) {
+        case "1":
+          this.$router.push("/yy");
+          break;
+        case "2":
+          this.$router.push("/spth");
+          break;
+        default:
+          break;
+      }
+    },
     handleMin() {
       remote.getCurrentWindow().minimize();
     },
@@ -102,10 +96,10 @@ export default {
       remote.getCurrentWindow().close();
     },
     go() {
-      this.$router.push({path:'/spth'})
-      console.log(this.$router)
-      console.log(window.location.href)
-    }
+      this.$router.push({ path: "/spth" });
+      console.log(this.$router);
+      console.log(window.location.href);
+    },
   },
 };
 </script>
