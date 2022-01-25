@@ -113,6 +113,7 @@ export default {
 }
 .tbtn i {
   cursor: pointer;
+  color:#fff;
 }
 .tbtn .iconfont {
   font-size: 14px;
