@@ -1,14 +1,17 @@
 <template>
 	<div class="login">
+    <!-- 标头 -->
 		<div class="title">
 			<a href="" target="_blank" underline="ture" class="config">接入配置</a>
 			<i class="el-icon-close" @click="exit"></i>
 		</div>
+    <!-- 用户头像 -->
     <div class="userimg">
         <div class="imgbox">
           <img src="../assets/tx.png"/>
         </div>
     </div>
+    <!-- 主体 -->
 		<div class="body">
 			<div class="input" style="text-align:center;">	
 					<div style="margin-top: 20px">
@@ -16,8 +19,6 @@
 						<el-input v-model="user.password" placeholder="输入密码" type="password"></el-input>
 						<el-button type="primary"  class="submit" @click="login">登 录</el-button>
 					</div>			
-				
-		
 		</div>
 	</div>
   </div>
@@ -43,8 +44,7 @@
         mounted() {
           // makeDraggable()//窗口拖拽
             remote.getCurrentWindow().setSize(300, 372, false)
-    // remote.getCurrentWindow().setResizable(resizable);
-
+        // remote.getCurrentWindow().setResizable(resizable);
         },
         methods: {
             exit() {

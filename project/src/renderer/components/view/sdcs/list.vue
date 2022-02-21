@@ -1,6 +1,8 @@
 <template>
+  <!-- 联系人列表 -->
   <div class="cp-group" @contextmenu="menu(1,group.groupId)">
     <div>
+      <!-- 头像 -->
       <div class="img">
         <el-badge
           :is-dot="group.unRead > 0 && group.type === 'group'"
@@ -10,6 +12,7 @@
           <img :src="group.img" width="48" height="48" />
         </el-badge>
       </div>
+      <!-- 内容 -->
       <div class="content">
         <p>{{ group.name }}
               <span class="time">
@@ -29,6 +32,7 @@
 </template>
 
 <script>
+// 导入右键菜单
   import menu from '../../../../common/rightClick'
 export default {
   name: "list",

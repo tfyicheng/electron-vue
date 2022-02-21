@@ -1,9 +1,13 @@
 <template>
+<!-- 终端设备 -->
   <div class="bod">
+    <!-- 顶部标题 -->
     <div class="zdtop">
       <span class="zdtitle">用户管理</span>
     </div>
+    <!-- 主体 -->
     <div class="zdmain">
+      <!-- 顶部菜单 -->
       <div class="mainmenu">
         <el-button
           type="primary"
@@ -20,7 +24,7 @@
           style="float: right"
         ></el-input>
       </div>
-
+      <!-- 表格内容 -->
       <el-table
         ref="singleTable"
         :data="tableData"
@@ -74,11 +78,11 @@
           </template>
         </el-table-column>
       </el-table>
-
+      <!-- 底部按钮 -->
       <div style="margin-top: 20px">
         <el-button @click="toggleSelection()">取消选择</el-button>
       </div>
-
+      <!-- 添加信息弹窗 -->
       <el-dialog
       v-dialogDrag
         title="用户信息"
@@ -115,9 +119,10 @@
 </template>
 
 <script>
+// 导入拖拽事件
 import '../../../common/drag'
 export default {
-  name: "zdsb",
+  name: "ZDSB",
   data() {
     return {
       tableData: [

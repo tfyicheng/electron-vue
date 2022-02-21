@@ -1,4 +1,5 @@
 <template>
+ <!-- 列表搜索栏 -->
   <div class="groupbody">
     <div class="gtop">
       <el-input placeholder="搜索" prefix-icon="el-icon-search"></el-input>

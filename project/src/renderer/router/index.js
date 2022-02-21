@@ -9,12 +9,11 @@ Router.prototype.push = function push(location) {
 const router = new Router({
   mode: 'hash',
   routes: [
- {
+    {
       path: '/gn',
       name: 'gn',
       component: require('@/components/gn/gn').default,
       children: [
-       
       ]
     },
     {
@@ -28,38 +27,36 @@ const router = new Router({
       component: require('@/components/main/main').default,
       children: [
         {
-          path: '/zdtest',
-          name: 'zdtest',
-          component: require('@/components/view/zdtest').default
+          path: '/zdcs',
+          name: 'ZDCS',
+          component: require('@/components/view/ZDCS').default
         },
         {
-          path: '/sdtest',
-          name: 'sdtest',
-          component: require('@/components/view/sdcs/sdtest').default,
+          path: '/sdcs',
+          name: 'SDCS',
+          component: require('@/components/view/SDCS/SDCS').default,
         },
         {
           path: '/zdsb',
-          name: 'zdsb',
-          component: require('@/components/view/zdsb').default
+          name: 'ZDSB',
+          component: require('@/components/view/ZDSB').default
         },
         {
           path: '/sjcj',
-          name: 'sjcj',
-          component: require('@/components/view/sjcj').default
+          name: 'SJCJ',
+          component: require('@/components/view/SJCJ').default
         },
-       
+
       ]
     }, {
       path: '/spth',
       name: 'spth',
       component: require('@/components/gn/spth').default
     }, {
-      path: '/yy',
-      name: 'yy',
-      component: require('@/components/gn/yy').default
+      path: '/yyth',
+      name: 'yyth',
+      component: require('@/components/gn/yyth').default
     },
-   
-   
   ]
 })
 router.beforeEach((to, from, next) => {

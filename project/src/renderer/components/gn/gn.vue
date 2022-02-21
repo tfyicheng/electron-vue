@@ -71,7 +71,7 @@ export default {
 
       switch (this.$route.query.type) {
         case "1":
-          this.$router.push("/yy");
+          this.$router.push("/yyth");
           break;
         case "2":
           this.$router.push("/spth");
@@ -194,6 +194,8 @@ img {
   border-radius: 50%;
   text-align: center;
   cursor: pointer;
+
+
   line-height: 40px;
 }
 .bbtn i {

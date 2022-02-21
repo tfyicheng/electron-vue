@@ -1,9 +1,13 @@
 <template>
+  <!-- 自动测试 -->
   <div class="bod">
+    <!-- 标题 -->
     <div class="zdtop">
       <span class="zdtitle">自动测试</span>
     </div>
+    <!-- 主体 -->
     <div class="zdmain">
+      <!-- 顶部菜单 -->
       <div class="mainmenu">
          <el-button type="warning" icon="el-icon-upload">导出</el-button>
          <el-button type="danger" icon="el-icon-delete">删除</el-button>
@@ -11,7 +15,7 @@
          <el-input v-model="input" placeholder="关键词"style="float:right"></el-input>
 
       </div>
-
+      <!-- 主体表格 -->
         <el-table
         stripe="ture"
           ref="multipleTable"
@@ -45,6 +49,7 @@
               </template>
           </el-table-column>
         </el-table>
+        <!-- 底部按钮 -->
         <div style="margin-top: 20px">
           <el-button @click="toggleSelection()">取消选择</el-button>
         </div>
@@ -56,7 +61,7 @@
 <script>
 
 export default {
-   name:"zdtest",
+   name:"ZDCS",
 
   data() {
     return {

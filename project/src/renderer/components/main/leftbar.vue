@@ -64,13 +64,13 @@ export default {
       menus: [
         {
           icon: "iconfont icon-xinicon_huabanfuben",
-          path: "zdtest",
+          path: "zdcs",
           value: 0,
           name: "自动测试",
         },
         {
           icon: "iconfont icon-ceshi",
-          path: "sdtest",
+          path: "sdcs",
           value: 0,
           name: "手动测试",
         },

@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <!-- 左侧导航栏 -->
     <leftbar style="position: fixed; top: 0; left: 0; z-index: 999"></leftbar>
     
     <!-- <div class="top"style="-webkit-app-region: drag;" >
@@ -13,6 +14,8 @@
       <top></top>
     </div> 
     <!-- 方案三：固定主体的top栏，绝对定位透明  -->
+
+    <!-- 右侧主体内容 -->
     <router-view style="margin-left: 120px;" />
   </div>
 </template>
@@ -22,18 +25,19 @@ import { remote } from "electron";
 import leftbar from "./leftbar.vue";
 import top from "./top.vue";
 import topmenu from "./topmenu.vue";
-import sdtest from "../view/sdcs/sdtest.vue";
+import SDCS from "../view/SDCS/SDCS.vue";
 export default {
   name: "main",
-  components: { leftbar, sdtest, top,topmenu },
+  components: { leftbar, SDCS, top,topmenu },
   methods: {},
   beforeCreate() {
+    // 调用主进程设置窗体
     remote.getCurrentWindow().setSize(1440, 1024);
     remote.getCurrentWindow().center();
   },
   mounted() {
-    this.$router.push("/sdtest");
-   
+    // 挂载之后导航到指定页面
+    this.$router.push("/sdcs");
 
   }
 };

@@ -11,14 +11,14 @@
     </div>
     <img :src="img" width="61" height="61" />
     <div class="name">{{ name }}</div>
-      <template v-if="status === 'wait'">
-          <div   class="time">正在等待对方接受邀请</div>
-         </template>
-        <template v-else>
-    <div  class="time">{{ time }}</div>
+    <template v-if="status === 'wait'">
+      <div class="time">正在等待对方接受邀请</div>
+    </template>
+    <template v-else>
+      <div class="time">{{ time }}</div>
     </template>
     <div class="bbtn">
-      <div class="mute" @click="go"  >
+      <div class="mute" @click="go">
         <i class="iconfont icon-yuyin1"></i>
         <span>切换语音通话</span>
       </div>
@@ -41,15 +41,15 @@ export default {
       name: "",
       time: "03:35",
       img: "",
-      status:"wait",
+      status: "wait",
     };
   },
 
   components: {},
   beforeCreate() {
     remote.getCurrentWebContents().closeDevTools();
-        // remote.getCurrentWindow().setSize(1440, 1024);
-        // remote.getCurrentWindow().center();
+    // remote.getCurrentWindow().setSize(1440, 1024);
+    // remote.getCurrentWindow().center();
     //    在挂载之前调用事件监听
     remote.ipcMain.once("yydata", (event, arg) => {
       this.name = arg.name;
@@ -80,9 +80,9 @@ export default {
       remote.getCurrentWindow().close();
     },
     go() {
-      this.$router.push('/yy')
-      console.log("luyou"+this.$router)
-    }
+      this.$router.push("/yyth");
+      console.log("luyou" + this.$router);
+    },
   },
 };
 </script>
@@ -123,7 +123,7 @@ export default {
 }
 .tbtn i {
   cursor: pointer;
-  color:#fff;
+  color: #fff;
 }
 .tbtn .iconfont {
   font-size: 14px;
@@ -151,13 +151,13 @@ img {
   font-size: 14px;
 }
 .bbtn {
-   width: 100%;
+  width: 100%;
   margin: 60px auto;
   bottom: 0;
   position: absolute;
 }
 .mute {
-   margin: 0px auto;
+  margin: 0px auto;
   -webkit-app-region: no-drag;
   display: block;
   background-color: #5f5554;
@@ -173,7 +173,7 @@ img {
 .close {
   -webkit-app-region: no-drag;
   display: block;
-   margin: 0px auto;
+  margin: 0px auto;
   background-color: #ff6565;
   width: 40px;
   height: 40px;
@@ -197,8 +197,8 @@ img {
   color: #fff;
   line-height: 30px;
   width: 130px;
-   margin: 0 auto;
-   transform:translateX(-50%) ;
-   padding-left: 40px;
+  margin: 0 auto;
+  transform: translateX(-50%);
+  padding-left: 40px;
 }
 </style>

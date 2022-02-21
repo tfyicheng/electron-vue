@@ -1,7 +1,11 @@
 <template>
+<!-- 会话主体 -->
   <div class="chatmain">
+    <!-- 联系人名字 -->
     <div class="chattop">{{ chat.name }}</div>
+    <!-- 会话窗口 -->
     <div class="chatbody" v-if="chat !== null" @click="showBrow = false">
+      <!-- 对话消息框 -->
       <div class="msg" id="msg">
         <ul>
           <!-- style="min-height: 100px" -->
@@ -22,9 +26,11 @@
           </li>
         </ul>
       </div>
-      <!--   -->
+      <!--  拖拽条 -->
       <div id="drag" @mousedown="resize"></div>
+      <!-- 内容发送框 -->
       <div class="send" id="send">
+        <!-- 表情框 -->
         <div class="brows" v-if="showBrow" @click.stop="showBrowWin">
           <div class="brow">
             <ul>
@@ -47,6 +53,7 @@
             </ul>
           </div>
         </div>
+        <!-- 发送框菜单栏 -->
         <div class="tool-bar">
           <i class="el-icon-eleme" @click.stop="showBrow = !showBrow"></i>
           <i class="iconfont icon-wenjian" @click="uploadFile">
@@ -68,6 +75,7 @@
           <i class="iconfont icon-shipin" @click="gn(2)"></i>
           <i class="iconfont icon-yuyin"></i>
         </div>
+        <!-- 输入框 -->
         <div id="input" ref="ip" contenteditable="true" @click="db" @contextmenu="menu(3)">
           <div
             v-if="fileList.length > 0"
@@ -84,6 +92,7 @@
             </div>
           </div>
         </div>
+        <!-- 按钮 -->
         <button class="btn" @click="send">发送(S)</button>
       </div>
     </div>
@@ -165,6 +174,7 @@ export default {
   },
   methods: {
     menu,
+    // 功能小窗
     gn(type) {
        console.log(window.location.href)
       console.log(type)

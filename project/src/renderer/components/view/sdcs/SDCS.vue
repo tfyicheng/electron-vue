@@ -1,7 +1,10 @@
 <template>
+<!-- 手动测试会话主体 -->
     <div class="body">
         <!-- list -->
+        <!-- 左侧联系人列表 -->
         <div class="group">
+            <!-- 列表搜索栏 -->
             <grouptop ></grouptop>
             <div class="gul">
                      <ul  >
@@ -13,6 +16,7 @@
             </div>
        
         </div>
+        <!-- 会话窗口 -->
         <div class="content" >
 			<chat :chat="select" @send="send" v-show="hidden"></chat>
 		</div>
@@ -255,11 +259,13 @@ export default {
                     }
                 })
             },
+            // 选择联系人
             selects(s) {
                 this.select = s,
                 this.hidden= s.groupId
                 this.$store.commit('setSelectSession', s)
             },
+            // 右键删除
              del(e) {
             if (e !== 0) {
                  this.groups.splice( this.groups.findIndex(item => item.groupId=== e), 1)
