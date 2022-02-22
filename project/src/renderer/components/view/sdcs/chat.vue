@@ -5,8 +5,8 @@
     <div class="chattop">{{ chat.name }}</div>
     <!-- 会话窗口 -->
     <div class="chatbody" v-if="chat !== null" @click="showBrow = false">
-      <!-- 对话消息框 -->
-      <div class="msg" id="msg">
+      <!-- 对话框 onselectstart="return false;"-->
+      <div class="msg" id="msg" >
         <ul>
           <!-- style="min-height: 100px" -->
           <li v-for="c in chat.msgs">
@@ -27,8 +27,8 @@
         </ul>
       </div>
       <!--  拖拽条 -->
-      <div id="drag" @mousedown="resize"></div>
-      <!-- 内容发送框 -->
+      <div id="drag" @mousedown="resize"@mouseup="resizeover"></div>
+      <!-- 发送框 -->
       <div class="send" id="send">
         <!-- 表情框 -->
         <div class="brows" v-if="showBrow" @click.stop="showBrowWin">
@@ -75,8 +75,9 @@
           <i class="iconfont icon-shipin" @click="gn(2)"></i>
           <i class="iconfont icon-yuyin"></i>
         </div>
-        <!-- 输入框 -->
-        <div id="input" ref="ip" contenteditable="true" @click="db" @contextmenu="menu(3)">
+        <!-- 输入框  @drog="drag"-->
+        <div id="input" ref="ip" contenteditable="true" @click="db" @contextmenu="menu(3)"@mouseover="drag">
+         <!-- 文件发送 -->
           <div
             v-if="fileList.length > 0"
             class="file"
@@ -93,7 +94,7 @@
           </div>
         </div>
         <!-- 按钮 -->
-        <button class="btn" @click="send">发送(S)</button>
+        <button class="btn" @click="send">发送</button>
       </div>
     </div>
   </div>
@@ -106,6 +107,8 @@ const BrowserWindow = remote.BrowserWindow;
 // const  { BrowserWindow }  =  require ( '@electron/remote' )
 const path = require("path");
 let childWindow = null;
+   
+
 export default {
   name: "chat",
   props: ["chat"],
@@ -165,12 +168,19 @@ export default {
       ],
     };
   },
-  mounted() {
-    this.setPasteImg();
-    document.onmouseup = function () {
-      document.onmousedown = null;
-      document.onmousemove = null;
-    };
+  mounted() { 
+    // 鼠标松开拖拽事件结束
+    // this.drag2();
+      this.paste();
+    // this.drag();
+      this.setPasteImg();
+    // const inp = document.getElementById('input')
+  //    inp.addEventListener('paste', function (event) {
+  //     const text = event.clipboardData.getData('Text');
+  //     inp.execCommand("insertText", false, text);
+  //     console.log("6699")
+  //     event.preventDefault();
+  //   });
   },
   methods: {
     menu,
@@ -300,6 +310,7 @@ export default {
       let a = window.getSelection();
       //a.selectAllChildren(document.getElementById('input'))
       console.log(a);
+     
     },
     openFile(row) {
       exec(row.path, {});
@@ -316,6 +327,7 @@ export default {
     uploadFile() {
       this.$refs.upFile.$el.click();
     },
+    // 拖拽条功能
     resize(ev) {
       let initY = 0,
         tph = 0,
@@ -356,35 +368,111 @@ export default {
         } 
       };
     },
-    setPasteImg() {
-      document.addEventListener("paste", function (event) {
-        if (!document.activeElement === document.getElementById("input")) {
-          return;
-        }
-        if (event.clipboardData || event.originalEvent) {
-          var clipboardData =
-            event.clipboardData || event.originalEvent.clipboardData;
-          if (clipboardData.items) {
-            var blob;
-            for (var i = 0; i < clipboardData.items.length; i++) {
-              if (clipboardData.items[i].type.indexOf("image") !== -1) {
-                blob = clipboardData.items[i].getAsFile();
-              }
-            }
-            var render = new FileReader();
-            render.onload = function (evt) {
-              //输出base64编码
-              var base64 = evt.target.result;
-              var img = document.createElement("img");
-              img.setAttribute("src", base64);
-              img.setAttribute("style", "max-width:150px; max-height:120px");
-              document.activeElement.appendChild(img);
-            };
-            render.readAsDataURL(blob);
-          }
-        }
-      });
+    // 拖拽结束
+    resizeover(){
+    //    document.onmouseup = function () {
+    //   document.onmousedown = null;
+    //   document.onmousemove = null;
+    // };
+      document.onmousedown = null;
+      document.onmousemove = null;
     },
+   
+    // 粘贴去格式
+    paste() {
+       console.log("粘贴1") 
+           const inp = document.getElementById('input')
+     inp.addEventListener('paste', function (event) {
+      const text = event.clipboardData.getData('Text');
+      document.execCommand("insertText", false, text);
+      console.log(text)
+      event.preventDefault();
+    });
+    
+	// if ($('.editableDiv font').length > 0) {
+	//   $('.editableDiv font').before($('.editableDiv font').text())
+	//   $('.editableDiv font').remove()
+  //   console.log("鼠标抬起事件2")
+	// }
+},
+  // 拖拽去格式
+    drag(event) {
+       console.log("鼠标抬起事件1"+event)
+        console.log(event);
+    //  const inp = document.getElementById('input')
+          // inp.addEventListener('mouseup', function (event) {
+      // const text = event.clipboardData.getData('Text');
+      // document.execCommand("insertText", false, text);
+      // console.log(text)
+         let selection=window.getSelection();
+            //调用selection对象的toString()方法就可以获取鼠标拖动选中的文本。
+            console.log("选中的文本为：");
+            console.log(selection.toString());
+            document.execCommand("insertText", false, selection.toString());
+    //   event.preventDefault();
+    // });
+   
+     event.preventDefault();
+	// if ($('.editableDiv font').length > 0) {
+	//   $('.editableDiv font').before($('.editableDiv font').text())
+	//   $('.editableDiv font').remove()
+  //   console.log("鼠标抬起事件2")
+	// }
+},
+    drag2() {
+       const inp = document.getElementById('input')
+          inp.addEventListener( "dragenter" , function (e) {
+     e.preventDefault();
+     e.stopPropagation();
+      console.log("drog")
+}, false );
+inp.addEventListener( "dragover" , function (e) {
+     e.preventDefault();
+     e.stopPropagation();
+}, false );
+ 
+inp.addEventListener( "dragleave" , function (e) {
+     e.preventDefault();
+     e.stopPropagation();
+}, false );
+ 
+inp.addEventListener( "drop" , function (e) {
+     e.preventDefault();
+     e.stopPropagation();
+     // 处理拖拽文件的逻辑
+     console.log("drog")
+},false)
+
+    },
+    // setPasteImg() {
+    //   document.addEventListener("paste", function (event) {
+    //     if (!document.activeElement === document.getElementById("input")) {
+    //       return;
+    //     }
+    //     if (event.clipboardData || event.originalEvent) {
+    //       var clipboardData =
+    //         event.clipboardData || event.originalEvent.clipboardData;
+    //       if (clipboardData.items) {
+    //         var blob;
+    //         for (var i = 0; i < clipboardData.items.length; i++) {
+    //           if (clipboardData.items[i].type.indexOf("image") !== -1) {
+    //             blob = clipboardData.items[i].getAsFile();
+    //           }
+    //         }
+    //         var render = new FileReader();
+    //         render.onload = function (evt) {
+    //           //输出base64编码
+    //           var base64 = evt.target.result;
+    //           var img = document.createElement("img");
+    //           img.setAttribute("src", base64);
+    //           img.setAttribute("style", "max-width:150px; max-height:120px");
+    //           document.activeElement.appendChild(img);
+    //         };
+    //         render.readAsDataURL(blob);
+    //       }
+    //     }
+    //   });
+    // },
     insertHtml(html) {
       var sel = window.getSelection(),
         range;

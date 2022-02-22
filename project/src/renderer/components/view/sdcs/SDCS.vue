@@ -1,14 +1,14 @@
 <template>
 <!-- 手动测试会话主体 -->
-    <div class="body">
+    <div class="body"  >
         <!-- list -->
         <!-- 左侧联系人列表 -->
         <div class="group">
             <!-- 列表搜索栏 -->
             <grouptop ></grouptop>
-            <div class="gul">
-                     <ul  >
-		    	<li v-for="g in groups" @click="selects(g)"
+            <div class="gul" onselectstart="return false;">
+                <ul  >
+		    	    <li v-for="g in groups" @click="selects(g)"
 		    	    :style="(select !== null && g.groupId === select.groupId) ? 'background-color: #eee;':''">
 		    		<list :group="g" :select="select"@deleteIndex="del"></list>
 		    	</li>
@@ -18,6 +18,7 @@
         </div>
         <!-- 会话窗口 -->
         <div class="content" >
+            <!-- 删除功能以v-show判断id隐藏 -->
 			<chat :chat="select" @send="send" v-show="hidden"></chat>
 		</div>
     <!-- <chat class="chat"></chat> -->
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+// 右键菜单事件
 window.addEventListener('contextmenu',function(e){
   e.preventDefault();
   console.log(e)
@@ -251,6 +253,9 @@ export default {
                 ]
             }
 	    },
+        mounted(){
+        //    this.selects(1)
+        },
 	    methods:{
             send(content, groupId) {
                 this.groups.forEach(group => {
@@ -261,9 +266,13 @@ export default {
             },
             // 选择联系人
             selects(s) {
+                console.log("2")
                 this.select = s,
                 this.hidden= s.groupId
-                this.$store.commit('setSelectSession', s)
+                // this.$store.commit('setSelectSession', s) 暂时报错
+                    const inp = document.getElementById('input')
+                    inp.focus();
+            
             },
             // 右键删除
              del(e) {

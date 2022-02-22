@@ -1,5 +1,5 @@
 <template>
-  <div class="bar">
+  <div class="bar" onselectstart="return false;" >
     <img src="../../assets/tx.png" width="60" height="60" />
     <div style="margin-top: 20px">
       <div class="item" v-for="(m, index) in menus">
