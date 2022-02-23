@@ -58,7 +58,7 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
+   
 const createTray = () => {
   trayIcon = path.join(__dirname, './');
   tray = new Tray(path.join(trayIcon, 'zd.png'));
@@ -101,7 +101,7 @@ const trayInit = () => {
     timer = null
     tray.setImage(path.join(trayIcon, 'zd.png'))
   }
-}
+} 
 //图标闪烁
 const trayFlashing = () => {
   timer = setInterval(function () {
@@ -118,11 +118,11 @@ ipcMain.on('new-msg', (event, params) => {
   console.log('收到新消息：', params)
   trayFlashing()
   return true
-})
+}) 
 //退出
 ipcMain.on('login-window', () => {
   mainWindow.setContentSize(300, 372)
-  mainWindow.center()
+  mainWindow.center() 
 })
 
 

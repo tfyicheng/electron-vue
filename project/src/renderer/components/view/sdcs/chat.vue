@@ -1,17 +1,17 @@
 <template>
-<!-- 会话主体 -->
+  <!-- 会话主体 -->
   <div class="chatmain">
     <!-- 联系人名字 -->
     <div class="chattop">{{ chat.name }}</div>
     <!-- 会话窗口 -->
     <div class="chatbody" v-if="chat !== null" @click="showBrow = false">
       <!-- 对话框 onselectstart="return false;"-->
-      <div class="msg" id="msg" >
+      <div class="msg" id="msg">
         <ul>
           <!-- style="min-height: 100px" -->
           <li v-for="c in chat.msgs">
             <div v-if="c.isMe" class="content" style="min-height: 55px">
-              <div class="me" v-html="c.content"@contextmenu="menu(2)"></div>
+              <div class="me" v-html="c.content" @contextmenu="menu(2)"></div>
               <img
                 class="me-img"
                 src="../../../assets/tx.png"
@@ -21,13 +21,17 @@
             </div>
             <div v-else class="content">
               <img :src="chat.img" width="50" height="50" class="other-img" />
-              <div class="other" v-html="c.content"@contextmenu="menu(2)"></div>
+              <div
+                class="other"
+                v-html="c.content"
+                @contextmenu="menu(2)"
+              ></div>
             </div>
           </li>
         </ul>
       </div>
       <!--  拖拽条 -->
-      <div id="drag" @mousedown="resize"@mouseup="resizeover"></div>
+      <div id="drag" @mousedown="resize" @mouseup="resizeover"></div>
       <!-- 发送框 -->
       <div class="send" id="send">
         <!-- 表情框 -->
@@ -56,6 +60,7 @@
         <!-- 发送框菜单栏 -->
         <div class="tool-bar">
           <i class="el-icon-eleme" @click.stop="showBrow = !showBrow"></i>
+          <!-- 文件发送 -->
           <i class="iconfont icon-wenjian" @click="uploadFile">
             <el-upload
               style="display: none"
@@ -75,9 +80,15 @@
           <i class="iconfont icon-shipin" @click="gn(2)"></i>
           <i class="iconfont icon-yuyin"></i>
         </div>
-        <!-- 输入框  @drog="drag"-->
-        <div id="input" ref="ip" contenteditable="true" @click="db" @contextmenu="menu(3)"@mouseover="drag">
-         <!-- 文件发送 -->
+        <!-- 输入框 @dragenter="drag"-->
+        <div
+          id="input"
+          ref="ip"
+          contenteditable="true"
+          @click="db"
+          @contextmenu="menu(3)"
+        >
+          <!-- 文件发送 -->
           <div
             v-if="fileList.length > 0"
             class="file"
@@ -101,13 +112,12 @@
 </template>
 
 <script>
-import menu from '../../../../common/rightClick'
+import menu from "../../../../common/rightClick";
 import { remote, ipcRenderer } from "electron";
 const BrowserWindow = remote.BrowserWindow;
 // const  { BrowserWindow }  =  require ( '@electron/remote' )
 const path = require("path");
 let childWindow = null;
-   
 
 export default {
   name: "chat",
@@ -168,29 +178,20 @@ export default {
       ],
     };
   },
-  mounted() { 
-    // 鼠标松开拖拽事件结束
-    // this.drag2();
-      this.paste();
-    // this.drag();
-      this.setPasteImg();
-    // const inp = document.getElementById('input')
-  //    inp.addEventListener('paste', function (event) {
-  //     const text = event.clipboardData.getData('Text');
-  //     inp.execCommand("insertText", false, text);
-  //     console.log("6699")
-  //     event.preventDefault();
-  //   });
+  mounted() {
+    this.drag();
+    this.paste();
+    this.setPasteImg();
   },
   methods: {
     menu,
     // 功能小窗
     gn(type) {
-       console.log(window.location.href)
-      console.log(type)
+      console.log(window.location.href);
+      console.log(type);
       const childURL =
         process.env.NODE_ENV === "development"
-          ? "http://localhost:9080" + "#/gn?type="+type
+          ? "http://localhost:9080" + "#/gn?type=" + type
           : path.join("file://", __dirname, "../renderer/components/gn/gn.vue");
       // 判读是否已经存在子窗口
       if (childWindow) {
@@ -202,7 +203,7 @@ export default {
           width: 360,
           resizable: true,
           show: false,
-          frame:false,
+          frame: false,
           // titleBarStyle:'hidden-inset',
           // titleBarOverlay: true,
           parent: remote.mainWindow,
@@ -218,49 +219,49 @@ export default {
         childWindow.on("closed", () => {
           childWindow = null;
         });
-      }     
-// 定时发送目的是等待子窗口完成渲染才能监听数据
+      }
+      // 定时发送目的是等待子窗口完成渲染才能监听数据
       setTimeout(() => {
         ipcRenderer.send("yydata", this.chat);
       }, 2000);
     },
-//      shipin() {
-//       const childURL =
-//         process.env.NODE_ENV === "development"
-//           ? "http://localhost:9080" + "#/spth"
-//           : path.join("file://", __dirname, "../renderer/components/gn/spth.vue");
-//       // 判读是否已经存在子窗口
-//       if (childWindow) {
-//         childWindow.show();
-//       } else {
-//         childWindow = new BrowserWindow({
-//           useContentSize: true,
-//           height: 600,
-//           width: 360,
-//           resizable: true,
-//           show: false,
-//           frame:false,
-//           // titleBarStyle:'hidden-inset',
-//           // titleBarOverlay: true,
-//           parent: remote.mainWindow,
-//           webPreferences: {
-//             webSecurity: false,
-//           },
-//         });
+    //      shipin() {
+    //       const childURL =
+    //         process.env.NODE_ENV === "development"
+    //           ? "http://localhost:9080" + "#/spth"
+    //           : path.join("file://", __dirname, "../renderer/components/gn/spth.vue");
+    //       // 判读是否已经存在子窗口
+    //       if (childWindow) {
+    //         childWindow.show();
+    //       } else {
+    //         childWindow = new BrowserWindow({
+    //           useContentSize: true,
+    //           height: 600,
+    //           width: 360,
+    //           resizable: true,
+    //           show: false,
+    //           frame:false,
+    //           // titleBarStyle:'hidden-inset',
+    //           // titleBarOverlay: true,
+    //           parent: remote.mainWindow,
+    //           webPreferences: {
+    //             webSecurity: false,
+    //           },
+    //         });
 
-//         childWindow.loadURL(childURL);
-//         childWindow.once("ready-to-show", () => {
-//           childWindow.show();
-//         });
-//         childWindow.on("closed", () => {
-//           childWindow = null;
-//         });
-//       }     
-// // 定时发送目的是等待子窗口完成渲染才能监听数据
-//       setTimeout(() => {
-//         ipcRenderer.send("yydata", this.chat);
-//       }, 2000);
-//     },
+    //         childWindow.loadURL(childURL);
+    //         childWindow.once("ready-to-show", () => {
+    //           childWindow.show();
+    //         });
+    //         childWindow.on("closed", () => {
+    //           childWindow = null;
+    //         });
+    //       }
+    // // 定时发送目的是等待子窗口完成渲染才能监听数据
+    //       setTimeout(() => {
+    //         ipcRenderer.send("yydata", this.chat);
+    //       }, 2000);
+    //     },
     send() {
       if (this.$refs.ip.innerHTML.length > 0) {
         let msg = {
@@ -310,7 +311,6 @@ export default {
       let a = window.getSelection();
       //a.selectAllChildren(document.getElementById('input'))
       console.log(a);
-     
     },
     openFile(row) {
       exec(row.path, {});
@@ -358,91 +358,191 @@ export default {
           drag.style.bottom = "565px";
           tp.style.height = "calc(100% - " + 565 + "px)";
           inp.style.height = "500px";
-          // document.onmousemove = null; 
-        } else if ( tp.clientHeight > 755 ) {
+          // document.onmousemove = null;
+        } else if (tp.clientHeight > 755) {
           bt.style.height = "165px";
           drag.style.bottom = "165px";
           tp.style.height = "calc(100% - " + 165 + "px)";
           inp.style.height = "100px";
           //  document.onmousemove = null;
-        } 
+        }
       };
     },
     // 拖拽结束
-    resizeover(){
-    //    document.onmouseup = function () {
-    //   document.onmousedown = null;
-    //   document.onmousemove = null;
-    // };
+    resizeover() {
+      //    document.onmouseup = function () {
+      //   document.onmousedown = null;
+      //   document.onmousemove = null;
+      // };
       document.onmousedown = null;
       document.onmousemove = null;
     },
-   
+
     // 粘贴去格式
     paste() {
-       console.log("粘贴1") 
-           const inp = document.getElementById('input')
-     inp.addEventListener('paste', function (event) {
-      const text = event.clipboardData.getData('Text');
-      document.execCommand("insertText", false, text);
-      console.log(text)
-      event.preventDefault();
-    });
-    
-	// if ($('.editableDiv font').length > 0) {
-	//   $('.editableDiv font').before($('.editableDiv font').text())
-	//   $('.editableDiv font').remove()
-  //   console.log("鼠标抬起事件2")
-	// }
-},
-  // 拖拽去格式
-    drag(event) {
-       console.log("鼠标抬起事件1"+event)
-        console.log(event);
-    //  const inp = document.getElementById('input')
-          // inp.addEventListener('mouseup', function (event) {
-      // const text = event.clipboardData.getData('Text');
-      // document.execCommand("insertText", false, text);
-      // console.log(text)
-         let selection=window.getSelection();
-            //调用selection对象的toString()方法就可以获取鼠标拖动选中的文本。
-            console.log("选中的文本为：");
-            console.log(selection.toString());
-            document.execCommand("insertText", false, selection.toString());
-    //   event.preventDefault();
-    // });
-   
-     event.preventDefault();
-	// if ($('.editableDiv font').length > 0) {
-	//   $('.editableDiv font').before($('.editableDiv font').text())
-	//   $('.editableDiv font').remove()
-  //   console.log("鼠标抬起事件2")
-	// }
-},
-    drag2() {
-       const inp = document.getElementById('input')
-          inp.addEventListener( "dragenter" , function (e) {
-     e.preventDefault();
-     e.stopPropagation();
-      console.log("drog")
-}, false );
-inp.addEventListener( "dragover" , function (e) {
-     e.preventDefault();
-     e.stopPropagation();
-}, false );
- 
-inp.addEventListener( "dragleave" , function (e) {
-     e.preventDefault();
-     e.stopPropagation();
-}, false );
- 
-inp.addEventListener( "drop" , function (e) {
-     e.preventDefault();
-     e.stopPropagation();
-     // 处理拖拽文件的逻辑
-     console.log("drog")
-},false)
+      const inp = document.getElementById("input");
+      inp.addEventListener("paste", function (event) {
+        const text = event.clipboardData.getData("Text");
+        document.execCommand("insertText", false, text);
+        console.log("粘贴的文本是：" + text);
+        event.preventDefault();
+      });
+    },
 
+    range() {
+      // var sendEmoji = document.getElementById('input')
+
+      // 定义最后光标对象
+      var lastEditRange;
+
+      // 编辑框点击事件
+      document.getElementById("input").onclick = function () {
+        // 获取选定对象
+        var selection = getSelection();
+        // 设置最后光标对象
+        lastEditRange = selection.getRangeAt(0);
+      };
+
+      // 编辑框按键弹起事件
+      document.getElementById("input").onkeyup = function () {
+        // 获取选定对象
+        var selection = getSelection();
+        // 设置最后光标对象
+        lastEditRange = selection.getRangeAt(0);
+      };
+
+      // 表情点击事件
+      document.getElementById("sendEmoji").onclick = function () {
+        // 获取编辑框对象
+        var edit = document.getElementById("input");
+        // 获取插入文本对象
+        // var emojiInput = document.getElementById('emojiInput')
+        let selection = window.getSelection();
+        //调用selection对象的toString()方法就可以获取鼠标拖动选中的文本。
+        console.log("选中的文本为：");
+        console.log(selection.toString());
+        var emojiInput = selection.toString();
+        // 编辑框设置焦点
+        edit.focus();
+        // 获取选定对象
+        // var selection = getSelection()
+        // 判断是否有最后光标对象存在
+        if (lastEditRange) {
+          // 存在最后光标对象，选定对象清除所有光标并添加最后光标还原之前的状态
+          selection.removeAllRanges();
+          selection.addRange(lastEditRange);
+        }
+        // 判断选定对象范围是编辑框还是文本节点
+        if (selection.anchorNode.nodeName != "#text") {
+          // 如果是编辑框范围。则创建表情文本节点进行插入
+          var emojiText = document.createTextNode(emojiInput.value);
+
+          if (edit.childNodes.length > 0) {
+            // 如果文本框的子元素大于0，则表示有其他元素，则按照位置插入表情节点
+            for (var i = 0; i < edit.childNodes.length; i++) {
+              if (i == selection.anchorOffset) {
+                edit.insertBefore(emojiText, edit.childNodes[i]);
+              }
+            }
+          } else {
+            // 否则直接插入一个表情元素
+            edit.appendChild(emojiText);
+          }
+          // 创建新的光标对象
+          var range = document.createRange();
+          // 光标对象的范围界定为新建的表情节点
+          range.selectNodeContents(emojiText);
+          // 光标位置定位在表情节点的最大长度
+          range.setStart(emojiText, emojiText.length);
+          // 使光标开始和光标结束重叠
+          range.collapse(true);
+          // 清除选定对象的所有光标对象
+          selection.removeAllRanges();
+          // 插入新的光标对象
+          selection.addRange(range);
+        } else {
+          // 如果是文本节点则先获取光标对象
+          var range = selection.getRangeAt(0);
+          // 获取光标对象的范围界定对象，一般就是textNode对象
+          var textNode = range.startContainer;
+          // 获取光标位置
+          var rangeStartOffset = range.startOffset;
+          // 文本节点在光标位置处插入新的表情内容
+          textNode.insertData(rangeStartOffset, emojiInput.value);
+          // 光标移动到到原来的位置加上新内容的长度
+          range.setStart(textNode, rangeStartOffset + emojiInput.value.length);
+          // 光标开始和光标结束重叠
+          range.collapse(true);
+          // 清除选定对象的所有光标对象
+          selection.removeAllRanges();
+          // 插入新的光标对象
+          selection.addRange(range);
+        }
+        // 无论如何都要记录最后光标对象
+        lastEditRange = selection.getRangeAt(0);
+      };
+    },
+    // 拖拽去格式
+    drag() {
+      const inp = document.getElementById("input");
+      inp.addEventListener(
+        "dragenter",
+        function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log("drog");
+        },
+        false
+      );
+      inp.addEventListener(
+        "dragover",
+        function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        },
+        false
+      );
+      inp.addEventListener(
+        "dragleave",
+        function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        },
+        false
+      );
+      //
+      inp.addEventListener(
+        "drop",
+        function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          // 处理拖拽的逻辑
+          console.log("drog2");
+
+          // const contentEditableDiv = document.getElementById("input");
+          // 获取被选中的内容，起点和终点在同一位置为光标，不同位置为选区
+          const selection = window.getSelection();
+          // 被选中/focus的元素
+          const anchorNode = selection.anchorNode;
+          if (!anchorNode) return;
+          // 父节点
+          const parentNode = selection.anchorNode.parentNode;
+          // const range = selection.getRangeAt(0);
+          const textNode = document.createTextNode(selection.toString());
+
+          // var el = window.document.body;
+          // window.document.body.onmouseover = function(event) {
+          // el = event.target.nodeName;
+          //   console.log(el)
+          // }
+  
+          // 判断选中区域的父元素是否等于当前区域，如果是，则拖拽插入无效
+          if (parentNode !== inp) {
+            inp.appendChild(textNode);
+          }
+        },
+        false
+      );
     },
     // setPasteImg() {
     //   document.addEventListener("paste", function (event) {
