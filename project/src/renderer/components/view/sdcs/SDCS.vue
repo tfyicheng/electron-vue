@@ -29,7 +29,7 @@
 // 右键菜单事件
 window.addEventListener('contextmenu',function(e){
   e.preventDefault();
-  console.log(e)
+//   console.log(e)
 });
 import chat from './chat.vue'
 import grouptop from './grouptop.vue'
@@ -254,7 +254,11 @@ export default {
             }
 	    },
         mounted(){
-        //    this.selects(1)
+        //    this.selects(this.select)
+         this.selects(1)
+        },
+        beforeDestroy(){
+            //  this.select=s
         },
 	    methods:{
             send(content, groupId) {
@@ -267,12 +271,13 @@ export default {
             // 选择联系人
             selects(s) {
                 console.log("2")
+            
                 this.select = s,
                 this.hidden= s.groupId
                 // this.$store.commit('setSelectSession', s) 暂时报错
                     const inp = document.getElementById('input')
                     inp.focus();
-            
+                    this.$forceUpdate()
             },
             // 右键删除
              del(e) {

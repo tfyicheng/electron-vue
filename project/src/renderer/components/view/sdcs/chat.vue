@@ -11,7 +11,7 @@
           <!-- style="min-height: 100px" -->
           <li v-for="c in chat.msgs">
             <div v-if="c.isMe" class="content" style="min-height: 55px">
-              <div class="me" v-html="c.content" @contextmenu="menu(2)"></div>
+              <div class="me" v-html="c.content" @contextmenu="menu(2,c)"></div>
               <img
                 class="me-img"
                 src="../../../assets/tx.png"
@@ -24,7 +24,7 @@
               <div
                 class="other"
                 v-html="c.content"
-                @contextmenu="menu(2)"
+                @contextmenu="menu(2,c)"
               ></div>
             </div>
           </li>
@@ -178,12 +178,22 @@ export default {
       ],
     };
   },
-  mounted() {
-    this.drag();
-    this.paste();
-    this.setPasteImg();
+ mounted() {
+  //  加上异步setTimeout，延迟获取dom的代码的执行
+    this.$nextTick(()=> {
+        setTimeout(()=> {
+         this.test();
+          this.drag();
+        this.paste(); 
+        // this.setPasteImg();
+      })
+    })
   },
+
   methods: {
+    test() {
+      console.log("w k s l")
+    },
     menu,
     // 功能小窗
     gn(type) {
@@ -380,7 +390,7 @@ export default {
 
     // 粘贴去格式
     paste() {
-      const inp = document.getElementById("input");
+      let inp = document.getElementById("input");
       inp.addEventListener("paste", function (event) {
         const text = event.clipboardData.getData("Text");
         document.execCommand("insertText", false, text);
@@ -389,108 +399,15 @@ export default {
       });
     },
 
-    range() {
-      // var sendEmoji = document.getElementById('input')
-
-      // 定义最后光标对象
-      var lastEditRange;
-
-      // 编辑框点击事件
-      document.getElementById("input").onclick = function () {
-        // 获取选定对象
-        var selection = getSelection();
-        // 设置最后光标对象
-        lastEditRange = selection.getRangeAt(0);
-      };
-
-      // 编辑框按键弹起事件
-      document.getElementById("input").onkeyup = function () {
-        // 获取选定对象
-        var selection = getSelection();
-        // 设置最后光标对象
-        lastEditRange = selection.getRangeAt(0);
-      };
-
-      // 表情点击事件
-      document.getElementById("sendEmoji").onclick = function () {
-        // 获取编辑框对象
-        var edit = document.getElementById("input");
-        // 获取插入文本对象
-        // var emojiInput = document.getElementById('emojiInput')
-        let selection = window.getSelection();
-        //调用selection对象的toString()方法就可以获取鼠标拖动选中的文本。
-        console.log("选中的文本为：");
-        console.log(selection.toString());
-        var emojiInput = selection.toString();
-        // 编辑框设置焦点
-        edit.focus();
-        // 获取选定对象
-        // var selection = getSelection()
-        // 判断是否有最后光标对象存在
-        if (lastEditRange) {
-          // 存在最后光标对象，选定对象清除所有光标并添加最后光标还原之前的状态
-          selection.removeAllRanges();
-          selection.addRange(lastEditRange);
-        }
-        // 判断选定对象范围是编辑框还是文本节点
-        if (selection.anchorNode.nodeName != "#text") {
-          // 如果是编辑框范围。则创建表情文本节点进行插入
-          var emojiText = document.createTextNode(emojiInput.value);
-
-          if (edit.childNodes.length > 0) {
-            // 如果文本框的子元素大于0，则表示有其他元素，则按照位置插入表情节点
-            for (var i = 0; i < edit.childNodes.length; i++) {
-              if (i == selection.anchorOffset) {
-                edit.insertBefore(emojiText, edit.childNodes[i]);
-              }
-            }
-          } else {
-            // 否则直接插入一个表情元素
-            edit.appendChild(emojiText);
-          }
-          // 创建新的光标对象
-          var range = document.createRange();
-          // 光标对象的范围界定为新建的表情节点
-          range.selectNodeContents(emojiText);
-          // 光标位置定位在表情节点的最大长度
-          range.setStart(emojiText, emojiText.length);
-          // 使光标开始和光标结束重叠
-          range.collapse(true);
-          // 清除选定对象的所有光标对象
-          selection.removeAllRanges();
-          // 插入新的光标对象
-          selection.addRange(range);
-        } else {
-          // 如果是文本节点则先获取光标对象
-          var range = selection.getRangeAt(0);
-          // 获取光标对象的范围界定对象，一般就是textNode对象
-          var textNode = range.startContainer;
-          // 获取光标位置
-          var rangeStartOffset = range.startOffset;
-          // 文本节点在光标位置处插入新的表情内容
-          textNode.insertData(rangeStartOffset, emojiInput.value);
-          // 光标移动到到原来的位置加上新内容的长度
-          range.setStart(textNode, rangeStartOffset + emojiInput.value.length);
-          // 光标开始和光标结束重叠
-          range.collapse(true);
-          // 清除选定对象的所有光标对象
-          selection.removeAllRanges();
-          // 插入新的光标对象
-          selection.addRange(range);
-        }
-        // 无论如何都要记录最后光标对象
-        lastEditRange = selection.getRangeAt(0);
-      };
-    },
     // 拖拽去格式
     drag() {
-      const inp = document.getElementById("input");
+      let inp = document.getElementById("input");
       inp.addEventListener(
         "dragenter",
         function (e) {
           e.preventDefault();
           e.stopPropagation();
-          console.log("drog");
+          console.log("拖拽开始");
         },
         false
       );
@@ -517,7 +434,7 @@ export default {
           e.preventDefault();
           e.stopPropagation();
           // 处理拖拽的逻辑
-          console.log("drog2");
+          console.log("拖拽结束");
 
           // const contentEditableDiv = document.getElementById("input");
           // 获取被选中的内容，起点和终点在同一位置为光标，不同位置为选区
@@ -529,12 +446,6 @@ export default {
           const parentNode = selection.anchorNode.parentNode;
           // const range = selection.getRangeAt(0);
           const textNode = document.createTextNode(selection.toString());
-
-          // var el = window.document.body;
-          // window.document.body.onmouseover = function(event) {
-          // el = event.target.nodeName;
-          //   console.log(el)
-          // }
   
           // 判断选中区域的父元素是否等于当前区域，如果是，则拖拽插入无效
           if (parentNode !== inp) {
@@ -797,6 +708,7 @@ export default {
   color: #606060;
   border: 1px solid #e5e5e5;
   background-color: #f5f5f5;
+  outline: none;
 }
 .chatbody .send .btn:hover {
   color: #fff;
