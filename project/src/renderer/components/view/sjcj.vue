@@ -61,6 +61,7 @@
 export default {
      data() {
     return {
+      input:"",
       tableData: [
         {
           number:1,        

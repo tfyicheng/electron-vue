@@ -15,7 +15,7 @@
           @click="addForm"
           >添加</el-button
         >
-        <el-button type="primary" icon="el-icon-search" style="float: right"
+        <el-button type="primary" icon="el-icon-search" style="float: right" v-model="input"
           >搜索</el-button
         >
         <el-input
@@ -125,6 +125,7 @@ export default {
   name: "ZDSB",
   data() {
     return {
+      input:"",
       tableData: [
         {
           number: "1",

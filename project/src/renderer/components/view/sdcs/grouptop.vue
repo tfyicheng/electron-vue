@@ -2,7 +2,7 @@
  <!-- 列表搜索栏 -->
   <div class="groupbody">
     <div class="gtop">
-      <el-input placeholder="搜索" prefix-icon="el-icon-search"></el-input>
+      <el-input placeholder="搜索" prefix-icon="el-icon-search" v-model="input"></el-input>
       <div class="gtopp">
         <i class="el-icon-plus"></i>
       </div>
@@ -14,6 +14,11 @@
 <script>
 export default {
   name: "grouptop",
+  data(){
+    return {
+      input:"",
+    }
+  },
 };
 </script>
 

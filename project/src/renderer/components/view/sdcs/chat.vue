@@ -11,7 +11,11 @@
           <!-- style="min-height: 100px" -->
           <li v-for="c in chat.msgs">
             <div v-if="c.isMe" class="content" style="min-height: 55px">
-              <div class="me" v-html="c.content" @contextmenu="menu(2,c)"></div>
+              <div
+                class="me"
+                v-html="c.content"
+                @contextmenu="menu(2, c)"
+              ></div>
               <img
                 class="me-img"
                 src="../../../assets/tx.png"
@@ -24,7 +28,7 @@
               <div
                 class="other"
                 v-html="c.content"
-                @contextmenu="menu(2,c)"
+                @contextmenu="menu(2, c)"
               ></div>
             </div>
           </li>
@@ -178,22 +182,34 @@ export default {
       ],
     };
   },
- mounted() {
-  //  加上异步setTimeout，延迟获取dom的代码的执行
-    this.$nextTick(()=> {
-        setTimeout(()=> {
-         this.test();
-          this.drag();
-        this.paste(); 
+  mounted() {
+    //  加上异步setTimeout，延迟获取dom的代码的执行
+    this.$nextTick(() => {
+      setTimeout(() => {
+        // this.enter();
+        this.drag();
+        this.paste();
         // this.setPasteImg();
-      })
-    })
+      });
+    });
   },
 
   methods: {
-    test() {
-      console.log("w k s l")
-    },
+    //回车键发送
+    // enter() {
+    //   console.log("w k s l");
+    //   document.onkeydown = cdk;
+    //   let inp = document.getElementById("input");
+    //   var that = this;
+    //   function cdk() {
+    //     if (inp.focus) {
+    //       if (event.keyCode == 13) {
+    //         event.preventDefault();
+    //         that.send();
+    //       }
+    //     }
+    //   }
+    // },
     menu,
     // 功能小窗
     gn(type) {
@@ -272,6 +288,8 @@ export default {
     //         ipcRenderer.send("yydata", this.chat);
     //       }, 2000);
     //     },
+
+    //发送按钮
     send() {
       if (this.$refs.ip.innerHTML.length > 0) {
         let msg = {
@@ -282,6 +300,11 @@ export default {
         this.$refs.ip.innerHTML = "";
         this.$emit("send", msg, this.chat.groupId);
       }
+      //自动滚动到底部
+      setTimeout(() => {
+        document.getElementById("msg").scrollTop =
+          document.getElementById("msg").scrollHeight;
+      }, 100);
     },
     getSize(size) {
       if (size > 1024000) {
@@ -446,7 +469,7 @@ export default {
           const parentNode = selection.anchorNode.parentNode;
           // const range = selection.getRangeAt(0);
           const textNode = document.createTextNode(selection.toString());
-  
+
           // 判断选中区域的父元素是否等于当前区域，如果是，则拖拽插入无效
           if (parentNode !== inp) {
             inp.appendChild(textNode);

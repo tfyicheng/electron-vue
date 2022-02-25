@@ -228,7 +228,7 @@ export default {
                         time: new Date().getTime()
                     },{
                         isMe: true,
-                        content: '<img src="https://s1.ax1x.com/2020/08/14/dC2uw9.jpg"/><p>溜了溜了</p>',
+                        content: '<img src="https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"/><p>溜了溜了</p>',
                         time: new Date().getTime()
                     }],
                     groupId: 11,
@@ -278,6 +278,11 @@ export default {
                     const inp = document.getElementById('input')
                     inp.focus();
                     this.$forceUpdate()
+                      //自动滚动到底部
+      setTimeout(() => {
+        document.getElementById("msg").scrollTop =
+          document.getElementById("msg").scrollHeight;
+      }, 100);
             },
             // 右键删除
              del(e) {
