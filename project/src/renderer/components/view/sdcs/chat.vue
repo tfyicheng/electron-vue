@@ -8,28 +8,63 @@
       <!-- 对话框 onselectstart="return false;"-->
       <div class="msg" id="msg">
         <ul>
-          <!-- style="min-height: 100px" -->
+          <!-- style="min-height: 100px" v-html="c.content"-->
           <li v-for="c in chat.msgs">
             <div v-if="c.isMe" class="content" style="min-height: 55px">
               <div
-                class="me"
+                v-if="c.type=='text'"
+                class="metext"
                 v-html="c.content"
                 @contextmenu="menu(2, c)"
               ></div>
-              <img
-                class="me-img"
+                <div
+                 v-else-if="c.type=='voice'"
+                class="mevoice"              
+                @contextmenu="menu(2, c)"
+              >
+               <p>{{c.content}}</p>
+              <i class="iconfont icon-saying"></i>             
+              </div>
+               <div
+                 v-else
+                class="mefile"
+                @contextmenu="menu(2, c)"
+              >
+              <i class="el-icon-document"></i>
+               <p class="mefilename">{{c.content.fileName}}</p>
+               <p class="mefilesize">{{c.content.fileSize}}</p>
+              </div>
+              <div class="me-img"> <img               
                 src="../../../assets/tx.png"
                 width="50"
                 height="50"
-              />
+              /></div>            
             </div>
             <div v-else class="content">
-              <img :src="chat.img" width="50" height="50" class="other-img" />
+              <div  class="other-img" ><img :src="chat.img" width="50" height="50"/></div>
               <div
+                v-if="c.type=='text'"
                 class="other"
                 v-html="c.content"
                 @contextmenu="menu(2, c)"
               ></div>
+               <div
+                 v-else-if="c.type=='voice'"
+                class="othervoice"              
+                @contextmenu="menu(2, c)"
+              >             
+              <i class="iconfont icon-saying"></i>   
+                <p>{{c.content}}</p>          
+              </div>
+               <div
+                 v-else
+                class="otherfile"
+                @contextmenu="menu(2, c)"
+              >
+               <i class="el-icon-document"></i>
+               <p class="otherfilename">{{c.content.fileName}}</p>
+               <p class="otherfilesize">{{c.content.fileSize}}</p>
+              </div>
             </div>
           </li>
         </ul>
@@ -296,6 +331,7 @@ export default {
           isMe: true,
           content: this.$refs.ip.innerHTML,
           time: new Date().getTime(),
+          type:'text'
         };
         this.$refs.ip.innerHTML = "";
         this.$emit("send", msg, this.chat.groupId);
@@ -305,6 +341,9 @@ export default {
         document.getElementById("msg").scrollTop =
           document.getElementById("msg").scrollHeight;
       }, 100);
+      // 删除草稿箱    
+       document.body.removeChild( document.getElementById(this.chat.groupId)); 
+      // console.log(this.chat.groupId)
     },
     getSize(size) {
       if (size > 1024000) {
@@ -608,7 +647,8 @@ export default {
   font-size: 15px;
   border-radius: 2px;
 }
-.chatbody .msg ul li .content .other::before {
+/* 对话框小三角 */
+.chatbody .msg ul li .content .other-img::after {
   content: "";
   position: absolute;
   left: 50px;
@@ -624,8 +664,8 @@ export default {
   position: absolute;
   right: 0;
 }
-
-.chatbody .msg ul li .content .me {
+/* 文本内容 */
+.chatbody .msg ul li .content .metext {
   max-width: 50%;
   float: right;
   margin-right: 65px;
@@ -634,7 +674,152 @@ export default {
   padding: 15px 10px 20px 10px;
   background-color: #9bccff;
 }
-.chatbody .msg ul li .content .me::after {
+/* 语音内容 */
+.chatbody .msg ul li .content .mevoice {
+  max-width: 50%;
+  width: 80px;
+  line-height: 55px;
+  height: 55px;
+  float: right;
+  margin-right: 65px;
+  font-size: 15px;
+  border-radius: 2px;
+  /* padding: 0px 0px 5px 0px; */
+  background-color: #9bccff;
+}
+.chatbody .msg ul li .content .mevoice::after {
+  content: "";
+  position: absolute;
+  right: 50px;
+  top: 8px;
+  width: 0;
+  height: 0;
+}
+.chatbody .msg ul li .content .mevoice p{
+  float: left;
+  transform: translateX(-25px);
+  color: #7e7e7e;
+  font-size: 17px;
+  margin: 0;
+}
+.chatbody .msg ul li .content .mevoice i{
+  float: right;
+  margin-right: 5px;
+  font-size: 30px;
+  transform: rotate(180deg);
+}
+/* others语音内容 */
+.chatbody .msg ul li .content .othervoice {
+  /* padding: 15px 10px 20px 10px; */
+  float: left;
+  max-width: 50%;
+   width: 80px;
+  line-height: 55px;
+  height: 55px;
+  margin-left: 15px;
+  background-color: #fff;
+  font-size: 15px;
+  border-radius: 2px;
+
+}
+.chatbody .msg ul li .content .othervoice::after {
+  content: "";
+  position: absolute;
+  right: 50px;
+  top: 8px;
+  width: 0;
+  height: 0;
+}
+.chatbody .msg ul li .content .othervoice p{
+  float: right;
+  transform: translateX(35px);
+  color: #7e7e7e;
+  font-size: 17px;
+  margin: 0;
+}
+.chatbody .msg ul li .content .othervoice i{
+  float:left;
+  margin-left: 5px;
+  font-size: 30px;
+  /* transform: rotate(180deg); */
+}
+/* me文件内容 */
+.chatbody .msg ul li .content .mefile {
+  max-width: 50%;
+  float: right;
+  margin-right: 65px;
+  width: 225px;
+  /* line-height: 70px; */
+  height: 70px;
+  font-size: 15px;
+  border-radius: 2px;
+  /* padding: 15px 10px 20px 10px; */
+  background-color: #ffffff;
+}
+.chatbody .msg ul li .content .mefile::after {
+  content: "";
+  position: absolute;
+  right: 50px;
+  top: 8px;
+  width: 0;
+  height: 0;
+  z-index: 5;
+  border: 8px solid #ffffff;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+.chatbody .msg ul li .content .mefile i{
+  float: right;
+  margin: 15px;
+  font-size: 40px;
+}
+.chatbody .msg ul li .content .mefile .mefilename{
+  margin: 15px 10px 5px;
+  font-size: 13px;
+  font-weight: 800;
+     overflow: hidden;    
+    text-overflow:ellipsis;    
+    white-space: nowrap;
+}
+.chatbody .msg ul li .content .mefile .mefilesize{
+  margin: 10px;
+  font-size: 12px;
+  color: #7e7e7e;
+}
+/* other文件内容 */
+.chatbody .msg ul li .content .otherfile {
+  max-width: 50%;
+  float: left;
+  margin-left: 15px;
+  width: 225px;
+  /* line-height: 70px; */
+  height: 70px;
+  font-size: 15px;
+  border-radius: 2px;
+  /* padding: 15px 10px 20px 10px; */
+  background-color: #ffffff;
+}
+.chatbody .msg ul li .content .otherfile i{
+  float: right;
+  margin: 15px;
+  font-size: 40px;
+}
+.chatbody .msg ul li .content .otherfile .otherfilename{
+  margin: 15px 10px 5px;
+  font-size: 13px;
+  font-weight: 800;
+   overflow: hidden;    
+    text-overflow:ellipsis;    
+    white-space: nowrap;
+}
+.chatbody .msg ul li .content .otherfile .otherfilesize{
+  margin: 10px;
+  font-size: 12px;
+  color: #7e7e7e;
+}
+/* 对话框小三角 */
+.chatbody .msg ul li .content .me-img::after {
   content: "";
   position: absolute;
   right: 50px;
@@ -739,7 +924,8 @@ export default {
 }
 /* 输入框 */
 #input {
-  padding: 0 5px;
+  box-sizing: border-box;
+  padding: 0px 17px 7px 17px;
   background-color: #f3f3f3;
   height: 120px;
   overflow-y: auto;
@@ -752,7 +938,7 @@ export default {
 }
 #input:hover {
   overflow-y: overlay;
-}
+} 
 /* 文件 */
 .chatbody #input .file {
   cursor: default;

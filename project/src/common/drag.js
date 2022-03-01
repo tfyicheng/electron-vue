@@ -32,6 +32,7 @@ Vue.directive('dialogDrag', {
  
       // 鼠标拖拽事件
       document.onmousemove = function (e) {
+        e.preventDefault();
         // 通过事件委托，计算拖拽元素距离整个可视区域的距离，即拖拽元素的x，y的0点。
         const l = e.clientX - disX;
         const t = e.clientY - disY;

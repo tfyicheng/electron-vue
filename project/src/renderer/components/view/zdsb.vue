@@ -79,9 +79,9 @@
         </el-table-column>
       </el-table>
       <!-- 底部按钮 -->
-      <div style="margin-top: 20px">
+      <!-- <div style="margin-top: 20px">
         <el-button @click="toggleSelection()">取消选择</el-button>
-      </div>
+      </div> -->
       <!-- 添加信息弹窗 -->
       <el-dialog
       v-dialogDrag
@@ -92,7 +92,7 @@
       >
         <el-form :model="form">
           <el-form-item label="头像" :label-width="formLabelWidth">
-            <el-input v-model="form.name" autocomplete="off"placeholder="选择文件"></el-input>
+            <el-input type="file" v-model="form.head" autocomplete="off"placeholder="选择文件"></el-input>
           </el-form-item>
            <el-form-item label="活动名称" :label-width="formLabelWidth">
             <el-input v-model="form.name" autocomplete="off"placeholder="请输入"></el-input>
@@ -104,7 +104,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="密码" :label-width="formLabelWidth">
-            <el-input v-model="form.name" autocomplete="off"placeholder="请输入"></el-input>
+            <el-input  type="password"  v-model="form.password" autocomplete="off"placeholder="请输入"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
