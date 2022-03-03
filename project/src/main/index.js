@@ -58,7 +58,7 @@ app.on('activate', () => {
     createWindow()
   }
 })
-    
+      
 const createTray = () => {
   trayIcon = path.join(__dirname, './');
   tray = new Tray(path.join(trayIcon, 'zd.png'));
