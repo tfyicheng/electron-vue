@@ -19,10 +19,10 @@
         <el-table
         stripe="ture"
           ref="multipleTable"
-          :data="tableData"
+          :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           tooltip-effect="dark"
            :header-cell-style="{color:'#171717',background:'#f7f9ff',borderColor:'#CECECE',borderTop:'1px solid #ddd'}"
-          style="width: 100%"
+          style="width: 100%;height:700px"
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column>
@@ -38,6 +38,10 @@
            <el-table-column prop="enddate" label="结束时间" show-overflow-tooltip>
           </el-table-column>
            <el-table-column prop="direction" label="业务方向" show-overflow-tooltip>
+              <template slot-scope="scope">
+               <span v-if="scope.row.status===1" >发起</span>
+               <span v-else >接收</span>
+              </template>
           </el-table-column>
            <el-table-column prop="source" label="源" show-overflow-tooltip>
           </el-table-column>
@@ -48,6 +52,15 @@
               </template>
           </el-table-column>
         </el-table>
+           <!-- 分页器 -->
+         <div style="text-align: center;margin-top: 30px;">       
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        @current-change="current_change">
+      </el-pagination>
+    </div>
         <!-- 底部按钮 -->
         <div style="margin-top: 20px">
           <el-button @click="toggleSelection()">取消选择</el-button>
@@ -62,38 +75,70 @@ export default {
      data() {
     return {
       input:"",
-      tableData: [
+      // tableData: [
+      //   {
+      //     number:1,        
+      //     name: "任务一",
+      //     type: "语音",
+      //     startdate: "2016-05-03",
+      //      enddate: "2016-05-03",
+      //      source:"单位一",
+      //      direction:1,
+      //      status:1,
+      //   },{
+      //     number:1,        
+      //     name: "任务一",
+      //     type: "语音",
+      //     startdate: "2016-05-03",
+      //      enddate: "2016-05-03",
+      //      source:"单位一",
+      //      direction:1,
+      //      status:0,
+      //   },{
+      //     number:1,        
+      //     name: "任务一",
+      //     type: "语音",
+      //     startdate: "2016-05-03",
+      //      enddate: "2016-05-03",
+      //      source:"单位一",
+      //      direction:2,
+      //      status:1,
+      //   },],   
+          tableData:[
         {
-          number:1,        
-          name: "任务一",
-          type: "语音",
-          startdate: "2016-05-03",
-           enddate: "2016-05-03",
-           source:"单位一",
-           direction:"发起",
-           status:1,
-        },{
-          number:1,        
-          name: "任务一",
-          type: "语音",
-          startdate: "2016-05-03",
-           enddate: "2016-05-03",
-           source:"单位一",
-           direction:"发起",
-           status:0,
-        },{
-          number:1,        
-          name: "任务一",
-          type: "语音",
-          startdate: "2016-05-03",
-           enddate: "2016-05-03",
-           source:"单位一",
-           direction:"发起",
-           status:1,
-        },],   
-         multipleSelection: [] 
+          number: "",
+          type: "",
+          name: "",
+          startdate: "",
+          enddate: "",
+          source:"",
+          direction:"",
+          status:"",
+        },
+      ],
+         multipleSelection: [],
+          total: 20,
+        pagesize:12,
+        currentPage:1
     }
   },
+  beforeMount(){
+    this.gettableData()
+  },
+  methods:{
+        //获取数据
+    gettableData() {
+        this.$http.get(' http://localhost:3000/sjcj').then((response)=>{
+    this.tableData=response.data;
+    console.log(response.data); 
+        }).catch((response)=>{
+     console.log(response.data);   
+        })
+    },
+      current_change(currentPage){
+        this.currentPage = currentPage;
+  },
+}
 }
 </script>
 
@@ -135,6 +180,10 @@ export default {
   font-weight: bold;
   font-size: 15px;
 }
+/* 去掉表单底部白线 */
+.el-table::before {
+    height: 0px;
+ }
 .el-table >>> .DisabledSelection .cell .el-checkbox__inner {
   /* display: none;
   position: relative; */

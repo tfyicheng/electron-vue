@@ -42,17 +42,17 @@
         }"
         :row-style="{ height: '61px' }"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
+       
       >
-        <!--tooltip-effect="dark" <el-table-column label="编号" type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column> -->
+        <!-- @selection-change="handleSelectionChange"tooltip-effect="dark" <el-table-column label="编号" type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column> -->
         <el-table-column label="编号" min-width="30%">
-          <template slot-scope="scope">{{ scope.row.number }}</template>
+          <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
         <el-table-column prop="img" label="头像" min-width="30%">
           <!-- 'data:image/jpeg;base64,' +   解码 -->
 
           <template slot-scope="scope">
-            <img width="60px" :src="scope.row.img" />
+             <img width="60px" :src="scope.row.head" />
           </template>
         </el-table-column>
         <el-table-column prop="name" label="用户名" min-width="40%">
@@ -64,11 +64,11 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            {{ scope.row.role ? "普通用户" : "超级管理员" }}
+            {{ scope.row.role ?"超级管理员" :  "普通用户" }}
           </template>
         </el-table-column>
         <el-table-column
-          prop="date"
+          prop="time"
           label="添加时间"
           min-width="40%"
           show-overflow-tooltip
@@ -76,9 +76,9 @@
         </el-table-column>
         <el-table-column prop="address" label="操作" min-width="30%">
           <template slot-scope="scope">
-            <a class="cz" @click="handleClick(scope.row)">重置</a>
+            <a class="cz" >重置</a>
             <a class="bj">编辑</a>
-            <a v-show="scope.row.role === 1" class="sc">删除</a>
+            <a v-show="scope.row.role === 0" class="sc">删除</a>
           </template>
         </el-table-column>
       </el-table>
@@ -111,9 +111,8 @@
                 style="display: none"
                 :limit="1"
                 ref="upload"
-                :on-preview="handlePreview"
+               
                 :on-change="upChange"
-                :on-success="suc"
                 class="upload-demo"
                 action=""
                 :auto-upload="false"
@@ -121,7 +120,7 @@
                 <el-button size="small" type="primary" ref="upFile"></el-button>
               </el-upload>
             </a>
-            <!-- :file-list="form.head"  "true"=  :before-upload="beforeUpload"  -->
+            <!--  :on-preview="handlePreview":file-list="form.head"  "true"=  :before-upload="beforeUpload"  -->
           </div>
           <el-form-item
             label="活动名称"
@@ -140,8 +139,8 @@
             prop="region"
           >
             <el-select v-model="form.region" placeholder="请选择">
-              <el-option label="超级管理员" value="shanghai"></el-option>
-              <el-option label="普通用户" value="beijing"></el-option>
+              <el-option label="超级管理员" value="root"></el-option>
+              <el-option label="普通用户" value="admin"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item
@@ -177,40 +176,51 @@
 import { copyFileSync } from "original-fs";
 // 导入拖拽事件
 import "../../../common/drag";
+import ajax from "../../../common/ajax";
 export default {
   name: "ZDSB",
   data() {
     return {
       input: "",
       fileName: "",
-      tableData: [
+      // tableData: [
+      //   {
+      //     number: "1",
+      //     date: "2016-05-03",
+      //     img: require("../../assets/tx.png"),
+      //     name: "admin",
+      //     role: 0,
+      //   },
+      //   {
+      //     number: "2",
+      //     date: "2016-05-03",
+      //     img: require("../../assets/tx.png"),
+      //     name: "admin",
+      //     role: 1,
+      //   },
+      //   {
+      //     number: "3",
+      //     date: "2016-05-03",
+      //     img: require("../../assets/tx.png"),
+      //     name: "admin",
+      //     role: 1,
+      //   },
+      //   {
+      //     number: "4",
+      //     date: "2016-05-03",
+      //     img: require("../../assets/tx.png"),
+      //     name: "admin",
+      //     role: 1,
+      //   },
+      // ],
+      tableData:[
         {
-          number: "1",
-          date: "2016-05-03",
-          img: require("../../assets/tx.png"),
-          name: "admin",
-          role: 0,
-        },
-        {
-          number: "2",
-          date: "2016-05-03",
-          img: require("../../assets/tx.png"),
-          name: "admin",
-          role: 1,
-        },
-        {
-          number: "3",
-          date: "2016-05-03",
-          img: require("../../assets/tx.png"),
-          name: "admin",
-          role: 1,
-        },
-        {
-          number: "4",
-          date: "2016-05-03",
-          img: require("../../assets/tx.png"),
-          name: "admin",
-          role: 1,
+          number: "",
+          time: "",
+          img: "",
+          name: "",
+          role: "",
+          head:"",
         },
       ],
       multipleSelection: [],
@@ -230,18 +240,30 @@ export default {
       formLabelWidth: "120px",
     };
   },
+  beforeMount(){
+   this.gettableData()
+  },
   methods: {
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach((row) => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
-    handleClick(row) {
-      console.log(row);
+    // toggleSelection(rows) {
+    //   if (rows) {
+    //     rows.forEach((row) => {
+    //       this.$refs.multipleTable.toggleRowSelection(row);
+    //     });
+    //   } else {
+    //     this.$refs.multipleTable.clearSelection();
+    //   }
+    // },
+    // handleClick(row) {
+    //   console.log(row);
+    // },
+    //获取数据
+    gettableData() {
+        this.$http.get(' http://localhost:3000/add').then((response)=>{
+    this.tableData=response.data;
+    console.log(response.data); 
+}).catch((response)=>{
+    console.log(response.data);   
+})
     },
     // 添加用户弹框
     addForm() {
@@ -255,6 +277,7 @@ export default {
     // 上传头像链接
     uploadFile() {
       this.$refs.upFile.$el.click();//实际点击upload组件
+       this.$refs.upload.clearFiles();
       // console.log(this.form.head);
     },
     //上传条件      因为跟auto-upload冲突所以要放到upchange中调用
@@ -273,11 +296,11 @@ export default {
     },
     //上传触发事件
     upChange(file, fileList) {
-      //  console.log(file)  上传的文件对象
+      //  console.log(file)  //上传的文件对象
       let _this = this;
       let event = event || window.event;
       var file = event.target.files[0]; //在event中获取文件对象
-      // var file = file.raw   // 因为被element包装过，upload获取的file对象要在下一层中获取文件对象
+      // var file2 = file.raw   // 因为被element包装过，upload获取的file对象要在下一层中获取文件对象
       //判断一次条件并同时调用一次
       if (this.beforeUpload(file)) {
         //创建文件对象
