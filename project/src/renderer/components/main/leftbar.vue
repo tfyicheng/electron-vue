@@ -75,6 +75,12 @@ export default {
           name: "手动测试",
         },
         {
+          icon: "iconfont icon-tongxunlu",
+          path: "txl",
+          value: 0,
+          name: "通讯录",
+        },
+        {
           icon: "iconfont icon-dingwei",
           path: "zdsb",
           value: 0,
@@ -86,6 +92,12 @@ export default {
           value: 0,
           name: "数据采集",
         },
+        {
+          icon: "iconfont icon-yupanpinggu",
+          path: "xnpg",
+          value: 0,
+          name: "效能评估",
+        }
       ],
     };
   },
@@ -135,38 +147,37 @@ export default {
   /* position: absolute; */
   text-align: center;
   height: 100%;
-  width: 120px;
-  padding: 40px 0;
+  width: 100px;
+  padding: 30px 0;
   background-color: #21345c;
 }
 .iconfont {
   float: left;
   margin: 0 10px;
-  margin-top: 20px;
-  font-size: 38px;
+  margin-top: 13px;
+  font-size: 35px;
   color: #fff;
 }
 .iconfont > span {
   display: block;
   margin: 10px;
-
-  font-size: 15px;
+  font-size: 12px;
 }
 .option {
   position: fixed;
-  bottom: 50px;
-  left: 60px;
+  bottom: 35px;
+  left: 50px;
   transform: translateX(-50%);
 }
 .option > .iconfont {
-  font-size: 30px;
+  font-size: 25px;
   outline: none;
 }
 .optionslist {
   position: fixed;
-  left: 85px;
+  left: 74px;
   bottom: 0;
-  width: 136px;
+  width: 130px;
   background-color: #21345c;
 }
 ul {
@@ -178,7 +189,7 @@ li {
   color: rgba(255, 255, 255, 0.9);
   padding-left: 10px;
   text-align: left;
-  font-size: 15px;
+  font-size: 14px;
   height: 50px;
   line-height: 50px;
 }

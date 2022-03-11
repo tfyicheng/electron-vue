@@ -16,7 +16,7 @@
     <!-- 方案三：固定主体的top栏，绝对定位透明  -->
 
     <!-- 右侧主体内容 -->
-    <router-view style="margin-left: 120px;" />
+    <router-view style="margin-left: 100px;" />
   </div>
 </template>
 
@@ -32,13 +32,17 @@ export default {
   methods: {},
   beforeCreate() {
     // 调用主进程设置窗体
-    remote.getCurrentWindow().setSize(1440, 1024);
-    remote.getCurrentWindow().center();
+    // remote.getCurrentWindow().setSize(1440, 1024);
+    remote.getCurrentWindow().setSize(1130, 870);//设置宽高
+    
+    remote.getCurrentWindow().setResizable(true);//设置是否允许改变宽高
+   
+    remote.getCurrentWindow().center();//窗口居中
   },
   mounted() {
     // 挂载之后导航到指定页面
     this.$router.push("/sdcs");
-
+ remote.getCurrentWindow().setMinimumSize(1130, 870);//设置最小宽高
   }
 };
 </script >

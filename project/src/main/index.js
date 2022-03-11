@@ -24,7 +24,7 @@ function createWindow() {
     useContentSize: true,
     width: 300,
     frame: false,
-    resizable: false,
+    // resizable: false,  
     show: false
   })
 

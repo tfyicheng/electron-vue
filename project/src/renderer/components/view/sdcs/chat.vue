@@ -10,6 +10,7 @@
         <ul>
           <!-- style="min-height: 100px" v-html="c.content"-->
           <li v-for="c in chat.msgs">
+            <!-- 我的消息 -->
             <div v-if="c.isMe" class="content" style="min-height: 55px">
               <div
                 v-if="c.type=='text'"
@@ -40,6 +41,7 @@
                 height="50"
               /></div>            
             </div>
+            <!-- 对方消息 -->
             <div v-else class="content">
               <div  class="other-img" ><img :src="chat.img" width="50" height="50"/></div>
               <div
@@ -98,9 +100,13 @@
         </div>
         <!-- 发送框菜单栏 -->
         <div class="tool-bar">
-          <i class="el-icon-eleme" @click.stop="showBrow = !showBrow"></i>
+          <el-tooltip content="图片发送" placement="top">
+               <i class="iconfont icon-tupian" @click.stop="showBrow = !showBrow"></i>
+            </el-tooltip>
+        
           <!-- 文件发送 -->
-          <i class="iconfont icon-wenjian" @click="uploadFile">
+          <el-tooltip content="文件发送" placement="top">
+           <i class="iconfont icon-wenjian" @click="uploadFile">
             <el-upload
               style="display: none"
               :limit="1"
@@ -114,10 +120,31 @@
             >
               <el-button size="small" type="primary" ref="upFile"></el-button>
             </el-upload>
-          </i>
-          <i class="iconfont icon-dianhua yuyin" @click="gn(1)"></i>
-          <i class="iconfont icon-shipin" @click="gn(2)"></i>
-          <i class="iconfont icon-yuyin"></i>
+          </i>  
+            </el-tooltip>
+          
+          <el-tooltip content="语音通话" placement="top">
+               <i class="iconfont icon-dianhua yuyin" @click="gn(1)"></i>
+            </el-tooltip>
+        
+          <el-tooltip content="视频通话" placement="top">
+              <i class="iconfont icon-shipin" @click="gn(2)"></i>
+            </el-tooltip>
+         
+           <el-tooltip content="语音发送" placement="top">
+             <i class="iconfont icon-yuyin"></i> 
+            </el-tooltip>
+
+          <el-tooltip content="视频会议" placement="top">
+             <i class="iconfont icon-shipintonghua"></i>         
+            </el-tooltip>
+
+          <el-tooltip content="IP拨号" placement="top">
+            <i class="iconfont icon-IPbohao"></i>
+            </el-tooltip>
+          
+         
+        
         </div>
         <!-- 输入框 @dragenter="drag"-->
         <div
@@ -168,62 +195,17 @@ export default {
       fileList: [],
       showBrow: false,
       activeBrow: 0,
-      brows: [
-        {
-          icon: "😀",
-          brow: [
-            "😀",
-            "😁",
-            "�",
-            "🤣",
-            "😃",
-            "😭",
-            "😜",
-            "😝",
-            "☺",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-          ],
-        },
-        {
-          icon: "😭",
-          brow: [
-            "😀",
-            "😁",
-            "😂",
-            "🤣",
-            "😃",
-            "😭",
-            "😜",
-            "😝",
-            "☺",
-            "😂",
-            "😂",
-            "😂",
-            "😂",
-          ],
-        },
-      ],
     };
   },
   mounted() {
+
     //  加上异步setTimeout，延迟获取dom的代码的执行
     this.$nextTick(() => {
       setTimeout(() => {
         // this.enter();
         this.drag();
         this.paste();
+        
         // this.setPasteImg();
       });
     });
@@ -403,33 +385,46 @@ export default {
     resize(ev) {
       let initY = 0,
         tph = 0,
-        bth = 0;
+        bth = 0,
+        tph2 = 0,
+        bth2 = 0;
       let tp = document.getElementById("msg");
       let bt = document.getElementById("send");
       let drag = document.getElementById("drag");
       let inp = document.getElementById("input");
-      tph = tp.offsetHeight;
-      bth = bt.offsetHeight;
-      //   inp.style.height=btn+120+"px";
+      tph2 = tp.offsetHeight;
+      bth2 = bt.offsetHeight;
+      tph = tp.clientHeight;//对话框的可视高度
+      bth = bt.clientHeight;//发送框的可视高度
+      
       initY = (ev || event).clientY;
       document.onmousemove = function (ev2) {
-        var y = (ev2 || event).clientY - initY;
+        var y = (ev2 || event).clientY - initY;//鼠标y轴移动距离
         //tp.style.cursor = 's-resize'
-        bt.style.height = bth - y + "px"; //发送框高度
+        bt.style.height = bth +334- y + "px"; //发送框高度
         drag.style.bottom = bth - y + "px"; //拖拽条底部
         inp.style.height = bth - 65 - y + "px"; //输入框高度
-        tp.style.height = "calc(100% - " + (bth - y) + "px)"; //对话框高度
-        // console.log(bt.style.height)
-        // console.log( drag.style.bottom)
-        //  console.log(inp.style.height)
-        //  console.log(tp.style.height)
-        //  console.log(inp.clientHeight)
-        //  console.log(tp.clientHeight)
+        tp.style.height = "calc(100% - " + (bth -334- y) + "px)"; //对话框高度
+        console.log("——————————————")
+         console.log("鼠标y轴移动距离:"+y)
+        console.log("对话框可视高度:"+tph2)
+          console.log("发送框可视高度:"+bth2)
+         console.log("对话框可视高度:"+tph)
+          console.log("发送框可视高度:"+bth)
+        console.log("*发送框高度:"+bt.style.height)
+        console.log( "*拖拽条离底部高度:"+drag.style.bottom)
+         console.log("*输入框高度:"+inp.style.height)
+         console.log("*对话框高度:"+tp.style.height)
+         console.log("输入框可视高度:"+inp.clientHeight)
+         console.log("对话框可视高度:"+tp.clientHeight)
+         console.log("发送框可视高度:"+bt.clientHeight)
+          console.log("发送框可视高度:"+bt.style.height)
+  
         if (inp.clientHeight > 500) {
           bt.style.height = "565px";
           drag.style.bottom = "565px";
           tp.style.height = "calc(100% - " + 565 + "px)";
-          inp.style.height = "500px";
+          inp.style.height = "500px";      
           // document.onmousemove = null;
         } else if (tp.clientHeight > 755) {
           bt.style.height = "165px";
@@ -438,6 +433,21 @@ export default {
           inp.style.height = "100px";
           //  document.onmousemove = null;
         }
+
+        //    if (inp.clientHeight > 346) {
+        //   bt.style.height = "411px";
+        //   drag.style.bottom = "411px";
+        //   tp.style.height = "calc(100% - " + 411 + "px)";
+        //   inp.style.height = "346px";
+        //   // document.onmousemove = null;
+        // } else if (tp.clientHeight > 601) {
+        //   bt.style.height = "165px";
+        //   drag.style.bottom = "165px";
+        //   tp.style.height = "calc(100% - " + 165 + "px)";
+        //   inp.style.height = "100px";
+        //   //  document.onmousemove = null;
+        // }
+      
       };
     },
     // 拖拽结束
@@ -448,6 +458,7 @@ export default {
       // };
       document.onmousedown = null;
       document.onmousemove = null;
+      console.log("work")
     },
 
     // 粘贴去格式
@@ -584,6 +595,7 @@ export default {
 
 <style scoped>
 .chatmain {
+  height: 100%;
   width: 100%;
   overflow: hidden;
 }
@@ -601,16 +613,23 @@ export default {
   border-bottom: 1px solid #ddd;
 }
 .chatbody {
+  padding: 0 0 334px 0 ; 
+  box-sizing: border-box ; 
   font-family: 微软雅黑, serif;
-  /* height: calc(100%-80px); */
-  height: 920px;
+  /* height: calc(100%-81px); */
+  height: 100%;
+  margin-bottom: -81px;
+  /* height:789px; */
   width: 100%;
   position: relative;
 }
 /* 消息框 */
 .chatbody .msg {
   background-color: #f3f3f3;
-  height: 716px;
+  /* height: 716px; */
+  /* height: calc(100% -334px) ; */
+  height: 100%;
+ /* bottom: 334px; */
   width: 100%;
   overflow: hidden;
 }
@@ -625,7 +644,7 @@ export default {
 }
 .chatbody .msg ul li {
   position: relative;
-  margin: 20px 0;
+  margin: 10px 0;
   height: 100%;
   width: 100%;
   word-wrap: break-word;
@@ -837,14 +856,15 @@ export default {
   cursor: n-resize;
   border: 2px solid #e8e8e8;
   position: absolute;
-  bottom: 200px;
+  bottom: 334px;
 }
 /* 发送框 */
 .chatbody .send {
+  margin-bottom: -332px;
   /* padding: 0 30px; */
-  height: 200px;
+  height: 330px;
   width: 100%;
-  bottom: 1px;
+  /* bottom: 1px; */
   position: absolute;
   background-color: #f3f3f3;
 }
@@ -858,6 +878,13 @@ export default {
   margin-left: 15px;
   font-size: large;
   color: #666;
+}
+.icon-IPbohao{
+  float: right;
+}
+.icon-shipintonghua{
+  float: right;
+  margin-right: 15px;
 }
 /* //表情包 */
 .chatbody .send .brows {
@@ -927,7 +954,7 @@ export default {
   box-sizing: border-box;
   padding: 0px 17px 7px 17px;
   background-color: #f3f3f3;
-  height: 120px;
+  height: 160px;
   overflow-y: auto;
   width: 100%;
   word-wrap: break-word;

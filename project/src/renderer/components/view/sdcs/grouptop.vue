@@ -24,6 +24,7 @@ export default {
 
 <style scoped>
 .groupbody {
+  margin: -80px 0 0;
   background-color: #f7f7f7;
 }
 .gtop {
@@ -34,11 +35,11 @@ export default {
 }
 .gtopp {
   display: inline-block;
-  width: 25px;
+  width: 23px;
 }
 .gtop >>> .el-input {
-  width: 345px;
-  height: 25px;
+  width: 290px;
+  height: 23px;
 }
 .gtop >>> .el-input__inner {
   border: none;

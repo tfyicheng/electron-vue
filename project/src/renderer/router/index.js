@@ -42,9 +42,17 @@ const router = new Router({
           component: require('@/components/view/ZDSB').default
         },
         {
+          path: '/txl',
+          name: 'TXL',
+          component: require('@/components/view/TXL').default
+        }, {
           path: '/sjcj',
           name: 'SJCJ',
           component: require('@/components/view/SJCJ').default
+        }, {
+          path: '/xnpg',
+          name: 'XNPG',
+          component: require('@/components/view/XNPG').default
         },
 
       ]

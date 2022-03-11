@@ -27,7 +27,7 @@
         >
           <el-table-column type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column>
           <el-table-column label="编号" width="100"prop="number">
-            <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
+            <template slot-scope="scope">{{ scope.row.number }}</template>
           </el-table-column>
           <el-table-column prop="name" label="任务名称" width="100">
           </el-table-column>
@@ -62,9 +62,9 @@
       </el-pagination>
     </div>
         <!-- 底部按钮 -->
-        <div style="margin-top: 20px">
+        <!-- <div style="margin-top: 20px">
           <el-button @click="toggleSelection()">取消选择</el-button>
-        </div>
+        </div> -->
       
     </div>
   </div>
@@ -75,47 +75,47 @@ export default {
      data() {
     return {
       input:"",
-      // tableData: [
-      //   {
-      //     number:1,        
-      //     name: "任务一",
-      //     type: "语音",
-      //     startdate: "2016-05-03",
-      //      enddate: "2016-05-03",
-      //      source:"单位一",
-      //      direction:1,
-      //      status:1,
-      //   },{
-      //     number:1,        
-      //     name: "任务一",
-      //     type: "语音",
-      //     startdate: "2016-05-03",
-      //      enddate: "2016-05-03",
-      //      source:"单位一",
-      //      direction:1,
-      //      status:0,
-      //   },{
-      //     number:1,        
-      //     name: "任务一",
-      //     type: "语音",
-      //     startdate: "2016-05-03",
-      //      enddate: "2016-05-03",
-      //      source:"单位一",
-      //      direction:2,
-      //      status:1,
-      //   },],   
-          tableData:[
+      tableData: [
         {
-          number: "",
-          type: "",
-          name: "",
-          startdate: "",
-          enddate: "",
-          source:"",
-          direction:"",
-          status:"",
-        },
-      ],
+          number:1,        
+          name: "任务一",
+          type: "语音",
+          startdate: "2016-05-03",
+           enddate: "2016-05-03",
+           source:"单位一",
+           direction:1,
+           status:1,
+        },{
+          number:1,        
+          name: "任务一",
+          type: "语音",
+          startdate: "2016-05-03",
+           enddate: "2016-05-03",
+           source:"单位一",
+           direction:1,
+           status:0,
+        },{
+          number:1,        
+          name: "任务一",
+          type: "语音",
+          startdate: "2016-05-03",
+           enddate: "2016-05-03",
+           source:"单位一",
+           direction:2,
+           status:1,
+        },],   
+      //     tableData:[
+      //   {
+      //     number: "",
+      //     type: "",
+      //     name: "",
+      //     startdate: "",
+      //     enddate: "",
+      //     source:"",
+      //     direction:"",
+      //     status:"",
+      //   },
+      // ],
          multipleSelection: [],
           total: 20,
         pagesize:12,
@@ -123,7 +123,7 @@ export default {
     }
   },
   beforeMount(){
-    this.gettableData()
+    // this.gettableData()
   },
   methods:{
         //获取数据

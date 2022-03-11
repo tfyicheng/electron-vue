@@ -38,13 +38,17 @@
             }
         },
         beforeCreate() {
+             
             remote.getCurrentWebContents().closeDevTools()
-            remote.getCurrentWindow().setSize(300, 372)
+            // remote.getCurrentWindow().setSize(300, 372)
+            remote.getCurrentWindow().setMinimumSize(300, 372);//设置最小宽高
+          
         },
         mounted() {
           // makeDraggable()//窗口拖拽
             remote.getCurrentWindow().setSize(300, 372, false)
-        // remote.getCurrentWindow().setResizable(resizable);
+           remote.getCurrentWindow().center();//窗口居中
+        remote.getCurrentWindow().setResizable(false);
         },
         methods: {
             exit() {

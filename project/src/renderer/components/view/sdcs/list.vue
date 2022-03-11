@@ -104,18 +104,18 @@ export default {
 </script>
 <style  scoped>
 .cp-group {
-  height: 82px;
+  height: 75px;
   font-size: small;
   position: relative;
 }
 .img {
-    padding: 19px;
+    padding: 15px 0 15px 19px;
 }
 p {
   color: black;
   margin: 1px 0;
-  font-size: 18px;
-  width: 350px;
+  font-size: 15px;
+  width: 290px;
 }
 .time {
   position: absolute;

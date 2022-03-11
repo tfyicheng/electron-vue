@@ -85,6 +85,12 @@ export default {
             },
             {
               isMe: true,
+              content: "文本",
+              time: new Date().getTime(),
+              type: "text",
+            },
+            {
+              isMe: true,
               content: 6 + '"',
               time: new Date().getTime(),
               type: "voice",
@@ -100,6 +106,16 @@ export default {
               content: {
                 fileName: "开会资料.pdf",
                 fileSize: "2MB",
+              },
+              time: new Date().getTime(),
+              type: "file",
+            },
+            {
+              isMe: false,
+              content: {
+                fileName:
+                  "开会文件开会文件开会文件开会文件开会文件开会文件.pdf",
+                fileSize: "5MB",
               },
               time: new Date().getTime(),
               type: "file",
@@ -385,6 +401,48 @@ export default {
           type: "user",
           unRead: 2,
         },
+        {
+          img: require("../../../assets/tx.png"),
+          name: "周铁轮",
+          msgs: [
+            {
+              isMe: false,
+              content: "打电话",
+              time: new Date().getTime(),
+              type: "text",
+            },
+            {
+              isMe: true,
+              content: 7 + '"',
+              time: new Date().getTime(),
+              type: "voice",
+            },
+          ],
+          groupId: 13,
+          type: "user",
+          unRead: 2,
+        },
+        {
+          img: require("../../../assets/tx.png"),
+          name: "周铁轮",
+          msgs: [
+            {
+              isMe: false,
+              content: "打电话",
+              time: new Date().getTime(),
+              type: "text",
+            },
+            {
+              isMe: true,
+              content: 7 + '"',
+              time: new Date().getTime(),
+              type: "voice",
+            },
+          ],
+          groupId: 14,
+          type: "user",
+          unRead: 2,
+        },
       ],
     };
   },
@@ -454,20 +512,25 @@ export default {
   height: 100%;
 }
 .group {
-  width: 440px;
+   padding: 80px 0 0;
+   box-sizing: border-box;
+  width: 380px;
   /* z-index: 999; */
   /* display: inline-block; */
   height: 100%;
   position: fixed;
   top: 0;
   /* left: 0;  */
-  left: 120px;
+  left: 100px;
   border-right: 1px solid #ddd;
   background-color: #f7f7f7;
   overflow: hidden;
 }
+
 .group .gul {
-  height: 944px;
+
+  height: 100%;
+
   overflow-y: hidden;
 }
 .group .gul:hover {
@@ -475,6 +538,7 @@ export default {
 }
 .group ul {
   width: 100%;
+  /* height: 100%; */
   padding: 0;
   margin: 0 0;
   background-color: #f7f7f7;
@@ -488,7 +552,7 @@ export default {
 .content {
   /* display: inline-block;  */
   /* left: 440px; */
-  padding-left: 440px;
+  padding-left: 380px;
   position: relative;
   height: 100%;
   /* height: 1024px; */

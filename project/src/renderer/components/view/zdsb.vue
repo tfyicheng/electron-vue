@@ -183,46 +183,46 @@ export default {
     return {
       input: "",
       fileName: "",
-      // tableData: [
-      //   {
-      //     number: "1",
-      //     date: "2016-05-03",
-      //     img: require("../../assets/tx.png"),
-      //     name: "admin",
-      //     role: 0,
-      //   },
-      //   {
-      //     number: "2",
-      //     date: "2016-05-03",
-      //     img: require("../../assets/tx.png"),
-      //     name: "admin",
-      //     role: 1,
-      //   },
-      //   {
-      //     number: "3",
-      //     date: "2016-05-03",
-      //     img: require("../../assets/tx.png"),
-      //     name: "admin",
-      //     role: 1,
-      //   },
-      //   {
-      //     number: "4",
-      //     date: "2016-05-03",
-      //     img: require("../../assets/tx.png"),
-      //     name: "admin",
-      //     role: 1,
-      //   },
-      // ],
-      tableData:[
+      tableData: [
         {
-          number: "",
-          time: "",
-          img: "",
-          name: "",
-          role: "",
-          head:"",
+          id: "1",
+          time: "2016-05-03",
+          head: require("../../assets/tx.png"),
+          name: "admin",
+          role: 0,
+        },
+        {
+          id:  "2",
+           time: "2016-05-03",
+          head: require("../../assets/tx.png"),
+          name: "admin",
+          role: 1,
+        },
+        {
+          id:  "3",
+          time: "2016-05-03",
+          head: require("../../assets/tx.png"),
+          name: "admin",
+          role: 1,
+        },
+        {
+         id:  "4",
+           time: "2016-05-03",
+          head: require("../../assets/tx.png"),
+          name: "admin",
+          role: 1,
         },
       ],
+      // tableData:[
+      //   {
+      //     id: "",
+      //     time: "",
+      //     img: "",
+      //     name: "",
+      //     role: "",
+      //     head:"",
+      //   },
+      // ],
       multipleSelection: [],
       dialogFormVisible: false,
       form: {
@@ -241,7 +241,7 @@ export default {
     };
   },
   beforeMount(){
-   this.gettableData()
+  //  this.gettableData()
   },
   methods: {
     // toggleSelection(rows) {
