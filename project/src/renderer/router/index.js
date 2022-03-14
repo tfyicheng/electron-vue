@@ -48,7 +48,7 @@ const router = new Router({
         }, {
           path: '/sjcj',
           name: 'SJCJ',
-          component: require('@/components/view/SJCJ').default
+          component: require('@/components/view/SJCJ/sjcj').default
         }, {
           path: '/xnpg',
           name: 'XNPG',

@@ -1,11 +1,22 @@
 <template>
- <!-- 列表搜索栏 -->
+  <!-- 列表搜索栏 -->
   <div class="groupbody">
     <div class="gtop">
-      <el-input placeholder="搜索" prefix-icon="el-icon-search" v-model="input"></el-input>
+      <el-input
+        id="inp"
+        placeholder="搜索"
+        prefix-icon="el-icon-search"
+        v-model="input"
+        @click.native="search"
+        @input="result($event)"
+      ></el-input>
+
       <div class="gtopp">
         <i class="el-icon-plus"></i>
       </div>
+    </div>
+    <div id="cancel" @click="cancel">
+      <i class="iconfont icon-guanbixi"> </i>
     </div>
     <!-- <div>聊天列表</div> -->
   </div>
@@ -14,10 +25,28 @@
 <script>
 export default {
   name: "grouptop",
-  data(){
+  data() {
     return {
-      input:"",
-    }
+      input: "",
+    };
+  },
+  methods: {
+    search() {
+      console.log("11");
+      this.$emit("showResult", 0); //自定义事件  传递值“子向父组件传值” 展示搜索层
+      let cal = document.getElementById("cancel");
+      cal.style.display = "block";
+    },
+    cancel() {
+      this.$emit("showResult", 1); //自定义事件  传递值“子向父组件传值” 关闭搜索层
+      let cal = document.getElementById("cancel");
+      cal.style.display = "none";
+      let inp = document.getElementById("inp");
+      inp.value = "";
+    },
+    result(e) {
+      console.log("22");
+    },
   },
 };
 </script>
@@ -59,13 +88,28 @@ export default {
   background-color: rgb(223, 223, 223);
 }
 .el-input >>> input::-webkit-input-placeholder {
-  color: #a3a3a3 ;
+  color: #a3a3a3;
   font-weight: bold;
   font-size: 15px;
   padding-left: 4px;
 }
- .el-input /deep/ .el-icon-search::before {
+.el-input /deep/ .el-icon-search::before {
   color: #a3a3a3;
   font-size: 18px;
+}
+#cancel {
+  display: none;
+  cursor: pointer;
+  position: fixed;
+  text-align: center;
+  line-height: 25px;
+  left: 380px;
+  top: 27px;
+  font-size: 12px;
+  border-radius: 50%;
+  color: #f7f7f7;
+  height: 25px;
+  width: 25px;
+  background-color: #a3a3a3;
 }
 </style>

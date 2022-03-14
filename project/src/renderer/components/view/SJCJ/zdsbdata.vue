@@ -1,11 +1,6 @@
 <template>
-  <!-- 数据采集 -->
-     <div class="bod">
-       <!-- 标题 -->
-    <div class="sjtop">
-      <span class="sjtitle">业务数据采集</span>
-    </div>
-      <!-- 主体 -->
+ <div>
+          <!-- 主体 -->
     <div class="sjmain">
       <!-- 顶部菜单 -->
       <div class="mainmenu">
@@ -22,7 +17,7 @@
           :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           tooltip-effect="dark"
            :header-cell-style="{color:'#171717',background:'#f7f9ff',borderColor:'#CECECE',borderTop:'1px solid #ddd'}"
-          style="width: 100%;height:700px"
+          style="width: 100%;height:65vh"
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column>
@@ -67,7 +62,7 @@
         </div> -->
       
     </div>
-  </div>
+ </div>
 </template>
 
 <script>

@@ -205,7 +205,6 @@ export default {
         // this.enter();
         this.drag();
         this.paste();
-        
         // this.setPasteImg();
       });
     });
@@ -385,15 +384,11 @@ export default {
     resize(ev) {
       let initY = 0,
         tph = 0,
-        bth = 0,
-        tph2 = 0,
-        bth2 = 0;
+        bth = 0;
       let tp = document.getElementById("msg");
       let bt = document.getElementById("send");
       let drag = document.getElementById("drag");
       let inp = document.getElementById("input");
-      tph2 = tp.offsetHeight;
-      bth2 = bt.offsetHeight;
       tph = tp.clientHeight;//对话框的可视高度
       bth = bt.clientHeight;//发送框的可视高度
       
@@ -401,53 +396,35 @@ export default {
       document.onmousemove = function (ev2) {
         var y = (ev2 || event).clientY - initY;//鼠标y轴移动距离
         //tp.style.cursor = 's-resize'
-        bt.style.height = bth +334- y + "px"; //发送框高度
+        bt.style.height = bth - y + "px"; //发送框高度
         drag.style.bottom = bth - y + "px"; //拖拽条底部
-        inp.style.height = bth - 65 - y + "px"; //输入框高度
-        tp.style.height = "calc(100% - " + (bth -334- y) + "px)"; //对话框高度
-        console.log("——————————————")
-         console.log("鼠标y轴移动距离:"+y)
-        console.log("对话框可视高度:"+tph2)
-          console.log("发送框可视高度:"+bth2)
-         console.log("对话框可视高度:"+tph)
-          console.log("发送框可视高度:"+bth)
-        console.log("*发送框高度:"+bt.style.height)
-        console.log( "*拖拽条离底部高度:"+drag.style.bottom)
-         console.log("*输入框高度:"+inp.style.height)
-         console.log("*对话框高度:"+tp.style.height)
-         console.log("输入框可视高度:"+inp.clientHeight)
-         console.log("对话框可视高度:"+tp.clientHeight)
-         console.log("发送框可视高度:"+bt.clientHeight)
-          console.log("发送框可视高度:"+bt.style.height)
+        inp.style.height = bth -100 -65 - y + "px"; //输入框高度
+        tp.style.height = "calc(100% - " + (bth - y) + "px)"; //对话框高度
+        // console.log("——————————————")
+        //  console.log("鼠标y轴移动距离:"+y)
+        //  console.log("对话框可视高度:"+tph)
+        //   console.log("发送框可视高度:"+bth)
+        // console.log("**发送框高度:"+bt.style.height)
+        // console.log( "**拖拽条离底部高度:"+drag.style.bottom)
+        //  console.log("**输入框高度:"+inp.style.height)
+        //  console.log("**对话框高度:"+tp.style.height)
+        //  console.log("输入框可视高度:"+inp.clientHeight)
+        //  console.log("对话框可视高度:"+tp.clientHeight)
+        //  console.log("发送框可视高度:"+bt.clientHeight)
   
-        if (inp.clientHeight > 500) {
-          bt.style.height = "565px";
-          drag.style.bottom = "565px";
-          tp.style.height = "calc(100% - " + 565 + "px)";
-          inp.style.height = "500px";      
-          // document.onmousemove = null;
-        } else if (tp.clientHeight > 755) {
-          bt.style.height = "165px";
-          drag.style.bottom = "165px";
-          tp.style.height = "calc(100% - " + 165 + "px)";
+        if (inp.clientHeight > 590) {
+          bt.style.height = "755px";
+          drag.style.bottom = "755px";
+          tp.style.height = "calc(100% - " + 755 + "px)";
+          inp.style.height = "590px";      
+          document.onmousemove = null;inp.style.height >= 650
+        } else if (inp.clientHeight < 100) {
+          bt.style.height = "265px";
+          drag.style.bottom = "265px";
+          tp.style.height = "calc(100% - " + 265 + "px)";
           inp.style.height = "100px";
-          //  document.onmousemove = null;
-        }
-
-        //    if (inp.clientHeight > 346) {
-        //   bt.style.height = "411px";
-        //   drag.style.bottom = "411px";
-        //   tp.style.height = "calc(100% - " + 411 + "px)";
-        //   inp.style.height = "346px";
-        //   // document.onmousemove = null;
-        // } else if (tp.clientHeight > 601) {
-        //   bt.style.height = "165px";
-        //   drag.style.bottom = "165px";
-        //   tp.style.height = "calc(100% - " + 165 + "px)";
-        //   inp.style.height = "100px";
-        //   //  document.onmousemove = null;
-        // }
-      
+           document.onmousemove = null;
+        }     
       };
     },
     // 拖拽结束
@@ -458,7 +435,7 @@ export default {
       // };
       document.onmousedown = null;
       document.onmousemove = null;
-      console.log("work")
+      console.log("drag-over")
     },
 
     // 粘贴去格式
@@ -613,7 +590,7 @@ export default {
   border-bottom: 1px solid #ddd;
 }
 .chatbody {
-  padding: 0 0 334px 0 ; 
+  /* padding: 0 0 334px 0 ; 方案二 */
   box-sizing: border-box ; 
   font-family: 微软雅黑, serif;
   /* height: calc(100%-81px); */
@@ -626,9 +603,10 @@ export default {
 /* 消息框 */
 .chatbody .msg {
   background-color: #f3f3f3;
+   /* height: 100%;方案二 */
   /* height: 716px; */
   /* height: calc(100% -334px) ; */
-  height: 100%;
+ height: 60vh;
  /* bottom: 334px; */
   width: 100%;
   overflow: hidden;
@@ -856,15 +834,17 @@ export default {
   cursor: n-resize;
   border: 2px solid #e8e8e8;
   position: absolute;
-  bottom: 334px;
+  /* bottom: 334px; */
+  bottom: 40vh;
 }
 /* 发送框 */
 .chatbody .send {
-  margin-bottom: -332px;
+  /* margin-bottom: -332px;方案二 */
   /* padding: 0 30px; */
-  height: 330px;
+  /* height: 330px; */
+  height: 39.9vh;
   width: 100%;
-  /* bottom: 1px; */
+  bottom: 1px;
   position: absolute;
   background-color: #f3f3f3;
 }
@@ -954,7 +934,8 @@ export default {
   box-sizing: border-box;
   padding: 0px 17px 7px 17px;
   background-color: #f3f3f3;
-  height: 160px;
+  /* height: 160px; */
+   height: 21.5vh;
   overflow-y: auto;
   width: 100%;
   word-wrap: break-word;

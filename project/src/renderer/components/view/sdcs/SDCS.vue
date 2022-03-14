@@ -5,8 +5,8 @@
     <!-- 左侧联系人列表 -->
     <div class="group">
       <!-- 列表搜索栏 -->
-      <grouptop></grouptop>
-      <div class="gul" onselectstart="return false;">
+      <grouptop @showResult="result"></grouptop>
+      <div v-if="search" class="gul" onselectstart="return false;">
         <ul>
           <li
             v-for="g in groups"
@@ -20,6 +20,9 @@
             <list :group="g" :select="select" @deleteIndex="del"></list>
           </li>
         </ul>
+      </div>
+      <div v-else class="gsearch">
+          
       </div>
     </div>
     <!-- 会话窗口 -->
@@ -45,6 +48,7 @@ export default {
   components: { grouptop, chat, list },
   data() {
     return {
+      search:1,
       select: null,
       endselectId:null,
       hidden: 1,
@@ -449,6 +453,7 @@ export default {
   mounted() {
     //    this.selects(this.select)
     this.selects(1);
+    
   },
   beforeDestroy() {
     //  this.select=s
@@ -502,6 +507,10 @@ export default {
     sel.removeAllRanges();
     sel.addRange(range);
 },
+result(e){
+      this.search=e
+      console.log("66"+e)
+    }
   },
   watch: {},
 };
@@ -532,6 +541,15 @@ export default {
   height: 100%;
 
   overflow-y: hidden;
+}
+.group .gsearch {
+  /* display: inline-block; */
+  /* z-index: 889; */
+  height: 100%;
+  width: 100%;
+  /* background-color: pink; */
+
+  overflow-y: overlay;
 }
 .group .gul:hover {
   overflow-y: overlay;
