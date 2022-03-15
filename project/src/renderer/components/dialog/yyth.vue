@@ -71,7 +71,7 @@ export default {
     //       }
     //     },
     close() {
-      remote.getCurrentWindow().close();
+      remote.getCurrentWindow().hide();
     },
   },
 };

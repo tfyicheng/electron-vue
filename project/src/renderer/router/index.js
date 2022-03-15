@@ -10,9 +10,9 @@ const router = new Router({
   mode: 'hash',
   routes: [
     {
-      path: '/gn',
-      name: 'gn',
-      component: require('@/components/gn/gn').default,
+      path: '/dialog',
+      name: 'dialogCenter',
+      component: require('@/components/dialog/dialogCenter').default,
       children: [
       ]
     },
@@ -59,11 +59,11 @@ const router = new Router({
     }, {
       path: '/spth',
       name: 'spth',
-      component: require('@/components/gn/spth').default
+      component: require('@/components/dialog/spth').default
     }, {
       path: '/yyth',
       name: 'yyth',
-      component: require('@/components/gn/yyth').default
+      component: require('@/components/dialog/yyth').default
     },
   ]
 })

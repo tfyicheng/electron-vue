@@ -15,16 +15,17 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+
 function createWindow() {
-  /**
+  /** 
    * Initial window options
-   */
+   */ 
   mainWindow = new BrowserWindow({
     height: 372,
     useContentSize: true,
     width: 300,
     frame: false,
-    // resizable: false,  
+    // resizable: false,   
     show: false
   })
 
@@ -44,6 +45,8 @@ mainWindow.on('closed', () => {
 })
 createTray()// 创建图标托盘
 }
+
+
 
 app.on('ready', createWindow)
 

@@ -1,30 +1,25 @@
 <template>
   <div class="body body-blur">
-    <div class="bg">
-      <img :src="img" alt="" />
-    </div>
+    <!-- <div class="bg">
+      <!-- <img :src="img" alt="" /> -
+    </div> -->
 
     <div class="tbtn">
       <i class="iconfont icon-zuixiaohua" @click="handleMin"></i>
       <i class="iconfont icon-zuidahuaxi"></i>
       <i class="iconfont icon-guanbixi" @click="close"></i>
     </div>
-    <img :src="img" width="61" height="61" />
+    <img :src="img" width="150" height="150" />
     <div class="name">{{ name }}</div>
-    <template v-if="status === 'wait'">
-      <div class="time">正在等待对方接受邀请</div>
-    </template>
-    <template v-else>
-      <div class="time">{{ time }}</div>
-    </template>
+    <div class="time">{{ time }}</div>
     <div class="bbtn">
       <div class="mute" @click="go">
-        <i class="iconfont icon-yuyin1"></i>
-        <span>切换语音通话</span>
+        <i class="iconfont icon-jingyin"></i>
+        <span>gn测试</span>
       </div>
       <div class="close" @click="close">
         <i class="iconfont icon-guaduan"></i>
-        <span>取消</span>
+        <span>挂断</span>
       </div>
     </div>
   </div>
@@ -41,29 +36,78 @@ export default {
       name: "",
       time: "03:35",
       img: "",
-      status: "wait",
     };
   },
 
   components: {},
+
   beforeCreate() {
-    remote.getCurrentWebContents().closeDevTools();
-    // remote.getCurrentWindow().setSize(1440, 1024);
-    // remote.getCurrentWindow().center();
+    console.log("999");
+
+    // remote.getCurrentWebContents().closeDevTools();
+    //     remote.getCurrentWindow().setSize(1440, 1024);
+    //     remote.getCurrentWindow().center();
     //    在挂载之前调用事件监听
-    remote.ipcMain.once("yydata", (event, arg) => {
-      this.name = arg.name;
-      this.img = arg.img;
-      console.log(arg.name);
-      console.log("778");
+
+  },
+
+  beforeMount() {
+      this.call();
+
+  },
+
+  mounted() {
+        remote.ipcMain.on("yydata", (event, arg,arg2) => {
+       console.log(arg)
+      console.log(arg2)
+      this.call(arg2)
+      // this.name = arg.name;
+      // this.img = arg.img;
+      // console.log(arg.name);
+      // console.log("778");
+      // console.log(this.$route.query.type);
     });
   },
 
-  beforeMount() {},
+beforeUpdate(){
 
-  mounted() {},
+},
 
   methods: {
+    // call() {
+    //   console.log("886" + this.$route.query.type);
+
+    //   switch (this.$route.query.type) {
+    //     case "1":
+    //       this.$router.push("/yyth");
+    //       break;
+    //     case "2":
+    //       this.$router.push("/spth");
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // },
+
+      call(arg2) {
+            // console.log("886" + this.$route.query.type);
+
+            switch (arg2) {
+              case 1:
+                this.$router.push("/yyth");
+                remote.getCurrentWindow().show();
+                break;
+              case 2:
+                this.$router.push("/spth");
+                remote.getCurrentWindow().show();
+                break;
+              default:
+                break;
+            }
+          },
+
+
+
     handleMin() {
       remote.getCurrentWindow().minimize();
     },
@@ -77,11 +121,12 @@ export default {
     //       }
     //     },
     close() {
-      remote.getCurrentWindow().close();
+      remote.getCurrentWindow().hide();
     },
     go() {
-      this.$router.push("/yyth");
-      console.log("luyou" + this.$router);
+      this.$router.push({ path: "/spth" });
+      console.log(this.$router);
+      console.log(window.location.href);
     },
   },
 };
@@ -89,9 +134,9 @@ export default {
 <style  scoped>
 .body {
   -webkit-app-region: drag;
+  background-color: pink;
   width: 100%;
   height: 600px;
-  overflow: hidden;
 }
 .bg {
   width: 360px;
@@ -123,43 +168,40 @@ export default {
 }
 .tbtn i {
   cursor: pointer;
-  color: #fff;
 }
 .tbtn .iconfont {
   font-size: 14px;
   margin-right: 14px;
 }
 img {
-  position: fixed;
-  top: 15px;
-  left: 12px;
-  text-align: left;
+  display: block;
+  /* width: 150px; */
+  margin: 0 auto;
+  padding-top: 120px;
 }
 .name {
   color: #fff;
-  margin-top: 18px;
-  margin-left: 90px;
-  /* width: 100%; */
-  text-align: left;
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
 }
 .time {
   color: #fff;
-  margin-top: 12px;
-  margin-left: 90px;
-  /* width: 100%; */
-  text-align: left;
-  font-size: 14px;
+  margin-top: 5px;
+  width: 100%;
+  text-align: center;
 }
 .bbtn {
-  width: 100%;
-  margin: 60px auto;
-  bottom: 0;
-  position: absolute;
+  display: block;
+  width: 150px;
+  margin: 120px auto;
+  position: relative;
 }
 .mute {
-  margin: 0px auto;
   -webkit-app-region: no-drag;
-  display: block;
+  display: inline-block;
+  position: absolute;
+  left: 1px;
   background-color: #5f5554;
   width: 40px;
   height: 40px;
@@ -167,19 +209,21 @@ img {
   text-align: center;
   cursor: pointer;
   line-height: 40px;
-  margin-bottom: 50px;
 }
 
 .close {
   -webkit-app-region: no-drag;
-  display: block;
-  margin: 0px auto;
+  display: inline-block;
+  position: absolute;
+  right: 1px;
   background-color: #ff6565;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   text-align: center;
   cursor: pointer;
+
+
   line-height: 40px;
 }
 .bbtn i {
@@ -195,10 +239,5 @@ img {
   /* padding-top: 30px; */
   font-size: 12px;
   color: #fff;
-  line-height: 30px;
-  width: 130px;
-  margin: 0 auto;
-  transform: translateX(-50%);
-  padding-left: 40px;
 }
 </style>

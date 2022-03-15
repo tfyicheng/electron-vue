@@ -124,11 +124,11 @@
             </el-tooltip>
           
           <el-tooltip content="语音通话" placement="top">
-               <i class="iconfont icon-dianhua yuyin" @click="gn(1)"></i>
+               <i class="iconfont icon-dianhua yuyin" @click="dialog(1)"></i>
             </el-tooltip>
         
           <el-tooltip content="视频通话" placement="top">
-              <i class="iconfont icon-shipin" @click="gn(2)"></i>
+              <i class="iconfont icon-shipin" @click="dialog(2)"></i>
             </el-tooltip>
          
            <el-tooltip content="语音发送" placement="top">
@@ -183,7 +183,7 @@ import { remote, ipcRenderer } from "electron";
 const BrowserWindow = remote.BrowserWindow;
 // const  { BrowserWindow }  =  require ( '@electron/remote' )
 const path = require("path");
-let childWindow = null;
+// let childWindow = null;
 
 export default {
   name: "chat",
@@ -227,86 +227,70 @@ export default {
     //   }
     // },
     menu,
+ 
     // 功能小窗
-    gn(type) {
-      console.log(window.location.href);
-      console.log(type);
-      const childURL =
-        process.env.NODE_ENV === "development"
-          ? "http://localhost:9080" + "#/gn?type=" + type
-          : path.join("file://", __dirname, "../renderer/components/gn/gn.vue");
-      // 判读是否已经存在子窗口
-      if (childWindow) {
-        childWindow.show();
-      } else {
-        childWindow = new BrowserWindow({
-          useContentSize: true,
-          height: 600,
-          width: 360,
-          resizable: true,
-          show: false,
-          frame: false,
-          // titleBarStyle:'hidden-inset',
-          // titleBarOverlay: true,
-          parent: remote.mainWindow,
-          webPreferences: {
-            webSecurity: false,
-          },
-        });
+    // dialog(type) {
+    //   console.log(window.location.href);
+    //   console.log(type);
+    //   const childURL =
+    //     process.env.NODE_ENV === "development"
+    //       ? "http://localhost:9080" + "#/dialog?type=" + type
+    //       : path.join("file://", __dirname, "../renderer/components/dialog/dialogCenter.vue");
+    //   // 判读是否已经存在子窗口
+    //   if (childWindow) {
+    //     childWindow.show();
+    //   } else {
+    //     childWindow = new BrowserWindow({
+    //       useContentSize: true,
+    //       height: 600,
+    //       width: 360,
+    //       resizable: true,
+    //       show: false,
+    //       frame: false,
+    //       // titleBarStyle:'hidden-inset',
+    //       // titleBarOverlay: true,
+    //       parent: remote.mainWindow,
+    //       webPreferences: {
+    //         webSecurity: false,
+    //       },
+    //     });
 
-        childWindow.loadURL(childURL);
-        childWindow.once("ready-to-show", () => {
-          childWindow.show();
-        });
-        childWindow.on("closed", () => {
-          childWindow = null;
-        });
-      }
-      // 定时发送目的是等待子窗口完成渲染才能监听数据
+    //     childWindow.loadURL(childURL);
+    //     childWindow.once("ready-to-show", () => {
+    //       childWindow.show();
+    //     });
+    //     childWindow.on("closed", () => {
+    //       childWindow = null;
+    //     });
+    //   }
+    //   // 定时发送目的是等待子窗口完成渲染才能监听数据
+    //   setTimeout(() => {
+    //     ipcRenderer.send("yydata", this.chat);
+    //   }, 2000);
+    // },
+   
+
+   
+ 
+
+   dialog(type){
+      console.log(type)
+      //   // 判读是否已经存在子窗口
+      // if (remote.childWindow) {
+      //   console.log("erzi")
+      //   childWindow.show();
+      // } 
+      // remote.getChildWindows()
+  // ipcRenderer.send("yydata", this.chat,type);
+    //  定时发送目的是等待子窗口完成渲染才能监听数据
       setTimeout(() => {
-        ipcRenderer.send("yydata", this.chat);
+        ipcRenderer.send("yydata", this.chat,type);
       }, 2000);
-    },
-    //      shipin() {
-    //       const childURL =
-    //         process.env.NODE_ENV === "development"
-    //           ? "http://localhost:9080" + "#/spth"
-    //           : path.join("file://", __dirname, "../renderer/components/gn/spth.vue");
-    //       // 判读是否已经存在子窗口
-    //       if (childWindow) {
-    //         childWindow.show();
-    //       } else {
-    //         childWindow = new BrowserWindow({
-    //           useContentSize: true,
-    //           height: 600,
-    //           width: 360,
-    //           resizable: true,
-    //           show: false,
-    //           frame:false,
-    //           // titleBarStyle:'hidden-inset',
-    //           // titleBarOverlay: true,
-    //           parent: remote.mainWindow,
-    //           webPreferences: {
-    //             webSecurity: false,
-    //           },
-    //         });
-
-    //         childWindow.loadURL(childURL);
-    //         childWindow.once("ready-to-show", () => {
-    //           childWindow.show();
-    //         });
-    //         childWindow.on("closed", () => {
-    //           childWindow = null;
-    //         });
-    //       }
-    // // 定时发送目的是等待子窗口完成渲染才能监听数据
-    //       setTimeout(() => {
-    //         ipcRenderer.send("yydata", this.chat);
-    //       }, 2000);
-    //     },
-
+  
+   },
+   
     //发送按钮
-    send() {
+   send() {
       if (this.$refs.ip.innerHTML.length > 0) {
         let msg = {
           isMe: true,

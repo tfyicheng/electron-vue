@@ -135,8 +135,15 @@ export default {
         message: "请重新登录",
         center: true,
       });
+    
+    mainWindow.on('closed', () => {
+      mainWindow = null
+      })
+   
+    
     },
-  },
+ 
+ },
 };
 </script>
 

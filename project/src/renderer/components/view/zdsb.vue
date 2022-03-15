@@ -410,7 +410,7 @@ export default {
   width: 440px;
   height: 340px;
   /* left: 15vw; */
-  left: 40%;
+  left: 36vw;
   top: 20vh;
   margin: 0 !important;
 }

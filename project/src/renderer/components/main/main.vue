@@ -22,14 +22,52 @@
 
 <script>
 import { remote } from "electron";
+const BrowserWindow = remote.BrowserWindow;
 import leftbar from "./leftbar.vue";
 import top from "./top.vue";
 import topmenu from "./topmenu.vue";
 import SDCS from "../view/SDCS/SDCS.vue";
+const path = require("path");
+let childWindow = null;
 export default {
   name: "main",
   components: { leftbar, SDCS, top,topmenu },
-  methods: {},
+  methods: {
+      
+  dialogCenter(){
+       const childURL =
+        process.env.NODE_ENV === "development"
+          ? "http://localhost:9080" + "#/dialog"
+          : path.join("file://", __dirname, "../renderer/components/dialog/dialogCenter.vue");
+      //   // 判读是否已经存在子窗口
+      if (childWindow) {
+        childWindow.hide();
+      } else {
+        childWindow = new BrowserWindow({
+          useContentSize: true,
+          		// modal: true,
+          height: 600,
+          width: 660,
+          resizable: true,
+          show: true,
+          frame: false,
+          // titleBarStyle:'hidden-inset',
+          // titleBarOverlay: true,
+          parent: remote.mainWindow,
+          webPreferences: {
+            webSecurity: false,
+          },
+        });
+
+        childWindow.loadURL(childURL);
+        
+ 
+
+
+  }
+  },
+
+  },
   beforeCreate() {
     // 调用主进程设置窗体
     // remote.getCurrentWindow().setSize(1440, 1024);
@@ -40,9 +78,12 @@ export default {
     remote.getCurrentWindow().center();//窗口居中
   },
   mounted() {
+  
     // 挂载之后导航到指定页面
     this.$router.push("/sdcs");
  remote.getCurrentWindow().setMinimumSize(1130, 870);//设置最小宽高
+
+  this.dialogCenter();
   }
 };
 </script >

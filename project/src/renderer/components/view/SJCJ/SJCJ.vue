@@ -51,5 +51,6 @@ export default {
 }
 .bod >>> .el-tabs__nav-scroll{
   margin-left: 24px;
+  color: pink!important;
 }
 </style>

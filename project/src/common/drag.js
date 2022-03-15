@@ -47,8 +47,8 @@ Vue.directive('dialogDrag', {
         console.log("----------")
         // 边界值判定 注意clientWidth scrollWidth区别 要减去之前的top left值
         // dragDom.offsetParent表示弹窗阴影部分
-        if (finallyL < 120) {
-          finallyL = 120
+        if (finallyL < 100) {
+          finallyL = 100
         } else if (finallyL > dragDom.offsetParent.clientWidth - dragDom.clientWidth - dragDom.offsetParent.offsetLeft) {
           finallyL = dragDom.offsetParent.clientWidth - dragDom.clientWidth - dragDom.offsetParent.offsetLeft
         }
