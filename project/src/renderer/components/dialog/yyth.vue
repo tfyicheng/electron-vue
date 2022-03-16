@@ -1,17 +1,19 @@
 <template>
   <div class="body body-blur">
+    <!-- 背景模糊 -->
     <div class="bg">
       <img :src="img" alt="" />
     </div>
-
+    <!-- 顶部菜单 -->
     <div class="tbtn">
       <i class="iconfont icon-zuixiaohua" @click="handleMin"></i>
-      <i class="iconfont icon-zuidahuaxi"></i>
+      <!-- <i class="iconfont icon-zuidahuaxi"></i> -->
       <i class="iconfont icon-guanbixi" @click="close"></i>
     </div>
     <img :src="img" width="150" height="150" />
     <div class="name">{{ name }}</div>
     <div class="time">{{ time }}</div>
+    <!-- 底部按钮 -->
     <div class="bbtn">
       <div class="mute">
         <i class="iconfont icon-jingyin"></i>
@@ -42,8 +44,8 @@ export default {
   components: {},
   beforeCreate() {
     remote.getCurrentWebContents().closeDevTools();
-    //     remote.getCurrentWindow().setSize(1440, 1024);
-    //     remote.getCurrentWindow().center();
+    remote.getCurrentWindow().setSize(360, 600);
+    // remote.getCurrentWindow().center();
     //    在挂载之前调用事件监听
     remote.ipcMain.once("yydata", (event, arg) => {
       this.name = arg.name;
@@ -82,6 +84,8 @@ export default {
   /* background-color: pink; */
   width: 100%;
   height: 600px;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .bg {
   width: 360px;
@@ -113,7 +117,7 @@ export default {
 }
 .tbtn i {
   cursor: pointer;
-  color:#fff;
+  color: #fff;
 }
 .tbtn .iconfont {
   font-size: 14px;

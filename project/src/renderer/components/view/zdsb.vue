@@ -494,12 +494,12 @@ export default {
   padding-right: 5px;
 }
 /* 模态框 margin-left: 120px; */
-.el-dialog__wrapper {
+/* .el-dialog__wrapper {
   z-index: 9 !important;
 }
 .zdmain >>> .v-modal {
   z-index: 8 !important;
-}
+} */
 
 /* 上传按钮css修改方案二  创建新标签覆盖，用upload代替 */
 .el-form .up {

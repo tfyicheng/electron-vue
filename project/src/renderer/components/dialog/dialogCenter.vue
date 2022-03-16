@@ -9,18 +9,13 @@
       <i class="iconfont icon-zuidahuaxi"></i>
       <i class="iconfont icon-guanbixi" @click="close"></i>
     </div>
-    <img :src="img" width="150" height="150" />
-    <div class="name">{{ name }}</div>
-    <div class="time">{{ time }}</div>
-    <div class="bbtn">
-      <div class="mute" @click="go">
-        <i class="iconfont icon-jingyin"></i>
-        <span>gn测试</span>
+      <div>
+        <h1>
+            弹窗中心
+        </h1>
+      
       </div>
-      <div class="close" @click="close">
-        <i class="iconfont icon-guaduan"></i>
-        <span>挂断</span>
-      </div>
+
     </div>
   </div>
 </template>
@@ -67,6 +62,11 @@ export default {
       // console.log("778");
       // console.log(this.$route.query.type);
     });
+
+          remote.ipcMain.on("dialogclose", (event) => {
+            console.log("close")
+      remote.getCurrentWindow().close();
+    });
   },
 
 beforeUpdate(){
@@ -99,6 +99,10 @@ beforeUpdate(){
                 break;
               case 2:
                 this.$router.push("/spth");
+                remote.getCurrentWindow().show();
+                break;
+                 case 3:
+                this.$router.push("/yyfs");
                 remote.getCurrentWindow().show();
                 break;
               default:

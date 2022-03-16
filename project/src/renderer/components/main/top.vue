@@ -1,9 +1,12 @@
 <template>
   
     <div class="btn">
-      <i class="iconfont icon-zuixiaohua" @click="handleMin"></i>
-      <i class="iconfont icon-zuidahuaxi" @click="handleMax"></i>
-      <i class="iconfont icon-guanbixi" @click="exit"></i>
+      <div title="最小化"> <i class="iconfont icon-zuixiaohua" @click="handleMin"></i></div> 
+       <div title="最大化"> <i class="iconfont icon-zuidahuaxi" @click="handleMax"></i></div> 
+        <div title="关闭">  <i class="iconfont icon-guanbixi" @click="exit"></i></div> 
+     
+     
+    
     </div>
 
 </template>
@@ -52,6 +55,9 @@ export default {
   right: 0px;
   /* width: 100%; */
   text-align: right;
+}
+.btn div {
+  display: inline-block;
 }
 .btn i {
 cursor: pointer;

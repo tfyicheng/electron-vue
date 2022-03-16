@@ -11,7 +11,7 @@
         @input="result($event)"
       ></el-input>
 
-      <div class="gtopp">
+      <div class="gtopp" title="创建群聊">
         <i class="el-icon-plus"></i>
       </div>
     </div>

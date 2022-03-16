@@ -48,6 +48,7 @@ export default {
   components: {},
   beforeCreate() {
     remote.getCurrentWebContents().closeDevTools();
+    remote.getCurrentWindow().setSize(360, 600);
     // remote.getCurrentWindow().setSize(1440, 1024);
     // remote.getCurrentWindow().center();
     //    在挂载之前调用事件监听
@@ -92,6 +93,8 @@ export default {
   width: 100%;
   height: 600px;
   overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .bg {
   width: 360px;

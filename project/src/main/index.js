@@ -19,7 +19,7 @@ const winURL = process.env.NODE_ENV === 'development'
 function createWindow() {
   /** 
    * Initial window options
-   */ 
+   */      
   mainWindow = new BrowserWindow({
     height: 372,
     useContentSize: true,

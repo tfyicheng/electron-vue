@@ -28,8 +28,9 @@ import top from "./top.vue";
 import topmenu from "./topmenu.vue";
 import SDCS from "../view/SDCS/SDCS.vue";
 const path = require("path");
-let childWindow = null;
+ var childWindow2 = null;
 export default {
+ 
   name: "main",
   components: { leftbar, SDCS, top,topmenu },
   methods: {
@@ -39,17 +40,37 @@ export default {
         process.env.NODE_ENV === "development"
           ? "http://localhost:9080" + "#/dialog"
           : path.join("file://", __dirname, "../renderer/components/dialog/dialogCenter.vue");
-      //   // 判读是否已经存在子窗口
-      if (childWindow) {
-        childWindow.hide();
-      } else {
-        childWindow = new BrowserWindow({
+           //   // 判读是否已经存在子窗口
+           //     if (childWindow) {
+           //       childWindow.hide();
+           //     } else {
+           //       childWindow = new BrowserWindow({
+           //         useContentSize: true,
+           //         		// modal: true,
+           //         height: 600,
+           //         width: 660,
+           //         resizable: true,
+           //         show: false,
+           //         frame: false,
+           //         // titleBarStyle:'hidden-inset',
+           //         // titleBarOverlay: true,
+           //         parent: remote.mainWindow,
+           //         webPreferences: {
+           //           webSecurity: false,
+           //         },
+           //       });
+
+           //       childWindow.loadURL(childURL);
+
+           // }
+
+  childWindow2 = new BrowserWindow({
           useContentSize: true,
           		// modal: true,
           height: 600,
           width: 660,
           resizable: true,
-          show: true,
+          show: false,
           frame: false,
           // titleBarStyle:'hidden-inset',
           // titleBarOverlay: true,
@@ -59,12 +80,13 @@ export default {
           },
         });
 
-        childWindow.loadURL(childURL);
-        
- 
-
-
-  }
+        childWindow2.loadURL(childURL);
+                  childWindow2.hookWindowMessage(278, function (e) {
+          childWindow2.setEnabled(false)
+         setTimeout(()=> { childWindow2.setEnabled(true)
+         }, 100)
+        return true
+         })
   },
 
   },
@@ -84,6 +106,14 @@ export default {
  remote.getCurrentWindow().setMinimumSize(1130, 870);//设置最小宽高
 
   this.dialogCenter();
+  },
+  beforeDestroy(){
+  
+    childWindow2 = null;
+      this.$message({
+        message: "已关闭子窗口",
+        center: true,
+      });
   }
 };
 </script >

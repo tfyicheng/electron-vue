@@ -132,15 +132,15 @@
             </el-tooltip>
          
            <el-tooltip content="语音发送" placement="top">
-             <i class="iconfont icon-yuyin"></i> 
+             <i class="iconfont icon-yuyin" @click="dialog(3)" ></i> 
             </el-tooltip>
 
           <el-tooltip content="视频会议" placement="top">
-             <i class="iconfont icon-shipintonghua"></i>         
+             <i class="iconfont icon-shipintonghua" @click="dialog(4)"></i>         
             </el-tooltip>
 
           <el-tooltip content="IP拨号" placement="top">
-            <i class="iconfont icon-IPbohao"></i>
+            <i class="iconfont icon-IPbohao" @click="dialog(5)"></i>
             </el-tooltip>
           
          

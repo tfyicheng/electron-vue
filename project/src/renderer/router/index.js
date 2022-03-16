@@ -64,6 +64,10 @@ const router = new Router({
       path: '/yyth',
       name: 'yyth',
       component: require('@/components/dialog/yyth').default
+    }, {
+      path: '/yyfs',
+      name: 'yyfs',
+      component: require('@/components/dialog/yyfs').default
     },
   ]
 })

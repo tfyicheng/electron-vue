@@ -130,6 +130,7 @@ export default {
     },
     logout() {
       ipcRenderer.send("login-window");
+        ipcRenderer.send("dialogclose");
       this.$router.push("/");
       this.$message({
         message: "请重新登录",
