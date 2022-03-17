@@ -12,7 +12,7 @@
          <el-button type="warning" icon="el-icon-upload">导出</el-button>
          <el-button type="danger" icon="el-icon-delete">删除</el-button>
                   <el-button type="primary" icon="el-icon-search"style="float:right">搜索</el-button>
-         <el-input v-model="input" placeholder="关键词"style="float:right"></el-input>
+         <el-input v-model="input" placeholder="关键词"style="float:right" clearable></el-input>
 
       </div>
       <!-- 主体表格 -->

@@ -13,59 +13,75 @@
             <!-- 我的消息 -->
             <div v-if="c.isMe" class="content" style="min-height: 55px">
               <div
-                v-if="c.type=='text'"
+                v-if="c.type == 'text'"
                 class="metext"
                 v-html="c.content"
                 @contextmenu="menu(2, c)"
               ></div>
-                <div
-                 v-else-if="c.type=='voice'"
-                class="mevoice"              
+              <div
+                v-else-if="c.type == 'voice'"
+                class="mevoice"
                 @contextmenu="menu(2, c)"
+                title="播放"
               >
-               <p>{{c.content}}</p>
-              <i class="iconfont icon-saying"></i>             
+                <p>{{ c.content }}</p>
+                <i class="iconfont icon-saying"></i>
               </div>
-               <div
-                 v-else
+              <div
+                v-else-if="c.type == 'file'"
                 class="mefile"
                 @contextmenu="menu(2, c)"
+                title="保存"
               >
-              <i class="el-icon-document"></i>
-               <p class="mefilename">{{c.content.fileName}}</p>
-               <p class="mefilesize">{{c.content.fileSize}}</p>
+                <i class="el-icon-document"></i>
+                <p class="mefilename">{{ c.content.fileName }}</p>
+                <p class="mefilesize">{{ c.content.fileSize }}</p>
               </div>
-              <div class="me-img"> <img               
-                src="../../../assets/tx.png"
-                width="50"
-                height="50"
-              /></div>            
+              <div v-else class="meimg" @contextmenu="menu(2, c)">
+                <div class="imgbox">
+                  <i class="iconfont icon-xiazai" title="下载"></i>
+                  <img :src="c.content.imgsrc" alt="" />
+                </div>
+              </div>
+              <div class="me-img">
+                <img src="../../../assets/tx.png" width="50" height="50" />
+              </div>
             </div>
             <!-- 对方消息 -->
             <div v-else class="content">
-              <div  class="other-img" ><img :src="chat.img" width="50" height="50"/></div>
+              <div class="other-img">
+                <img :src="chat.img" width="50" height="50" />
+              </div>
               <div
-                v-if="c.type=='text'"
+                v-if="c.type == 'text'"
                 class="other"
                 v-html="c.content"
                 @contextmenu="menu(2, c)"
               ></div>
-               <div
-                 v-else-if="c.type=='voice'"
-                class="othervoice"              
+              <div
+                v-else-if="c.type == 'voice'"
+                class="othervoice"
                 @contextmenu="menu(2, c)"
-              >             
-              <i class="iconfont icon-saying"></i>   
-                <p>{{c.content}}</p>          
+                title="播放"
+              >
+                <i class="iconfont icon-saying"></i>
+                <p>{{ c.content }}</p>
               </div>
-               <div
-                 v-else
+              <div
+                v-else-if="c.type == 'file'"
                 class="otherfile"
                 @contextmenu="menu(2, c)"
+                title="保存"
               >
-               <i class="el-icon-document"></i>
-               <p class="otherfilename">{{c.content.fileName}}</p>
-               <p class="otherfilesize">{{c.content.fileSize}}</p>
+                <i class="el-icon-document"></i>
+                <p class="otherfilename">{{ c.content.fileName }}</p>
+                <p class="otherfilesize">{{ c.content.fileSize }}</p>
+              </div>
+              <div v-else class="otherimg" @contextmenu="menu(2, c)">
+                <div class="imgbox">
+                  <i class="iconfont icon-xiazai" title="下载"></i>
+                  <img :src="c.content.imgsrc" alt="" />
+                </div>
               </div>
             </div>
           </li>
@@ -101,50 +117,50 @@
         <!-- 发送框菜单栏 -->
         <div class="tool-bar">
           <el-tooltip content="图片发送" placement="top">
-               <i class="iconfont icon-tupian" @click.stop="showBrow = !showBrow"></i>
-            </el-tooltip>
-        
+            <i
+              class="iconfont icon-tupian"
+              @click.stop="showBrow = !showBrow"
+            ></i>
+          </el-tooltip>
+
           <!-- 文件发送 -->
           <el-tooltip content="文件发送" placement="top">
-           <i class="iconfont icon-wenjian" @click="uploadFile">
-            <el-upload
-              style="display: none"
-              :limit="1"
-              ref="upload"
-              :on-preview="handlePreview"
-              :on-change="upChange"
-              :auto-upload="false"
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :file-list="fileList"
-            >
-              <el-button size="small" type="primary" ref="upFile"></el-button>
-            </el-upload>
-          </i>  
-            </el-tooltip>
-          
+            <i class="iconfont icon-wenjian" @click="uploadFile">
+              <el-upload
+                style="display: none"
+                :limit="1"
+                ref="upload"
+                :on-preview="handlePreview"
+                :on-change="upChange"
+                :auto-upload="false"
+                class="upload-demo"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :file-list="fileList"
+              >
+                <el-button size="small" type="primary" ref="upFile"></el-button>
+              </el-upload>
+            </i>
+          </el-tooltip>
+
           <el-tooltip content="语音通话" placement="top">
-               <i class="iconfont icon-dianhua yuyin" @click="dialog(1)"></i>
-            </el-tooltip>
-        
+            <i class="iconfont icon-dianhua yuyin" @click="dialog(1)"></i>
+          </el-tooltip>
+
           <el-tooltip content="视频通话" placement="top">
-              <i class="iconfont icon-shipin" @click="dialog(2)"></i>
-            </el-tooltip>
-         
-           <el-tooltip content="语音发送" placement="top">
-             <i class="iconfont icon-yuyin" @click="dialog(3)" ></i> 
-            </el-tooltip>
+            <i class="iconfont icon-shipin" @click="dialog(2)"></i>
+          </el-tooltip>
+
+          <el-tooltip content="语音发送" placement="top">
+            <i class="iconfont icon-yuyin" @click="dialog(3)"></i>
+          </el-tooltip>
 
           <el-tooltip content="视频会议" placement="top">
-             <i class="iconfont icon-shipintonghua" @click="dialog(4)"></i>         
-            </el-tooltip>
+            <i class="iconfont icon-shipintonghua" @click="dialog(4)"></i>
+          </el-tooltip>
 
           <el-tooltip content="IP拨号" placement="top">
             <i class="iconfont icon-IPbohao" @click="dialog(5)"></i>
-            </el-tooltip>
-          
-         
-        
+          </el-tooltip>
         </div>
         <!-- 输入框 @dragenter="drag"-->
         <div
@@ -198,7 +214,6 @@ export default {
     };
   },
   mounted() {
-
     //  加上异步setTimeout，延迟获取dom的代码的执行
     this.$nextTick(() => {
       setTimeout(() => {
@@ -227,7 +242,7 @@ export default {
     //   }
     // },
     menu,
- 
+
     // 功能小窗
     // dialog(type) {
     //   console.log(window.location.href);
@@ -268,35 +283,30 @@ export default {
     //     ipcRenderer.send("yydata", this.chat);
     //   }, 2000);
     // },
-   
 
-   
- 
-
-   dialog(type){
-      console.log(type)
+    dialog(type) {
+      console.log(type);
       //   // 判读是否已经存在子窗口
       // if (remote.childWindow) {
       //   console.log("erzi")
       //   childWindow.show();
-      // } 
+      // }
       // remote.getChildWindows()
-  // ipcRenderer.send("yydata", this.chat,type);
-    //  定时发送目的是等待子窗口完成渲染才能监听数据
+      // ipcRenderer.send("yydata", this.chat,type);
+      //  定时发送目的是等待子窗口完成渲染才能监听数据
       setTimeout(() => {
-        ipcRenderer.send("yydata", this.chat,type);
+        ipcRenderer.send("yydata", this.chat, type);
       }, 2000);
-  
-   },
-   
+    },
+
     //发送按钮
-   send() {
+    send() {
       if (this.$refs.ip.innerHTML.length > 0) {
         let msg = {
           isMe: true,
           content: this.$refs.ip.innerHTML,
           time: new Date().getTime(),
-          type:'text'
+          type: "text",
         };
         this.$refs.ip.innerHTML = "";
         this.$emit("send", msg, this.chat.groupId);
@@ -306,8 +316,8 @@ export default {
         document.getElementById("msg").scrollTop =
           document.getElementById("msg").scrollHeight;
       }, 100);
-      // 删除草稿箱    
-       document.body.removeChild( document.getElementById(this.chat.groupId)); 
+      // 删除草稿箱
+      document.body.removeChild(document.getElementById(this.chat.groupId));
       // console.log(this.chat.groupId)
     },
     getSize(size) {
@@ -373,16 +383,16 @@ export default {
       let bt = document.getElementById("send");
       let drag = document.getElementById("drag");
       let inp = document.getElementById("input");
-      tph = tp.clientHeight;//对话框的可视高度
-      bth = bt.clientHeight;//发送框的可视高度
-      
+      tph = tp.clientHeight; //对话框的可视高度
+      bth = bt.clientHeight; //发送框的可视高度
+
       initY = (ev || event).clientY;
       document.onmousemove = function (ev2) {
-        var y = (ev2 || event).clientY - initY;//鼠标y轴移动距离
+        var y = (ev2 || event).clientY - initY; //鼠标y轴移动距离
         //tp.style.cursor = 's-resize'
         bt.style.height = bth - y + "px"; //发送框高度
         drag.style.bottom = bth - y + "px"; //拖拽条底部
-        inp.style.height = bth -100 -65 - y + "px"; //输入框高度
+        inp.style.height = bth - 100 - 65 - y + "px"; //输入框高度
         tp.style.height = "calc(100% - " + (bth - y) + "px)"; //对话框高度
         // console.log("——————————————")
         //  console.log("鼠标y轴移动距离:"+y)
@@ -395,20 +405,21 @@ export default {
         //  console.log("输入框可视高度:"+inp.clientHeight)
         //  console.log("对话框可视高度:"+tp.clientHeight)
         //  console.log("发送框可视高度:"+bt.clientHeight)
-  
+
         if (inp.clientHeight > 590) {
           bt.style.height = "755px";
           drag.style.bottom = "755px";
           tp.style.height = "calc(100% - " + 755 + "px)";
-          inp.style.height = "590px";      
-          document.onmousemove = null;inp.style.height >= 650
+          inp.style.height = "590px";
+          document.onmousemove = null;
+          inp.style.height >= 650;
         } else if (inp.clientHeight < 100) {
           bt.style.height = "265px";
           drag.style.bottom = "265px";
           tp.style.height = "calc(100% - " + 265 + "px)";
           inp.style.height = "100px";
-           document.onmousemove = null;
-        }     
+          document.onmousemove = null;
+        }
       };
     },
     // 拖拽结束
@@ -419,7 +430,7 @@ export default {
       // };
       document.onmousedown = null;
       document.onmousemove = null;
-      console.log("drag-over")
+      console.log("drag-over");
     },
 
     // 粘贴去格式
@@ -575,7 +586,7 @@ export default {
 }
 .chatbody {
   /* padding: 0 0 334px 0 ; 方案二 */
-  box-sizing: border-box ; 
+  box-sizing: border-box;
   font-family: 微软雅黑, serif;
   /* height: calc(100%-81px); */
   height: 100%;
@@ -587,11 +598,11 @@ export default {
 /* 消息框 */
 .chatbody .msg {
   background-color: #f3f3f3;
-   /* height: 100%;方案二 */
+  /* height: 100%;方案二 */
   /* height: 716px; */
   /* height: calc(100% -334px) ; */
- height: 60vh;
- /* bottom: 334px; */
+  height: 60vh;
+  /* bottom: 334px; */
   width: 100%;
   overflow: hidden;
 }
@@ -628,19 +639,7 @@ export default {
   font-size: 15px;
   border-radius: 2px;
 }
-/* 对话框小三角 */
-.chatbody .msg ul li .content .other-img::after {
-  content: "";
-  position: absolute;
-  left: 50px;
-  top: 8px;
-  width: 0;
-  height: 0;
-  border: 8px solid rgb(255, 255, 255);
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-}
+
 .chatbody .msg ul li .content .me-img {
   position: absolute;
   right: 0;
@@ -667,6 +666,7 @@ export default {
   border-radius: 2px;
   /* padding: 0px 0px 5px 0px; */
   background-color: #9bccff;
+  cursor: pointer;
 }
 .chatbody .msg ul li .content .mevoice::after {
   content: "";
@@ -676,14 +676,14 @@ export default {
   width: 0;
   height: 0;
 }
-.chatbody .msg ul li .content .mevoice p{
+.chatbody .msg ul li .content .mevoice p {
   float: left;
   transform: translateX(-25px);
   color: #7e7e7e;
   font-size: 17px;
   margin: 0;
 }
-.chatbody .msg ul li .content .mevoice i{
+.chatbody .msg ul li .content .mevoice i {
   float: right;
   margin-right: 5px;
   font-size: 30px;
@@ -694,14 +694,14 @@ export default {
   /* padding: 15px 10px 20px 10px; */
   float: left;
   max-width: 50%;
-   width: 80px;
+  width: 80px;
   line-height: 55px;
   height: 55px;
   margin-left: 15px;
   background-color: #fff;
   font-size: 15px;
   border-radius: 2px;
-
+  cursor: pointer;
 }
 .chatbody .msg ul li .content .othervoice::after {
   content: "";
@@ -711,15 +711,15 @@ export default {
   width: 0;
   height: 0;
 }
-.chatbody .msg ul li .content .othervoice p{
+.chatbody .msg ul li .content .othervoice p {
   float: right;
   transform: translateX(35px);
   color: #7e7e7e;
   font-size: 17px;
   margin: 0;
 }
-.chatbody .msg ul li .content .othervoice i{
-  float:left;
+.chatbody .msg ul li .content .othervoice i {
+  float: left;
   margin-left: 5px;
   font-size: 30px;
   /* transform: rotate(180deg); */
@@ -736,11 +736,12 @@ export default {
   border-radius: 2px;
   /* padding: 15px 10px 20px 10px; */
   background-color: #ffffff;
+  cursor: pointer;
 }
 .chatbody .msg ul li .content .mefile::after {
   content: "";
   position: absolute;
-  right: 50px;
+  right: 49px;
   top: 8px;
   width: 0;
   height: 0;
@@ -750,20 +751,20 @@ export default {
   border-right-color: transparent;
   border-bottom-color: transparent;
 }
-.chatbody .msg ul li .content .mefile i{
+.chatbody .msg ul li .content .mefile i {
   float: right;
   margin: 15px;
   font-size: 40px;
 }
-.chatbody .msg ul li .content .mefile .mefilename{
+.chatbody .msg ul li .content .mefile .mefilename {
   margin: 15px 10px 5px;
   font-size: 13px;
   font-weight: 800;
-     overflow: hidden;    
-    text-overflow:ellipsis;    
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.chatbody .msg ul li .content .mefile .mefilesize{
+.chatbody .msg ul li .content .mefile .mefilesize {
   margin: 10px;
   font-size: 12px;
   color: #7e7e7e;
@@ -780,36 +781,136 @@ export default {
   border-radius: 2px;
   /* padding: 15px 10px 20px 10px; */
   background-color: #ffffff;
+  cursor: pointer;
 }
-.chatbody .msg ul li .content .otherfile i{
+.chatbody .msg ul li .content .otherfile i {
   float: right;
   margin: 15px;
   font-size: 40px;
 }
-.chatbody .msg ul li .content .otherfile .otherfilename{
+.chatbody .msg ul li .content .otherfile .otherfilename {
   margin: 15px 10px 5px;
   font-size: 13px;
   font-weight: 800;
-   overflow: hidden;    
-    text-overflow:ellipsis;    
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.chatbody .msg ul li .content .otherfile .otherfilesize{
+.chatbody .msg ul li .content .otherfile .otherfilesize {
   margin: 10px;
   font-size: 12px;
   color: #7e7e7e;
 }
-/* 对话框小三角 */
+/* me图片内容 */
+.chatbody .msg ul li .content .meimg {
+  max-width: 50%;
+  float: right;
+  margin-right: 65px;
+  /* height: 180px; */
+  width: 250px;
+}
+.chatbody .msg ul li .content .meimg img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  float: right;
+}
+.chatbody .msg ul li .content .meimg .imgbox {
+  position: relative;
+  float: right;
+}
+.chatbody .msg ul li .content .meimg i {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  color: #fff;
+  font-size: 40px;
+}
+.chatbody .msg ul li .content .meimg::after {
+  content: "";
+  position: absolute;
+  right: 49px;
+  top: 8px;
+  width: 0;
+  height: 0;
+  z-index: 5;
+  border: 8px solid #f3f3f3;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+.chatbody .msg ul li .content .otherimg {
+  /* position: relative; */
+  max-width: 50%;
+  float: left;
+  margin-left: 15px;
+  /* height: 180px; */
+  width: 250px;
+}
+.chatbody .msg ul li .content .otherimg .imgbox {
+  position: relative;
+  float: left;
+}
+.chatbody .msg ul li .content .otherimg i {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  color: #fff;
+  font-size: 40px;
+}
+.chatbody .msg ul li .content .otherimg img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  float: left;
+}
+.chatbody .msg ul li .content .otherimg::after {
+  content: "";
+  position: absolute;
+  left: 49px;
+  top: 8px;
+  width: 0;
+  height: 0;
+  border: 8px solid #f3f3f3;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+
+/* me对话框小三角 */
 .chatbody .msg ul li .content .me-img::after {
   content: "";
   position: absolute;
-  right: 50px;
+  right: 49px;
   top: 8px;
   width: 0;
   height: 0;
   border: 8px solid #9bccff;
   border-top-color: transparent;
   border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+/* other对话框小三角 */
+.chatbody .msg ul li .content .other-img::after {
+  content: "";
+  position: absolute;
+  left: 49px;
+  top: 8px;
+  width: 0;
+  height: 0;
+  border: 8px solid rgb(255, 255, 255);
+  border-top-color: transparent;
+  border-left-color: transparent;
   border-bottom-color: transparent;
 }
 /*拖拽条 */
@@ -831,6 +932,8 @@ export default {
   bottom: 1px;
   position: absolute;
   background-color: #f3f3f3;
+  -webkit-user-select:none;
+  user-select:none;
 }
 .chatbody .send .tool-bar {
   height: 50px;
@@ -843,10 +946,10 @@ export default {
   font-size: large;
   color: #666;
 }
-.icon-IPbohao{
+.icon-IPbohao {
   float: right;
 }
-.icon-shipintonghua{
+.icon-shipintonghua {
   float: right;
   margin-right: 15px;
 }
@@ -919,7 +1022,7 @@ export default {
   padding: 0px 17px 7px 17px;
   background-color: #f3f3f3;
   /* height: 160px; */
-   height: 21.5vh;
+  height: 21.5vh;
   overflow-y: auto;
   width: 100%;
   word-wrap: break-word;
@@ -930,7 +1033,7 @@ export default {
 }
 #input:hover {
   overflow-y: overlay;
-} 
+}
 /* 文件 */
 .chatbody #input .file {
   cursor: default;

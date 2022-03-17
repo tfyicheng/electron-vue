@@ -20,12 +20,14 @@
           icon="el-icon-search"
           style="float: right"
           v-model="input"
+          
           >搜索</el-button
         >
         <el-input
           v-model="input"
           placeholder="关键词"
           style="float: right"
+          clearable
         ></el-input>
       </div>
       <!-- 表格内容 -->

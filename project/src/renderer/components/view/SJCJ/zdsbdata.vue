@@ -7,7 +7,7 @@
          <el-button type="warning" icon="el-icon-upload">导出</el-button>
          <el-button type="danger" icon="el-icon-delete">删除</el-button>
                   <el-button type="primary" icon="el-icon-search"style="float:right">搜索</el-button>
-         <el-input v-model="input" placeholder="关键词"style="float:right"></el-input>
+         <el-input v-model="input" placeholder="关键词"style="float:right" clearable></el-input>
 
       </div>
       <!-- 主体表格 -->
@@ -21,7 +21,7 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column>
-          <el-table-column label="编号" width="100"prop="number">
+          <el-table-column label="编号" width="90"prop="number">
             <template slot-scope="scope">{{ scope.row.number }}</template>
           </el-table-column>
           <el-table-column prop="name" label="任务名称" width="100">

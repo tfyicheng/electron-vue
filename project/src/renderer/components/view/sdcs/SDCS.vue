@@ -133,6 +133,22 @@ export default {
               },
               time: new Date().getTime(),
               type: "file",
+            },{
+              isMe: true,
+              content: {
+                // imgsrc:require("../../../assets/tx.png"),
+                imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
+              },
+              time: new Date().getTime(),
+              type: "img",
+            },{
+              isMe: false,
+              content: {
+                imgsrc:"https://picsum.photos/400/500?random=1",
+                // imgsrc:require("../../../assets/tx.png"),
+              },
+              time: new Date().getTime(),
+              type: "img",
             },
           ],
           groupId: 2,
