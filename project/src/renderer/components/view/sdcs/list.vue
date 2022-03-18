@@ -115,7 +115,10 @@ p {
   color: black;
   margin: 1px 0;
   font-size: 15px;
-  width: 290px;
+  width: 200px;
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .time {
   position: absolute;
@@ -134,5 +137,6 @@ p {
 .ctip {
     margin-top: 7px;
     font-size: 12px;
+    width:290px;
 }
 </style>

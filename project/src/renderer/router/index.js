@@ -44,7 +44,7 @@ const router = new Router({
         {
           path: '/txl',
           name: 'TXL',
-          component: require('@/components/view/TXL').default
+          component: require('@/components/view/TXL/txl').default
         }, {
           path: '/sjcj',
           name: 'SJCJ',

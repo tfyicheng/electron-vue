@@ -41,7 +41,7 @@ window.addEventListener("contextmenu", function (e) {
   //   console.log(e)
 });
 import chat from "./chat.vue";
-import grouptop from "./grouptop.vue";
+import grouptop from "../../../../common/grouptop.vue";
 import list from "./list.vue";
 import draft from "../../../../common/draft";
 export default {
@@ -156,11 +156,13 @@ export default {
         },
         {
           img: require("../../../assets/tx.png"),
-          name: "王力宏",
+          name: "工作群9999999999999999999999999999999",
           type: "group",
           msgs: [
             {
               isMe: false,
+              name:"王力宏",
+              head:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F",
               content: "今天是部门培训会议，你什么时候过来吖",
               time: new Date().getTime(),
               type: "text",
@@ -173,10 +175,37 @@ export default {
             },
             {
               isMe: false,
+               name:"陈一发",
               content:
                 "今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖",
               time: new Date().getTime(),
               type: "text",
+            },
+            {
+              isMe: false,
+               name:"陈二发",
+              content: 10 + '"',
+              time: new Date().getTime(),
+              type: "voice",
+            },
+            {
+              isMe: false,
+               name:"火红的萨日朗",
+              content: {
+                fileName: "开会资料.pdf",
+                fileSize: "2MB",
+              },
+              time: new Date().getTime(),
+              type: "file",
+            },{
+              isMe: false,
+                name:"萨日朗",
+              content: {
+                // imgsrc:require("../../../assets/tx.png"),
+                imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
+              },
+              time: new Date().getTime(),
+              type: "img",
             },
           ],
           groupId: 3,
@@ -184,7 +213,7 @@ export default {
         },
         {
           img: require("../../../assets/tx.png"),
-          name: "王力宏",
+          name: "王力宏99999999999999999999999999999999999999999999",
           type: "group",
           msgs: [
             {
@@ -212,7 +241,7 @@ export default {
         },
         {
           img: require("../../../assets/tx.png"),
-          name: "王力宏",
+          name: "王力宏今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖",
           type: "group",
           msgs: [
             {
@@ -377,10 +406,24 @@ export default {
           ],
           groupId: 10,
           unRead: 5,
+        }, {
+          img: require("../../../assets/tx.png"),
+          name: "王力宏55",
+     
+          msgs: [
+            {
+              isMe: false,
+              content: "今天是部门培训会议，你什么时候过来吖6666",
+              time: new Date().getTime(),
+              type: "text",
+            }
+          ],
+          groupId: 90,
+          unRead: 5,
         },
         {
           img: require("../../../assets/tx.png"),
-          name: "周铁轮",
+          name: "周铁轮((((((((((((((((((((((((((((((((((((((((((((9999999999999999999",
           msgs: [
             {
               isMe: false,
@@ -523,7 +566,8 @@ export default {
     sel.removeAllRanges();
     sel.addRange(range);
 },
-result(e){
+    //打开搜索面板
+    result(e){
       this.search=e
       console.log("66"+e)
     }

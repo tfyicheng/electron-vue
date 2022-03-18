@@ -1,17 +1,18 @@
 <template>
  <div>
-     通讯录
+     <div>666</div>
+      <div class="chattop">{{chat.name}}</div>
  </div>
 </template>
 
 <script>
 
  export default {
-  name:'TXL',
-  props:[''],
+  name:'',
+   props: ["chat"],
   data () {
    return {
-
+      
    };
   },
 
@@ -20,7 +21,9 @@
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+
+  },
 
   methods: {},
 

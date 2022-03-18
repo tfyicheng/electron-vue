@@ -50,8 +50,10 @@
             <!-- 对方消息 -->
             <div v-else class="content">
               <div class="other-img">
-                <img :src="chat.img" width="50" height="50" />
+                <img v-if="!c.name" :src="chat.img" width="50" height="50" />
+                <img v-else :src="c.head" width="50" height="50" />
               </div>
+              <div v-show="c.name" class="membername">{{c.name}}</div>
               <div
                 v-if="c.type == 'text'"
                 class="other"
@@ -580,9 +582,12 @@ export default {
   font-size: 24px;
   font-weight: bold;
   background-color: #f3f3f3;
-  width: 100%;
+  width: 40vw;
   padding-left: 30px;
   border-bottom: 1px solid #ddd;
+    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .chatbody {
   /* padding: 0 0 334px 0 ; 方案二 */
@@ -688,6 +693,25 @@ export default {
   margin-right: 5px;
   font-size: 30px;
   transform: rotate(180deg);
+}
+/* others群聊名字 */
+.chatbody .msg ul li .content .membername {
+  display: block;
+  color: #a3a3a3;
+   margin: 3px 0 4px 65px;
+   font-size: 13px;
+}
+.chatbody .msg ul li .content .membername::after {
+  content: "";
+  position: absolute;
+  left: 49px;
+  top: 8px;
+  width: 0;
+  height: 0;
+  border: 8px solid #f3f3f3;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
 }
 /* others语音内容 */
 .chatbody .msg ul li .content .othervoice {
@@ -830,6 +854,7 @@ export default {
   cursor: pointer;
   color: #fff;
   font-size: 40px;
+  opacity: 0.8;
 }
 .chatbody .msg ul li .content .meimg::after {
   content: "";
@@ -866,6 +891,7 @@ export default {
   cursor: pointer;
   color: #fff;
   font-size: 40px;
+  opacity: 0.8;
 }
 .chatbody .msg ul li .content .otherimg img {
   width: auto;
