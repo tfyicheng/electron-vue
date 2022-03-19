@@ -584,13 +584,13 @@ export default {
   background-color: #f3f3f3;
   width: 40vw;
   padding-left: 30px;
-  border-bottom: 1px solid #ddd;
     overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .chatbody {
   /* padding: 0 0 334px 0 ; 方案二 */
+  border-top: 1px solid #ddd;
   box-sizing: border-box;
   font-family: 微软雅黑, serif;
   /* height: calc(100%-81px); */

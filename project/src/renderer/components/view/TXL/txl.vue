@@ -16,7 +16,7 @@
     
   </el-collapse-item> -->
         <!-- </el-collapse> -->
-    <!-- 用户 -->
+        <!-- 用户 -->
         <div>
           <p>用户</p>
           <!-- -->
@@ -25,12 +25,12 @@
               v-for="g in me"
               @click="selects(g)"
               :style="
-                select !== null && g.groupId === select.groupId
+                select !== null && g.Id === select.Id
                   ? 'background-color: #eee;'
                   : ''
               "
             >
-              <div class="groupul" @contextmenu="menu(1, g.groupId)">
+              <div class="groupul" @contextmenu="menu(1, g.Id)">
                 <!-- 头像 -->
                 <div class="img">
                   <img :src="g.img" width="48" height="48" />
@@ -51,12 +51,12 @@
               v-for="g in groups"
               @click="selects(g)"
               :style="
-                select !== null && g.groupId === select.groupId
+                select !== null && g.Id === select.Id
                   ? 'background-color: #eee;'
                   : ''
               "
             >
-              <div class="groupul" @contextmenu="menu(1, g.groupId)">
+              <div class="groupul" @contextmenu="menu(1, g.Id)">
                 <!-- 头像 -->
                 <div class="img">
                   <img :src="g.img" width="48" height="48" />
@@ -77,12 +77,12 @@
               v-for="g in users"
               @click="selects(g)"
               :style="
-                select !== null && g.userId === select.userId
+                select !== null && g.Id === select.Id
                   ? 'background-color: #eee;'
                   : ''
               "
             >
-              <div class="groupul" @contextmenu="menu(1, g.userId)">
+              <div class="groupul" @contextmenu="menu(1, g.Id)">
                 <!-- 头像 -->
                 <div class="img">
                   <img :src="g.img" width="48" height="48" />
@@ -102,14 +102,15 @@
     <!-- 会话窗口 -->
     <div class="content">
       <!-- 删除功能以v-show判断id隐藏 -->
-      <!-- <chat :chat="select" @send="send" v-show="hidden"v-show="hidden"></chat> -->
-      <details :chat="select"></details>
+
+      <detail :detail="select" @send="send"></detail>
+
+      <!-- 方案二 -->
       <!-- <el-card class="box-card">
         <img :src="select.img" width="48" height="48" />
         <div class="chattop">{{ select.name }}</div>
       </el-card> -->
     </div>
-    <!-- <chat class="chat"></chat> -->
   </div>
 </template>
 
@@ -121,11 +122,11 @@ window.addEventListener("contextmenu", function (e) {
 });
 // 导入右键菜单
 import menu from "../../../../common/rightClick";
-import details from "./details.vue";
+import detail from "./detail.vue";
 import grouptop from "../../../../common/grouptop.vue";
 import draft from "../../../../common/draft";
 export default {
-  components: { grouptop, details },
+  components: { grouptop, detail },
   data() {
     return {
       search: 1,
@@ -136,103 +137,93 @@ export default {
         {
           img: require("../../../assets/tx.png"),
           name: "Admin",
-          groupId: 0,
+          Id: 0,
         },
       ],
       groups: [
         {
           img: require("../../../assets/tx.png"),
           name: "王力宏",
-          groupId: 1,
+          Id: 1,
+          number: 4,
+          member: [
+            {
+              img: require("../../../assets/tx.png"),
+              name: "王力宏1王力宏王力宏王力宏王力宏王力宏王力宏王力宏",
+              groupId: 1,
+            },
+            {
+              img: require("../../../assets/tx.png"),
+              name: "王力宏2",
+              groupId: 1,
+            },
+            {
+              img: require("../../../assets/tx.png"),
+              name: "王力宏2",
+              groupId: 1,
+            },
+          ],
         },
         {
           img: require("../../../assets/tx.png"),
           name: "陈2️⃣发",
-          groupId: 2,
+          Id: 2,
+          number: 8,
         },
         {
           img: require("../../../assets/tx.png"),
           name: "陈3️⃣发富强民主和平自由公正法治",
-          groupId: 3,
+          Id: 3,
+          number: 9,
         },
         {
           img: require("../../../assets/tx.png"),
           name: "陈絲发",
-          groupId: 4,
+          Id: 4,
+          number: 4,
         },
       ],
       users: [
         {
           img: require("../../../assets/tx.png"),
           name: "999999999999999999999999999999999999999",
-          userId: 5,
+          Id: 5,
         },
         {
           img: require("../../../assets/tx.png"),
           name: "陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发",
-          userId: 6,
+          Id: 6,
         },
         {
           img: require("../../../assets/tx.png"),
           name: "陈一发",
-          userId: 7,
+          Id: 7,
         },
         {
           img: require("../../../assets/tx.png"),
           name: "陈一发",
-          userId: 8,
+          Id: 8,
         },
       ],
     };
   },
   mounted() {
-    //    this.selects(this.select)
-    this.selects(1);
+    //   默认界面
+    this.selects(me);
   },
   beforeDestroy() {
     //  this.select=s
   },
   methods: {
-    send(content, groupId) {
-      this.groups.forEach((group) => {
-        if (group.groupId === groupId) {
-          group.msgs.push(content);
-        }
-      });
+    // 接收子组件参数  跳转到会话
+    send(id) {
+      this.$router.push({ path: "/sdcs", query: { id } });
     },
-    // 选择联系人
-    // selects(s) {
-    //   console.log("2");
-
-    //   (this.select = s), (this.hidden = s.groupId);
-    //   // this.$store.commit('setSelectSession', s) 暂时报错
-    //   const inp = document.getElementById("input");
-    //   this.$forceUpdate();
-    //   //自动滚动到底部
-    //   setTimeout(() => {
-    //     document.getElementById("msg").scrollTop =
-    //       document.getElementById("msg").scrollHeight;
-    //   }, 100);
-    //   draft(s.groupId, this.endselectId);
-    //   this.endselectId = this.select.groupId;
-    //   this.setFocus(inp);
-    // },
     selects(s) {
       //   console.log(s);
 
-      (this.select = s), (this.hidden = s.groupId);
+      (this.select = s), (this.hidden = s.Id);
       console.log(this.select);
-      // this.$store.commit('setSelectSession', s) 暂时报错
-      //   const inp = document.getElementById("input");
-      //   this.$forceUpdate();
-      //自动滚动到底部
-      //   setTimeout(() => {
-      //     document.getElementById("msg").scrollTop =
-      //       document.getElementById("msg").scrollHeight;
-      //   }, 100);
-      //   draft(s.groupId, this.endselectId);
-      //   this.endselectId = this.select.groupId;
-      //   this.setFocus(inp);
     },
     // 右键删除
     del(e) {
@@ -248,19 +239,9 @@ export default {
         this.hidden = 0;
       }
     },
-    // 设置光标在文本最后
-    setFocus(el) {
-      el.focus();
-      var range = document.createRange();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      var sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-    },
+    // 搜索面板
     result(e) {
       this.search = e;
-      console.log("66" + e);
     },
     menu,
   },

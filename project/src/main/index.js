@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow, tray = null, trayIcon = null
-const winURL = process.env.NODE_ENV === 'development'
+const winURL = process.env.NODE_ENV === 'development' 
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
@@ -19,7 +19,7 @@ const winURL = process.env.NODE_ENV === 'development'
 function createWindow() {
   /** 
    * Initial window options
-   */      
+   */         
   mainWindow = new BrowserWindow({
     height: 372,
     useContentSize: true,

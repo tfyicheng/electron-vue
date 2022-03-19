@@ -28,7 +28,7 @@
     <!-- 会话窗口 -->
     <div class="content">
       <!-- 删除功能以v-show判断id隐藏 -->
-      <chat :chat="select" @send="send" v-show="hidden"></chat>
+      <chat :chat="select" @send="tochat" v-show="hidden"></chat>
     </div>
     <!-- <chat class="chat"></chat> -->
   </div>
@@ -509,15 +509,28 @@ export default {
       ],
     };
   },
+  beforeMount(){
+ 
+  },
   mounted() {
+     this.tochat();
     //    this.selects(this.select)
-    this.selects(1);
+    // this.selects(2);
     
   },
   beforeDestroy() {
     //  this.select=s
   },
   methods: {
+    // 跳转到聊天
+    tochat(){
+      // console.log( this.$route.query.id)
+       this.select = this.groups.find((item)=>{
+		          return item.groupId == this.$route.query.id;
+		      });
+     
+    },
+    
     send(content, groupId) {
       this.groups.forEach((group) => {
         if (group.groupId === groupId) {
