@@ -28,7 +28,7 @@
     <!-- 会话窗口 -->
     <div class="content">
       <!-- 删除功能以v-show判断id隐藏 -->
-      <chat :chat="select" @send="tochat" v-show="hidden"></chat>
+      <chat :chat="select" @send="send" v-show="hidden"></chat>
     </div>
     <!-- <chat class="chat"></chat> -->
   </div>
@@ -513,13 +513,20 @@ export default {
  
   },
   mounted() {
-     this.tochat();
+    //  this.tochat();
     //    this.selects(this.select)
     // this.selects(2);
     
   },
   beforeDestroy() {
     //  this.select=s
+  },
+
+//挂载后和更新前被调用的。但如果该组件中没有使用缓存，也就是没被<keep-alive>包裹，activated不起作用
+  activated(){
+      this.$nextTick(()=>{
+          this.tochat();
+      })
   },
   methods: {
     // 跳转到聊天

@@ -1,22 +1,25 @@
 <template>
   <div class="bar" onselectstart="return false;" >
+    <!-- 头像 -->
     <img src="../../assets/tx.png" width="60" height="60" />
+    <!-- 菜单 -->
     <div style="margin-top: 20px">
-      <div class="item" v-for="(m, index) in menus">
+      <div class="item" v-for="m in menus">
         <el-badge :value="m.value" :hidden="m.value === 0">
           <i
             :class="m.icon"
             @click="
               to(m.path);
-              now = index;
+              now = m.index;
             "
-            :style="now === index ? 'color: rgb(77, 159, 255)' : ''"
+            :style="now === m.index ? 'color: rgb(77, 159, 255)' : ''"
           >
             <span>{{ m.name }}</span></i
           >
         </el-badge>
       </div>
     </div>
+    <!-- 设置 -->
     <div class="option">
       <div
         id="op"
@@ -35,6 +38,7 @@
         </div>
       </div>
     </div>
+    <!-- 退出弹窗 -->
     <el-dialog
       title="退出登录"
       :visible.sync="logoutDialog"
@@ -59,44 +63,50 @@ export default {
   name: "leftbar",
   data() {
     return {
-      now: 1,//默认页面
+      now: 2,//默认页面
       logoutDialog: false,
       menus: [
         {
           icon: "iconfont icon-xinicon_huabanfuben",
           path: "zdcs",
-          value: 0,
+          value: 0, //角标
           name: "自动测试",
+          index:1,
         },
         {
           icon: "iconfont icon-ceshi",
           path: "sdcs",
           value: 0,
           name: "手动测试",
+           index:2,
         },
         {
           icon: "iconfont icon-tongxunlu",
           path: "txl",
           value: 0,
           name: "通讯录",
+           index:3,
         },
         {
           icon: "iconfont icon-dingwei",
           path: "zdsb",
           value: 0,
           name: "终端设备",
+           index:4,
         },
         {
           icon: "iconfont icon-icon_shujucaiji",
           path: "sjcj",
           value: 0,
           name: "数据采集",
+           index:5,
         },
         {
           icon: "iconfont icon-yupanpinggu",
           path: "xnpg",
           value: 0,
           name: "效能评估",
+           index:6,
         }
       ],
     };
@@ -120,7 +130,7 @@ export default {
         opl.style.display = "none";
       };
     },
-
+    //跳转路由
     to(path) {
       if (path !== null && path !== undefined) {
         // console.log("=> /main/" + path);
@@ -128,6 +138,7 @@ export default {
         this.$router.push(path);
       }
     },
+    //退出登陆
     logout() {
       ipcRenderer.send("login-window");
         ipcRenderer.send("dialogclose");
@@ -139,11 +150,18 @@ export default {
     
     mainWindow.on('closed', () => {
       mainWindow = null
-      })
-   
-    
+      }) 
     },
  
+ },
+ watch:{
+   //监听路由地址
+   $route(to,from){
+    if(to.path=='/sdcs'){
+        this.now=2
+      
+    }
+  }
  },
 };
 </script>
@@ -204,6 +222,11 @@ li {
 
 li:hover {
   background-color: #2f529c;
+}
+.bar  >>> .el-badge .el-badge__content {
+  top:15px;
+  right: 35px;
+  border: 0;
 }
 </style>
 <style>

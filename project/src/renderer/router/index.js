@@ -34,6 +34,9 @@ const router = new Router({
         {
           path: '/sdcs',
           name: 'SDCS',
+          meta: {
+            keepAlive: true, //添加这个作为标志符，表明该页面需要保留状态
+          },
           component: require('@/components/view/SDCS/SDCS').default,
         },
         {
@@ -44,6 +47,9 @@ const router = new Router({
         {
           path: '/txl',
           name: 'TXL',
+          meta: {
+            keepAlive: true, 
+          },
           component: require('@/components/view/TXL/txl').default
         }, {
           path: '/sjcj',

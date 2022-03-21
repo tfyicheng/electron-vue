@@ -16,7 +16,10 @@
     <!-- 方案三：固定主体的top栏，绝对定位透明  -->
 
     <!-- 右侧主体内容 -->
-    <router-view style="margin-left: 100px;" />
+     <keep-alive>
+       <router-view style="margin-left: 100px;" v-if="$route.meta.keepAlive"/>
+    </keep-alive>
+         <router-view style="margin-left: 100px;" v-if="!$route.meta.keepAlive"/>
   </div>
 </template>
 
@@ -34,7 +37,7 @@ export default {
   name: "main",
   components: { leftbar, SDCS, top,topmenu },
   methods: {
-      
+    //  功能小窗 
   dialogCenter(){
        const childURL =
         process.env.NODE_ENV === "development"
