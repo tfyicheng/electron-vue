@@ -29,13 +29,13 @@ const BrowserWindow = remote.BrowserWindow;
 import leftbar from "./leftbar.vue";
 import top from "./top.vue";
 import topmenu from "./topmenu.vue";
-import SDCS from "../view/SDCS/SDCS.vue";
+// import SDCS from "../view/SDCS/sdcs.vue";SDCS,
 const path = require("path");
  var childWindow2 = null;
 export default {
  
   name: "main",
-  components: { leftbar, SDCS, top,topmenu },
+  components: { leftbar,  top,topmenu },
   methods: {
     //  功能小窗 
   dialogCenter(){
@@ -109,14 +109,23 @@ export default {
  remote.getCurrentWindow().setMinimumSize(1130, 870);//设置最小宽高
 
   this.dialogCenter();
+
+//禁止页面缩放
+// document.addEventListener('mousewheel', (ev) => {
+// if(ev.ctrlKey){
+// ev.preventDefault();
+// return false;
+// }
+// });
+
   },
   beforeDestroy(){
   
     childWindow2 = null;
-      this.$message({
-        message: "已关闭子窗口",
-        center: true,
-      });
+      // this.$message({
+      //   message: "已关闭子窗口",
+      //   center: true,
+      // });
   }
 };
 </script >

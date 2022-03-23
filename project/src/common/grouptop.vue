@@ -33,7 +33,7 @@ export default {
   methods: {
     // 点击事件  展示搜索层
     search() {
-      console.log("11");
+      // console.log("11");
       this.$emit("showResult", 0); //自定义事件  传递值“子向父组件传值” 
       let cal = document.getElementById("cancel");
       cal.style.display = "block";
@@ -48,7 +48,6 @@ export default {
     },
     // 搜索内容变化时触发
     result(e) {
-      console.log("22");
       console.log(e);
     },
   },

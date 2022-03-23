@@ -43,19 +43,17 @@ export default {
     //     remote.getCurrentWindow().setSize(1440, 1024);
     //     remote.getCurrentWindow().center();
     //    在挂载之前调用事件监听
-
   },
 
   beforeMount() {
-      this.call();
-
+    this.call();
   },
 
   mounted() {
-        remote.ipcMain.on("yydata", (event, arg,arg2) => {
-       console.log(arg)
-      console.log(arg2)
-      this.call(arg2)
+    remote.ipcMain.on("yydata", (event, arg, arg2) => {
+      console.log(arg);
+      console.log(arg2);
+      this.call(arg2);
       // this.name = arg.name;
       // this.img = arg.img;
       // console.log(arg.name);
@@ -63,15 +61,13 @@ export default {
       // console.log(this.$route.query.type);
     });
 
-          remote.ipcMain.on("dialogclose", (event) => {
-            console.log("close")
+    remote.ipcMain.on("dialogclose", (event) => {
+      console.log("close");
       remote.getCurrentWindow().close();
     });
   },
 
-beforeUpdate(){
-
-},
+  beforeUpdate() {},
 
   methods: {
     // call() {
@@ -89,28 +85,26 @@ beforeUpdate(){
     //   }
     // },
 
-      call(arg2) {
-            // console.log("886" + this.$route.query.type);
+    call(arg2) {
+      // console.log("886" + this.$route.query.type);
 
-            switch (arg2) {
-              case 1:
-                this.$router.push("/yyth");
-                remote.getCurrentWindow().show();
-                break;
-              case 2:
-                this.$router.push("/spth");
-                remote.getCurrentWindow().show();
-                break;
-                 case 3:
-                this.$router.push("/yyfs");
-                remote.getCurrentWindow().show();
-                break;
-              default:
-                break;
-            }
-          },
-
-
+      switch (arg2) {
+        case 1:
+          this.$router.push("/yyth");
+          remote.getCurrentWindow().show();
+          break;
+        case 2:
+          this.$router.push("/spth");
+          remote.getCurrentWindow().show();
+          break;
+        case 3:
+          this.$router.push("/yyfs");
+          remote.getCurrentWindow().show();
+          break;
+        default:
+          break;
+      }
+    },
 
     handleMin() {
       remote.getCurrentWindow().minimize();
@@ -226,7 +220,6 @@ img {
   border-radius: 50%;
   text-align: center;
   cursor: pointer;
-
 
   line-height: 40px;
 }

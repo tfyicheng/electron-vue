@@ -135,8 +135,22 @@ export default {
       if (path !== null && path !== undefined) {
         // console.log("=> /main/" + path);
         // this.$store.commit('setSelectSession', null)
-        this.$router.push(path);
+        // this.$router.push(path);
+        let id = this.keepdate(path)
+        this.$router.push({ path, query: { id } });
       }
+
+    },
+    //保留页面数据
+    keepdate(path){
+      switch(path){
+     case 'sdcs':
+      return this.$store.state.Counter.id;
+       break;
+     default:  
+     return 555;     
+       break;
+   }
     },
     //退出登陆
     logout() {
@@ -183,6 +197,7 @@ export default {
   margin-top: 13px;
   font-size: 35px;
   color: #fff;
+    cursor: pointer;
 }
 .iconfont > span {
   display: block;

@@ -1,5 +1,6 @@
 const state = {
-  main: 0
+  main: 0,
+  id:null,
 }
 
 const mutations = {
@@ -8,7 +9,11 @@ const mutations = {
   },
   INCREMENT_MAIN_COUNTER (state) {
     state.main++
-  }
+  },
+  //保留跳转id
+  saveId(state,id) {
+    state.id = id
+  },
 }
 
 const actions = {

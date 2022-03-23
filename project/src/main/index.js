@@ -1,23 +1,23 @@
 import { app, BrowserWindow, Tray, Menu, ipcMain } from 'electron'
-import path from 'path'
+import path from 'path'  
 import '../renderer/store'
 
-/**
+/**        
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
- */   
+ */    
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
-
+ 
 let mainWindow, tray = null, trayIcon = null
-const winURL = process.env.NODE_ENV === 'development'  
+const winURL = process.env.NODE_ENV === 'development'   
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
 
 function createWindow() {
-  /** 
+  /**  
    * Initial window options
    */         
   mainWindow = new BrowserWindow({
@@ -28,13 +28,13 @@ function createWindow() {
     // resizable: false,   
     show: false
   })
-
+  
   mainWindow.loadURL(winURL)
   //屏蔽窗口菜单（-webkit-app-region:drag）
   mainWindow.hookWindowMessage(278, function (e) { 
   mainWindow.setEnabled(false)
   setTimeout(()=> {mainWindow.setEnabled(true)
-  }, 100)
+  }, 100) 
  return true 
   })
 mainWindow.on('ready-to-show', () => {
@@ -43,7 +43,10 @@ mainWindow.on('ready-to-show', () => {
 mainWindow.on('closed', () => {
   mainWindow = null
 })
-createTray()// 创建图标托盘
+
+
+
+createTray()// 创建图标托盘  
 }
 
 
@@ -63,8 +66,10 @@ app.on('activate', () => {
 })
       
 const createTray = () => {
-  trayIcon = path.join(__dirname, './');
+  // trayIcon = path.join(__dirname, './');
+  trayIcon = path.join(__static, './');
   tray = new Tray(path.join(trayIcon, 'zd.png'));
+  // tray = new Tray(path.join(__static,'./zd.png'))
   const contextMenu = Menu.buildFromTemplate([
     {
       label: '忽略', click: function () {

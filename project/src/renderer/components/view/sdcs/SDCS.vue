@@ -6,6 +6,8 @@
     <div class="group">
       <!-- 列表搜索栏 -->
       <grouptop @showResult="result"></grouptop>
+     
+       <!-- 联系人列表    onselectstart="return false;"不能选中取消全选-->    
       <div v-if="search" class="gul" onselectstart="return false;">
         <ul>
           <li
@@ -21,12 +23,14 @@
           </li>
         </ul>
       </div>
-      <div v-else class="gsearch">
-          
-      </div>
+       <!-- 搜索面板 -->
+       <div v-else class="gsearch"></div> 
+        <!--搜索面板 方案二 -->
+        <!-- <div v-show="!search" style="display:none;" class="gsearch2"></div>    -->
     </div>
+
     <!-- 会话窗口 -->
-    <div class="content">
+    <div v-show="select.groupId" class="content">
       <!-- 删除功能以v-show判断id隐藏 -->
       <chat :chat="select" @send="send" v-show="hidden"></chat>
     </div>
@@ -43,13 +47,13 @@ window.addEventListener("contextmenu", function (e) {
 import chat from "./chat.vue";
 import grouptop from "../../../../common/grouptop.vue";
 import list from "./list.vue";
-import draft from "../../../../common/draft";
+import draft from "../../../../common/draft";//草稿箱功能
 export default {
   components: { grouptop, chat, list },
   data() {
     return {
       search:1,
-      select: null,
+      select:{ groupId:null},
       endselectId:null,
       hidden: 1,
       haha: require("../../../assets/tx.png"),
@@ -136,16 +140,16 @@ export default {
             },{
               isMe: true,
               content: {
-                // imgsrc:require("../../../assets/tx.png"),
-                imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
+                imgsrc:require("../../../assets/tx.png"),
+                // imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
               },
               time: new Date().getTime(),
               type: "img",
             },{
               isMe: false,
               content: {
-                imgsrc:"https://picsum.photos/400/500?random=1",
-                // imgsrc:require("../../../assets/tx.png"),
+                // imgsrc:"https://picsum.photos/400/500?random=1",
+                imgsrc:require("../../../assets/500.jpg"),
               },
               time: new Date().getTime(),
               type: "img",
@@ -162,7 +166,7 @@ export default {
             {
               isMe: false,
               name:"王力宏",
-              head:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F",
+              head:require("../../../assets/tx.png"),
               content: "今天是部门培训会议，你什么时候过来吖",
               time: new Date().getTime(),
               type: "text",
@@ -201,8 +205,8 @@ export default {
               isMe: false,
                 name:"萨日朗",
               content: {
-                // imgsrc:require("../../../assets/tx.png"),
-                imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
+                imgsrc:require("../../../assets/tx.png"),
+                // imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
               },
               time: new Date().getTime(),
               type: "img",
@@ -408,8 +412,7 @@ export default {
           unRead: 5,
         }, {
           img: require("../../../assets/tx.png"),
-          name: "王力宏55",
-     
+          name: "王力宏55",     
           msgs: [
             {
               isMe: false,
@@ -433,8 +436,7 @@ export default {
             },
             {
               isMe: true,
-              content:
-                '<img src="https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"/><p>溜了溜了</p>',
+              content:"ok",
               time: new Date().getTime(),
               type: "text",
             },
@@ -510,34 +512,43 @@ export default {
     };
   },
   beforeMount(){
- 
   },
   mounted() {
-    //  this.tochat();
-    //    this.selects(this.select)
-    // this.selects(2);
-    
+     this.tochat();
+    //  console.log(this.$route.query.id)   
   },
   beforeDestroy() {
-    //  this.select=s
+    //  this.select=s 
+    //页面销毁之前提交保留的数据
+    this.$store.commit('saveId',this.select.groupId)
+    //  console.log(this.select.groupId)
   },
 
 //挂载后和更新前被调用的。但如果该组件中没有使用缓存，也就是没被<keep-alive>包裹，activated不起作用
-  activated(){
-      this.$nextTick(()=>{
-          this.tochat();
-      })
-  },
+  // activated(){ 
+  //     this.$nextTick(()=>{   
+  //         this.tochat();                
+  //     })
+  // },
+
+  // 只执行一次
+  // created(){
+  //     this.$nextTick(()=>{   
+  //          setTimeout(() => {
+  //          this.select={ groupId:null};
+  //     },100);                
+  //     })     
+  // },
   methods: {
-    // 跳转到聊天
+    // 跳转到聊天  刚开始没有数据要先给属性赋值空，不然bug ┭┮﹏┭┮
     tochat(){
       // console.log( this.$route.query.id)
        this.select = this.groups.find((item)=>{
-		          return item.groupId == this.$route.query.id;
-		      });
+		          return item.groupId  == this.$route.query.id ;
+		      })|| { groupId:null};
      
     },
-    
+    // 发送信息
     send(content, groupId) {
       this.groups.forEach((group) => {
         if (group.groupId === groupId) {
@@ -547,9 +558,7 @@ export default {
     },
     // 选择联系人
     selects(s) {
-      console.log("2");
-
-      (this.select = s), (this.hidden = s.groupId);
+      this.select = s, this.hidden = s.groupId;
       // this.$store.commit('setSelectSession', s) 暂时报错
       const inp = document.getElementById("input");
       this.$forceUpdate();
@@ -586,10 +595,11 @@ export default {
     sel.removeAllRanges();
     sel.addRange(range);
 },
+
     //打开搜索面板
     result(e){
       this.search=e
-      console.log("66"+e)
+      console.log("面板"+e)
     }
   },
   watch: {},
@@ -599,6 +609,7 @@ export default {
 <style scoped>
 .body {
   height: 100%;
+  background-color: #f3f3f3;
 }
 .group {
    padding: 80px 0 0;
@@ -615,20 +626,28 @@ export default {
   background-color: #f7f7f7;
   overflow: hidden;
 }
-
+/* 列表 */
 .group .gul {
 
   height: 100%;
 
   overflow-y: hidden;
 }
+/* 搜索面板 */
 .group .gsearch {
-  /* display: inline-block; */
-  /* z-index: 889; */
   height: 100%;
   width: 100%;
-  /* background-color: pink; */
-
+}
+.group .gsearch2 {
+  /* display: inline-block; */
+  padding: 80px 0 0;
+   box-sizing: border-box;
+  width: 379px;
+  height: 100%;
+  position: fixed;
+  top: 80px;
+  left: 100px;
+  background-color: #f7f7f7;
   overflow-y: overlay;
 }
 .group .gul:hover {

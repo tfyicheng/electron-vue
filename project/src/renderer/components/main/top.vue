@@ -55,6 +55,7 @@ export default {
   right: 0px;
   /* width: 100%; */
   text-align: right;
+   user-select:none;
 }
 .btn div {
   display: inline-block;

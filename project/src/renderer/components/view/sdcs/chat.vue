@@ -220,10 +220,11 @@ export default {
     this.$nextTick(() => {
       setTimeout(() => {
         // this.enter();
+        console.log("89")
         this.drag();
         this.paste();
         // this.setPasteImg();
-      });
+      },3000);
     });
   },
 
@@ -286,19 +287,13 @@ export default {
     //   }, 2000);
     // },
 
+  // 功能小窗
     dialog(type) {
       console.log(type);
-      //   // 判读是否已经存在子窗口
-      // if (remote.childWindow) {
-      //   console.log("erzi")
-      //   childWindow.show();
-      // }
-      // remote.getChildWindows()
-      // ipcRenderer.send("yydata", this.chat,type);
       //  定时发送目的是等待子窗口完成渲染才能监听数据
       setTimeout(() => {
         ipcRenderer.send("yydata", this.chat, type);
-      }, 2000);
+      }, 1000);
     },
 
     //发送按钮

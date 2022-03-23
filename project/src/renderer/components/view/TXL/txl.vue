@@ -97,7 +97,9 @@
         </div>
       </div>
       <!-- 搜索面板 -->
-      <div v-else class="gsearch"></div>
+      <div v-else class="gsearch">
+           <!-- 搜索面板 -->
+      </div>
     </div>
     <!-- 会话窗口 -->
     <div class="content">
@@ -124,7 +126,6 @@ window.addEventListener("contextmenu", function (e) {
 import menu from "../../../../common/rightClick";
 import detail from "./detail.vue";
 import grouptop from "../../../../common/grouptop.vue";
-import draft from "../../../../common/draft";
 export default {
   components: { grouptop, detail },
   data() {
