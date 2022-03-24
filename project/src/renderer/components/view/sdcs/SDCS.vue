@@ -522,6 +522,7 @@ export default {
     //页面销毁之前提交保留的数据
     this.$store.commit('saveId',this.select.groupId)
     //  console.log(this.select.groupId)
+ 
   },
 
 //挂载后和更新前被调用的。但如果该组件中没有使用缓存，也就是没被<keep-alive>包裹，activated不起作用
@@ -546,7 +547,7 @@ export default {
        this.select = this.groups.find((item)=>{
 		          return item.groupId  == this.$route.query.id ;
 		      })|| { groupId:null};
-     
+      this.selects(this.select)
     },
     // 发送信息
     send(content, groupId) {
@@ -555,6 +556,10 @@ export default {
           group.msgs.push(content);
         }
       });
+      // let dd = document.querySelector("div[readonly]")
+      // let dd = document.getElementsByTagName("textarea")
+      // console.log("88")
+      // console.log(dd)
     },
     // 选择联系人
     selects(s) {

@@ -53,7 +53,7 @@
                 <img v-if="!c.name" :src="chat.img" width="50" height="50" />
                 <img v-else :src="c.head" width="50" height="50" />
               </div>
-              <div v-show="c.name" class="membername">{{c.name}}</div>
+              <div v-show="c.name" class="membername">{{ c.name }}</div>
               <div
                 v-if="c.type == 'text'"
                 class="other"
@@ -169,6 +169,7 @@
           id="input"
           ref="ip"
           contenteditable="true"
+          @blur="autoSave(chat.groupId)"
           @click="db"
           @contextmenu="menu(3)"
         >
@@ -220,11 +221,11 @@ export default {
     this.$nextTick(() => {
       setTimeout(() => {
         // this.enter();
-        console.log("89")
+        console.log("89");
         this.drag();
         this.paste();
         // this.setPasteImg();
-      },3000);
+      }, 3000);
     });
   },
 
@@ -287,13 +288,35 @@ export default {
     //   }, 2000);
     // },
 
-  // 功能小窗
+    // 功能小窗
     dialog(type) {
       console.log(type);
       //  定时发送目的是等待子窗口完成渲染才能监听数据
       setTimeout(() => {
         ipcRenderer.send("yydata", this.chat, type);
       }, 1000);
+    },
+
+    //自动保存草稿
+    autoSave(d) {
+      let inp = document.getElementById("input");
+      // 获取当前输入框的文本,判断是否有值
+      if (inp.innerText) {
+        //如果这个id草稿箱是否已经存在  把文本存到这个id
+        if (document.getElementById(d)) {
+          document.getElementById(d).innerText = inp.innerText;
+        } else {
+          // 否则重新创建一个草稿箱，用这个id赋值方便根据id查找
+          let el = document.createElement("textarea");
+          // 隐藏区域
+          el.setAttribute("readonly", "");
+          el.style.position = "absolute";
+          el.style.left = "-9999px";
+          document.body.appendChild(el);
+          el.id = d;
+          el.innerText = inp.innerText;
+        }
+      }
     },
 
     //发送按钮
@@ -579,7 +602,7 @@ export default {
   background-color: #f3f3f3;
   width: 40vw;
   padding-left: 30px;
-    overflow: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -693,8 +716,8 @@ export default {
 .chatbody .msg ul li .content .membername {
   display: block;
   color: #a3a3a3;
-   margin: 3px 0 4px 65px;
-   font-size: 13px;
+  margin: 3px 0 4px 65px;
+  font-size: 13px;
 }
 .chatbody .msg ul li .content .membername::after {
   content: "";
@@ -953,8 +976,8 @@ export default {
   bottom: 1px;
   position: absolute;
   background-color: #f3f3f3;
-  -webkit-user-select:none;
-  user-select:none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .chatbody .send .tool-bar {
   height: 50px;

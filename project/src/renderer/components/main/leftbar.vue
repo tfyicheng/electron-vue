@@ -156,6 +156,14 @@ export default {
     logout() {
       ipcRenderer.send("login-window");
         ipcRenderer.send("dialogclose");
+         // 删除草稿箱
+    // let drafts = document.getElementsByTagName("textarea")
+    // for(let i=0;i<drafts.length;i++){
+    //   if(drafts[i].getAttribute('readonly')){
+    //        drafts[i].remove()
+    //   }
+    // }
+
       this.$router.push("/");
       this.$message({
         message: "请重新登录",
