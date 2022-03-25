@@ -10,10 +10,10 @@
       <i class="iconfont icon-guanbixi" @click="close"></i>
     </div>
       <div>
-        <h1>
+        <!-- <h1>
             弹窗中心
-        </h1>
-      
+        </h1> -->
+      <route-view></route-view>
       </div>
 
     </div>
@@ -23,7 +23,7 @@
 <script>
 import { remote, ipcRenderer } from "electron";
 export default {
-  name: "spth",
+  name: "dialogCenter",
 
   props: [""],
   data() {
@@ -99,6 +99,10 @@ export default {
           break;
         case 3:
           this.$router.push("/yyfs");
+          remote.getCurrentWindow().show();
+          break;
+          case 4:
+          this.$router.push("/sphy");
           remote.getCurrentWindow().show();
           break;
         default:

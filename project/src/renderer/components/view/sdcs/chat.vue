@@ -989,6 +989,7 @@ export default {
   margin-left: 15px;
   font-size: large;
   color: #666;
+  outline: none;
 }
 .icon-IPbohao {
   float: right;

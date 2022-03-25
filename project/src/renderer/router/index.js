@@ -9,13 +9,7 @@ Router.prototype.push = function push(location) {
 const router = new Router({
   mode: 'hash',
   routes: [
-    {
-      path: '/dialog',
-      name: 'dialogCenter',
-      component: require('@/components/dialog/dialogCenter').default,
-      children: [
-      ]
-    },
+  
     {
       path: '/',
       name: 'login',
@@ -74,6 +68,18 @@ const router = new Router({
       path: '/yyfs',
       name: 'yyfs',
       component: require('@/components/dialog/yyfs').default
+    }, {
+          path: '/sphy',
+          name: 'sphy',
+          component: require('@/components/dialog/sphy').default
+        },
+    {
+      path: '/dialog',
+      name: 'dialogCenter',
+      component: require('@/components/dialog/dialogCenter').default,
+      children: [
+       
+      ]
     },
   ]
 })
