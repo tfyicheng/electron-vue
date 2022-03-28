@@ -48,7 +48,7 @@ export default {
   components: {},
   beforeCreate() {
     remote.getCurrentWebContents().closeDevTools();
-    remote.getCurrentWindow().setSize(360, 600);
+    remote.getCurrentWindow().setContentSize(360, 600);
     // remote.getCurrentWindow().setSize(1440, 1024);
     // remote.getCurrentWindow().center();
     //    在挂载之前调用事件监听

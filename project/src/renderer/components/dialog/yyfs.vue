@@ -39,7 +39,10 @@ export default {
   components: {},
 
   beforeMount() {
-    remote.getCurrentWindow().setSize(280, 340);
+    // remote.getCurrentWindow().setSize(280, 340);
+    remote.getCurrentWindow().setContentSize(280, 340);
+     remote.getCurrentWebContents().closeDevTools();
+      // remote.getCurrentWindow().setResizable(false)
   },
 
   mounted() {},

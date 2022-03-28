@@ -38,7 +38,6 @@ export default {
 
   beforeCreate() {
     console.log("999");
-
     // remote.getCurrentWebContents().closeDevTools();
     //     remote.getCurrentWindow().setSize(1440, 1024);
     //     remote.getCurrentWindow().center();

@@ -1,8 +1,11 @@
 import { app, BrowserWindow, Tray, Menu, ipcMain } from 'electron'
 import path from 'path'  
 import '../renderer/store'
+// require('web-frame').setZoomLevelLimits(1, 1);
+// var webFrame = require('electron').webFrame;
+// webFrame.setZoomFactor(2);
 
-/**    
+/**      
  * Set `__static` path to static files in production    
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */   
@@ -42,6 +45,7 @@ mainWindow.on('ready-to-show', () => {
 })
 mainWindow.on('closed', () => {
   mainWindow = null
+  // mainWindow.hide()
 })
 
 
@@ -64,7 +68,19 @@ app.on('activate', () => {
     createWindow()
   }
 })
-      
+ 
+//设置任务栏任务菜单
+// app.setUserTasks([
+//   {
+//     program: process.execPath,
+//     arguments: '--new-window',
+//     iconPath: process.execPath,
+//     iconIndex: 0,
+//     title: 'New Window',
+//     description: 'Create a new window'
+//   }
+// ])
+
 const createTray = () => {
   // trayIcon = path.join(__dirname, './');
   trayIcon = path.join(__static, './');
