@@ -208,14 +208,23 @@ export default {
       ],
     };
   },
+    activated(){ 
+      this.$nextTick(()=>{   
+          this.todetail();                
+      })
+  },
   mounted() {
     //   默认界面
-    this.selects(me);
+    this.selects(this.me[0]);
   },
   beforeDestroy() {
     //  this.select=s
   },
   methods: {
+    //跳转到个人详情
+    todetail(){
+          if(this.$route.query.id == '000')return this.selects(this.me[0]); 
+    },
     // 接收子组件参数  跳转到会话
     send(id) {
       this.$router.push({ path: "/sdcs", query: { id } });

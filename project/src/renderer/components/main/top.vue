@@ -70,4 +70,8 @@ cursor: pointer;
   font-size: 15px;
   margin-right: 20px;
 }
+.icon-guanbixi:hover {
+  color: rgb(209, 49, 49);
+  font-weight: 800;
+}
 </style>

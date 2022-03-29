@@ -6,22 +6,36 @@
     </div>
     <!-- 顶部菜单 -->
     <div class="tbtn">
-      <i class="iconfont icon-zuixiaohua" @click="handleMin"></i>
+      <i class="iconfont icon-zuixiaohua" @click="handleMin" title="最小化"></i>
       <!-- <i class="iconfont icon-zuidahuaxi"></i> -->
-      <i class="iconfont icon-guanbixi" @click="close"></i>
+      <i class="iconfont icon-guanbixi" @click="close" title="关闭"></i>
     </div>
     <img :src="img" width="150" height="150" />
     <div class="name">{{ name }}</div>
-    <div class="time">{{ time }}</div>
+    <div  v-if="status=='1'" class="time">{{ time }}</div>
+    <div v-else class="time">
+        <div >正在等待对方接受邀请</div>
+        <span class="dot dot1"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
     <!-- 底部按钮 -->
-    <div class="bbtn">
-      <div class="mute">
+    <div  class="bbtn">
+      <div v-if="status=='1'">
+             <div class="mute">
         <i class="iconfont icon-jingyin"></i>
         <span>静音</span>
       </div>
       <div class="close" @click="close">
         <i class="iconfont icon-guaduan"></i>
         <span>挂断</span>
+      </div>
+      </div>
+      <div v-else>
+          <div class="cancel" @click="close">
+          <i class="iconfont icon-guaduan"></i>
+        <span>取消</span>
+      </div>
       </div>
     </div>
   </div>
@@ -31,11 +45,11 @@
 import { remote, ipcRenderer } from "electron";
 export default {
   name: "",
-
   props: [""],
   data() {
     return {
       name: "",
+      status:0,
       time: "03:35",
       img: "",
     };
@@ -57,7 +71,11 @@ export default {
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+    setTimeout(()=>{
+      this.status=1
+    },3000)
+  },
 
   methods: {
     handleMin() {
@@ -81,11 +99,36 @@ export default {
 <style  scoped>
 .body {
   -webkit-app-region: drag;
-  /* background-color: pink; */
+  /* background-color: rgb(94, 87, 88); */
   width: 100%;
   height: 600px;
   -webkit-user-select: none;
   user-select: none;
+}
+.dot{
+    height: 7px;
+    width: 7px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.5;
+    margin: 6px 4px;
+}
+.dot1{
+    opacity: 0.8;
+    background-color: rgb(255, 255, 255);
+  animation: dotting 1.5s  infinite step-start;
+}
+@keyframes dotting {
+    35%{
+        box-shadow:19px 0 0 rgb(255, 255, 255);
+    }
+    70%{
+        box-shadow: 38px 0 0 rgb(255, 255, 255);
+    }
+    85%{
+       opacity: 0.6;
+    }
 }
 .bg {
   width: 360px;
@@ -123,6 +166,11 @@ export default {
   font-size: 14px;
   margin-right: 14px;
 }
+.tbtn i:hover {
+  color: #ff6565;
+  font-weight: 800;
+}
+
 img {
   display: block;
   /* width: 150px; */
@@ -131,9 +179,12 @@ img {
 }
 .name {
   color: #fff;
-  margin-top: 20px;
-  width: 100%;
+  width:80vw;
+  margin:20px auto;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .time {
   color: #fff;
@@ -166,6 +217,20 @@ img {
   display: inline-block;
   position: absolute;
   right: 1px;
+  background-color: #ff6565;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+}
+.cancel {
+  -webkit-app-region: no-drag;
+  display: inline-block;
+  position: absolute;
+  right: 55px;
+  top: -25px;
   background-color: #ff6565;
   width: 40px;
   height: 40px;

@@ -71,7 +71,7 @@ export default {
         // modal: true,
         height: 600,
         width: 660,
-        resizable: false,//禁止改变主窗口大小，再设置大小就需要使用setContentSize
+        // resizable: false,//禁止改变主窗口大小，再设置大小就需要使用setContentSize
         show: false,
         frame: false,
         // titleBarStyle:'hidden-inset',

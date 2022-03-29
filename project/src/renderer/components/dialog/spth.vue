@@ -1,24 +1,38 @@
 <template>
+<!-- 背景 -->
   <div class="body body-blur">
-    <div class="bg">
+    <div v-if="status=='0'">
+         <div class="bg">
       <img :src="img" alt="" />
+    </div> 
     </div>
-
+    <div v-else>
+      <div class="bg2"></div>
+    </div>
+  <!-- 顶部菜单 -->
     <div class="tbtn">
       <i class="iconfont icon-zuixiaohua" @click="handleMin"></i>
-      <i class="iconfont icon-zuidahuaxi"></i>
+      <i v-show="status=='1'" class="iconfont icon-zuidahuaxi"@click="handleMax"></i>
       <i class="iconfont icon-guanbixi" @click="close"></i>
     </div>
-    <img :src="img" width="61" height="61" />
+    <!-- 等待/接通区域 -->
+    <div v-if="status=='0'">
+      <img :src="img" width="61" height="61" />
     <div class="name">{{ name }}</div>
-    <template v-if="status === 'wait'">
-      <div class="time">正在等待对方接受邀请</div>
+    <template >
+      <div class="time">正在等待对方接受邀请</span>
+       <i class="el-icon-loading"></i>
+      </div>
     </template>
-    <template v-else>
-      <div class="time">{{ time }}</div>
-    </template>
-    <div class="bbtn">
-      <div class="mute" @click="go">
+    </div>
+    <div v-else>
+      <div class="me"></div>
+    </div>
+  
+    <!-- 底部菜单按钮 -->
+    <div v-if="status=='0'">
+         <div class="bbtn">
+        <div class="mute" @click="go">
         <i class="iconfont icon-yuyin1"></i>
         <span>切换语音通话</span>
       </div>
@@ -26,6 +40,24 @@
         <i class="iconfont icon-guaduan"></i>
         <span>取消</span>
       </div>
+    </div>
+    </div>
+    <div  v-else>
+       <div class="time2">{{ time }}</div>
+       <div class="bbtn2">
+         <div class="mute bmenu" @click="go">
+        <i class="iconfont icon-shexiangtou"></i>
+        <span>关闭摄像头</span>
+      </div>
+      <div class="close bmenu" @click="close">
+        <i class="iconfont icon-guaduan"></i>
+        <span>挂断</span>
+      </div>
+        <div class="mute bmenu" @click="go">
+        <i class="iconfont icon-yuyin1"></i>
+        <span>切换语音通话</span>
+      </div>
+       </div>
     </div>
   </div>
 </template>
@@ -41,7 +73,7 @@ export default {
       name: "",
       time: "03:35",
       img: "",
-      status: "wait",
+      status: 0,
     };
   },
 
@@ -62,21 +94,25 @@ export default {
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+       setTimeout(()=>{
+      this.status=1
+    },3000)
+  },
 
   methods: {
     handleMin() {
       remote.getCurrentWindow().minimize();
     },
-    //     handleMax() {
-    //       if (this.isMax) {
-    //         remote.getCurrentWindow().unmaximize();
-    //         this.isMax = false;
-    //       } else {
-    //         remote.getCurrentWindow().maximize();
-    //         this.isMax = true;
-    //       }
-    //     },
+    handleMax() {
+      if (this.isMax) {
+        remote.getCurrentWindow().unmaximize();
+        this.isMax = false;
+      } else {
+        remote.getCurrentWindow().maximize();
+        this.isMax = true;
+      }
+    },
     close() {
       remote.getCurrentWindow().hide();
     },
@@ -96,6 +132,7 @@ export default {
   -webkit-user-select: none;
   user-select: none;
 }
+/* 背景 */
 .bg {
   width: 360px;
   height: 600px; /**宽高100%是为了图片铺满屏幕 */
@@ -109,6 +146,13 @@ export default {
   -ms-filter: blur(15px);
   filter: blur(15px);
 }
+.bg2 {
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  position: absolute;
+  background-color: pink;
+}
 .bg img {
   /* 图片居中对齐，加上盒子的长度再位移自身一半 */
   padding-left: 360px;
@@ -117,6 +161,7 @@ export default {
   /* width:200%; */
   height: 130%;
 }
+/* 顶部 */
 .tbtn {
   -webkit-app-region: no-drag;
   position: fixed;
@@ -128,10 +173,15 @@ export default {
   cursor: pointer;
   color: #fff;
 }
+.tbtn i:hover {
+  color: #ff6565;
+  font-weight: 800;
+}
 .tbtn .iconfont {
   font-size: 14px;
   margin-right: 14px;
 }
+/* 中间 */
 img {
   position: fixed;
   top: 15px;
@@ -142,17 +192,36 @@ img {
   color: #fff;
   margin-top: 18px;
   margin-left: 90px;
-  /* width: 100%; */
+  width: 50%;
   text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .time {
+  position:absolute;
   color: #fff;
-  margin-top: 12px;
-  margin-left: 90px;
-  /* width: 100%; */
-  text-align: left;
+  left: 90px; 
+  margin: 15px auto;
+  text-align: center;
   font-size: 14px;
 }
+.me {
+  position: fixed;
+  top: 30px;
+  left: 12px;
+  width: 100px;
+  height: 160px;
+  background-color: #fff;
+}
+@media screen and (min-width: 1000px) {
+.me {
+  width: 200px;
+  height: 320px;
+}
+ 
+}
+/* 底部 */
 .bbtn {
   width: 100%;
   margin: 60px auto;
@@ -163,7 +232,7 @@ img {
   margin: 0px auto;
   -webkit-app-region: no-drag;
   display: block;
-  background-color: #5f5554;
+  background-color: #999;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -194,6 +263,51 @@ img {
 }
 
 .bbtn span {
+  display: block;
+  /* padding-top: 30px; */
+  font-size: 12px;
+  color: #fff;
+  line-height: 30px;
+  width: 130px;
+  margin: 0 auto;
+  transform: translateX(-50%);
+  padding-left: 40px;
+}
+.time2 {
+  position:absolute;
+  color: #fff;
+  width: 100px;
+  left: 50%; 
+  transform: translate(-50%);
+  margin: 20px auto;
+  text-align: center;
+  font-size: 15px;
+  bottom: 100px;
+}
+.bbtn2 {
+  width: 100%;
+  height: 100px;
+  line-height: 150px;
+  text-align: center;
+  margin: 0 auto;
+  bottom: 0;
+  position: absolute;
+  background-color: rgba(59, 54, 53, 0.5);
+  /* opacity: 0.7; */
+}
+.bmenu {
+  display: inline-block;
+  margin: 0 9vw;
+}
+.bbtn2 i {
+  /* margin: 0 auto; */
+  color: #fff;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.bbtn2 span {
   display: block;
   /* padding-top: 30px; */
   font-size: 12px;

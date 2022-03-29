@@ -556,10 +556,6 @@ export default {
           group.msgs.push(content);
         }
       });
-      // let dd = document.querySelector("div[readonly]")
-      // let dd = document.getElementsByTagName("textarea")
-      // console.log("88")
-      // console.log(dd)
     },
     // 选择联系人
     selects(s) {

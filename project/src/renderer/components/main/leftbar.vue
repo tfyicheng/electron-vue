@@ -1,7 +1,7 @@
 <template>
   <div class="bar" onselectstart="return false;" >
     <!-- 头像 -->
-    <img src="../../assets/tx.png" width="60" height="60" />
+    <img src="../../assets/tx.png" width="60" height="60" @click="userdetail" title="个人详情"/>
     <!-- 菜单 -->
     <div style="margin-top: 20px">
       <div class="item" v-for="m in menus">
@@ -112,6 +112,12 @@ export default {
     };
   },
   methods: {
+    //跳转到个人详情页
+    userdetail(){
+       this.$router.push({ path: "/txl", query: { id:'000' } });
+       console.log("do it")
+    },
+    //展示子菜单
     show() {
       const opl = document.querySelector(".optionslist"); //子菜单列表
       const op = document.getElementById("op"); //菜单按钮
@@ -179,10 +185,29 @@ export default {
  watch:{
    //监听路由地址
    $route(to,from){
-    if(to.path=='/sdcs'){
-        this.now=2
-      
-    }
+      switch(to.path){
+         case '/zdcs':
+      return this.now=1;
+       break;
+     case '/sdcs':
+      return this.now=2;
+       break;
+        case '/txl':
+      return this.now=3;
+       break;
+          case '/zdsb':
+      return this.now=4;
+       break;
+          case '/sjcj':
+      return this.now=5;
+       break;
+          case '/xnpg':
+      return this.now=6;
+       break;
+     default:  
+     return 555;     
+       break;
+   }
   }
  },
 };
@@ -198,6 +223,9 @@ export default {
   width: 100px;
   padding: 30px 0;
   background-color: #21345c;
+}
+img {
+  cursor: pointer;
 }
 .iconfont {
   float: left;

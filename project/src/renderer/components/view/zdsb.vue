@@ -15,6 +15,12 @@
           @click="addForm"
           >添加</el-button
         >
+         <el-button
+          type="success"
+          icon="el-icon-time"
+           style="width:100px"
+          >获取时间</el-button
+        >
         <el-button
           type="primary"
           icon="el-icon-search"
