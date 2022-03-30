@@ -12,30 +12,36 @@
     </div>
     <img :src="img" width="150" height="150" />
     <div class="name">{{ name }}</div>
-    <div  v-if="status=='1'" class="time">{{ time }}</div>
+    <div v-if="status == '1'" class="time">{{ time }}</div>
     <div v-else class="time">
-        <div >正在等待对方接受邀请</div>
-        <span class="dot dot1"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+      <div>正在等待对方接受邀请</div>
+      <span class="dot dot1"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
     </div>
     <!-- 底部按钮 -->
-    <div  class="bbtn">
-      <div v-if="status=='1'">
-             <div class="mute">
-        <i class="iconfont icon-jingyin"></i>
-        <span>静音</span>
-      </div>
-      <div class="close" @click="close">
-        <i class="iconfont icon-guaduan"></i>
-        <span>挂断</span>
-      </div>
+    <div class="bbtn">
+      <div v-if="status == '1'">
+        <div id="mute" @click="mute">
+          <div v-if="muteStatus == '1'"style="color:black">
+           <i class="iconfont icon-voice-s" style="font-size: 22px"></i>
+            <span>静音</span>
+          </div>
+          <div v-else>
+            <i class="iconfont icon-jingyin" style="font-size: 16px;color:black"></i>
+            <span>取消静音</span>
+          </div>
+        </div>
+        <div class="close" @click="close">
+          <i class="iconfont icon-guaduan"></i>
+          <span>挂断</span>
+        </div>
       </div>
       <div v-else>
-          <div class="cancel" @click="close">
+        <div class="cancel" @click="close">
           <i class="iconfont icon-guaduan"></i>
-        <span>取消</span>
-      </div>
+          <span>取消</span>
+        </div>
       </div>
     </div>
   </div>
@@ -49,9 +55,10 @@ export default {
   data() {
     return {
       name: "",
-      status:0,
+      status: 0,
       time: "03:35",
       img: "",
+      muteStatus:1,
     };
   },
 
@@ -72,9 +79,9 @@ export default {
   beforeMount() {},
 
   mounted() {
-    setTimeout(()=>{
-      this.status=1
-    },3000)
+    setTimeout(() => {
+      this.status = 1;
+    }, 3000);
   },
 
   methods: {
@@ -90,6 +97,15 @@ export default {
     //         this.isMax = true;
     //       }
     //     },
+    mute(){
+      this.muteStatus = !this.muteStatus
+      let mut = document.getElementById("mute")
+      if(!this.muteStatus){
+        mut.style.backgroundColor="white"     
+        }else{
+       mut.style.backgroundColor="#5f5554"
+      }
+    },
     close() {
       remote.getCurrentWindow().hide();
     },
@@ -99,36 +115,36 @@ export default {
 <style  scoped>
 .body {
   -webkit-app-region: drag;
-  /* background-color: rgb(94, 87, 88); */
+  background-color: rgb(212, 145, 155);
   width: 100%;
   height: 600px;
   -webkit-user-select: none;
   user-select: none;
 }
-.dot{
-    height: 7px;
-    width: 7px;
-    display: inline-block;
-    border-radius: 50%;
-    background-color: rgb(255, 255, 255);
-    opacity: 0.5;
-    margin: 6px 4px;
+.dot {
+  height: 7px;
+  width: 7px;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.5;
+  margin: 6px 4px;
 }
-.dot1{
-    opacity: 0.8;
-    background-color: rgb(255, 255, 255);
-  animation: dotting 1.5s  infinite step-start;
+.dot1 {
+  opacity: 0.8;
+  background-color: rgb(255, 255, 255);
+  animation: dotting 1.5s infinite step-start;
 }
 @keyframes dotting {
-    35%{
-        box-shadow:19px 0 0 rgb(255, 255, 255);
-    }
-    70%{
-        box-shadow: 38px 0 0 rgb(255, 255, 255);
-    }
-    85%{
-       opacity: 0.6;
-    }
+  35% {
+    box-shadow: 19px 0 0 rgb(255, 255, 255);
+  }
+  70% {
+    box-shadow: 38px 0 0 rgb(255, 255, 255);
+  }
+  85% {
+    opacity: 0.6;
+  }
 }
 .bg {
   width: 360px;
@@ -179,8 +195,8 @@ img {
 }
 .name {
   color: #fff;
-  width:80vw;
-  margin:20px auto;
+  width: 80vw;
+  margin: 20px auto;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -198,7 +214,7 @@ img {
   margin: 120px auto;
   position: relative;
 }
-.mute {
+#mute {
   -webkit-app-region: no-drag;
   display: inline-block;
   position: absolute;
@@ -249,6 +265,9 @@ img {
 
 .bbtn span {
   display: block;
+  text-align: center;
+  width: 60px;
+  transform: translateX(-10px);
   /* padding-top: 30px; */
   font-size: 12px;
   color: #fff;

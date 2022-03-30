@@ -1,57 +1,143 @@
 <template>
   <div class="body">
-    <!-- 左边选择框  @showResult="result"-->
-    <div class="group">
-      <grouptop></grouptop>
-      <div class="gul" onselectstart="return false;">
-        <el-checkbox-group v-model="checkList" @change="handleCheckedChange">
-          <el-checkbox
-            v-for="g in member"
-            :label="g.id"
-            :style="
-              checkList !== null && checkList.includes(g.id)
-                ? 'background-color: #eee;'
-                : ''
-            "
-          >
-            <div>
-              <img :src="g.head" alt="" />
-              <div class="memname">{{ g.name }}</div>
+    <!-- 选择联系人 -->
+    <div v-if="status == '0'">
+      <!-- 左边选择框  @showResult="result"-->
+      <div class="group">
+        <grouptop></grouptop>
+        <div class="gul" onselectstart="return false;">
+          <el-checkbox-group v-model="checkList" @change="handleCheckedChange">
+            <el-checkbox
+              v-for="g in member"
+              :label="g.id"
+              :style="
+                checkList !== null && checkList.includes(g.id)
+                  ? 'background-color: #eee;'
+                  : ''
+              "
+            >
+              <div>
+                <img :src="g.head" alt="" />
+                <div class="memname">{{ g.name }}</div>
+              </div>
+            </el-checkbox>
+          </el-checkbox-group>
+        </div>
+      </div>
+      <!-- 右边确定框 -->
+      <div class="content">
+        <div class="contenttop">发起视频会议</div>
+        <!-- 选择联系人 -->
+        <div class="contentbox">
+          <div v-for="a in checkList" class="select">
+            <img
+              :src="
+                member.find((item) => {
+                  return item.id == a;
+                }).head
+              "
+              alt=""
+            />
+            <p class="selectname">
+              {{
+                member.find((item) => {
+                  return item.id == a;
+                }).name
+              }}
+            </p>
+            <div id="cancel" @click="cancel(a)">
+              <i class="iconfont icon-guanbixi"></i>
             </div>
-          </el-checkbox>
-        </el-checkbox-group>
+          </div>
+        </div>
+        <!-- 确认菜单 -->
+        <div class="menu">
+          <el-button class="cancel" icon="iconfont icon-quxiao" @click="close"
+            >取消</el-button
+          >
+          <el-button
+            type="primary"
+            icon="iconfont icon-queren"
+            @click="toMeeting"
+            >确认</el-button
+          >
+        </div>
       </div>
     </div>
-    <!-- 右边确定框 -->
-    <div class="content">
-      <div class="contenttop">发起视频会议</div>
-      <!-- 选择联系人 -->
-      <div class="contentbox">
-        <div v-for="a in checkList" class="select">
-          <img
-            :src="
-              member.find((item) => {
-                return item.id == a;
-              }).head
-            "
-            alt=""
-          />
-          <p class="selectname">
-            {{
-              member.find((item) => {
-                return item.id == a;
-              }).name
-            }}
-          </p>
-          <div id="cancel" @click="cancel(a)">
-            <i class="iconfont icon-guanbixi"></i>
+    <!-- 发起会议 -->
+    <div v-else>
+      <!-- 顶部菜单 -->
+      <div class="top">
+        <div class="topTitle">视频会议</div>
+        <top />
+      </div>
+      <!-- 视频区域 -->
+      <div class="center">
+        <div v-for="a in checkList" class="member">
+          <div class="bg">
+            <img
+              :src="
+                member.find((item) => {
+                  return item.id == a;
+                }).head
+              "
+              alt=""
+            />
+            <div class="loading">
+              <span class="dot dot1"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
           </div>
         </div>
       </div>
-      <!-- 确认菜单 -->
-      <div class="menu">
-        <el-button class="cancel" icon="iconfont icon-quxiao" @click="close">取消</el-button>
-        <el-button type="primary" icon="iconfont icon-queren">确认</el-button>
+      <!-- 底部菜单 -->
+      <div class="bottom">
+        <div class="bottomTitle">
+          <div v-if="memberStatus == '0'">等待接听</div>
+          <div v-else>3:30</div>
+        </div>
+        <!-- 按钮 -->
+        <div class="bbtn">
+          <div class="add" @click="add">
+            <i class="iconfont icon-jiahao"></i>
+            <span>添加成员</span>
+          </div>
+          <div class="mute" @click="mute">
+            <div v-if="muteStatus == '1'">
+              <i class="iconfont icon-voice-s"></i>
+              <span>静音</span>
+            </div>
+            <div v-else>
+              <i
+                class="iconfont icon-jingyin"
+                style="font-size: 20px; color: black"
+              ></i>
+              <span>取消静音</span>
+            </div>
+          </div>
+          <div class="close" @click="close">
+            <i class="iconfont icon-guaduan"></i>
+            <span>挂断</span>
+          </div>
+          <div class="camera" @click="camera">
+            <div v-if="cameraStatus == '1'">
+              <i class="iconfont icon-shexiangtou"></i>
+              <span>关闭摄像头</span>
+            </div>
+            <div v-else>
+              <i
+                class="iconfont icon-guanbishexiangtou"
+                style="font-size: 18px; color: black"
+              ></i>
+              <span>打开摄像头</span>
+            </div>
+          </div>
+          <div class="setting">
+            <i class="iconfont icon-shezhi"></i>
+            <span>成员管理</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -60,9 +146,10 @@
 <script>
 import { remote, ipcRenderer } from "electron";
 import grouptop from "../../../common/grouptop";
+import top from "../main/top.vue";
 export default {
   name: "",
-  components: { grouptop },
+  components: { grouptop, top },
   props: [""],
   data() {
     return {
@@ -104,17 +191,24 @@ export default {
         },
       ],
       checkList: [],
+      status: 0,
+      memberStatus: 0,
+      muteStatus: 1,
+      cameraStatus: 1,
     };
   },
 
   beforeMount() {
     // remote.getCurrentWindow().setSize(700, 480);使用setSize会失效导致drag区域双击全屏
-     remote.getCurrentWindow().setContentSize(700, 480);
-     remote.getCurrentWebContents().closeDevTools();
+    remote.getCurrentWindow().setContentSize(700, 480);
+    remote.getCurrentWebContents().closeDevTools();
     //  remote.getCurrentWindow().center();//窗口居中
   },
 
   mounted() {
+    setTimeout(() => {
+      this.memberStatus = 1;
+    }, 3000);
   },
 
   methods: {
@@ -136,10 +230,53 @@ export default {
       // console.log(this.checkList)
     },
     //取消发起
-    close(){
-        remote.getCurrentWindow().hide();
-        this.checkList=[]
+    close() {
+      remote.getCurrentWindow().hide();
+      this.checkList = [];
+      this.status = 0;
+      remote.getCurrentWindow().setContentSize(700, 480);
+    },
+    //发起会议
+    toMeeting() {
+      this.status = 1;
+      remote.getCurrentWindow().setContentSize(880, 600);
+    },
+    //静音
+    mute() {
+      this.muteStatus = !this.muteStatus;
+      let mut = document.getElementsByClassName("mute");
+      if (!this.muteStatus) {
+        mut[0].style.backgroundColor = "white";
+      } else {
+        mut[0].style.backgroundColor = "rgba(163, 160, 159, 0.5)";
+      }
+    },
+    //摄像头
+    camera() {
+      this.cameraStatus = !this.cameraStatus;
+      let cam = document.getElementsByClassName("camera");
+      if (!this.cameraStatus) {
+        cam[0].style.backgroundColor = "white";
+      } else {
+        cam[0].style.backgroundColor = "rgba(163, 160, 159, 0.5)";
+      }
+    },
+    add() {
+      this.status = 0;
+    },
+  },
+  watch:{
+    checkList(){
+       if(this.checkList.length>4){
+         
+      let mem = document.getElementsByClassName("member")
+      for(let i=0;i<mem.length;i++){
+        // mem[i].style.maxWidth='calc(100% / 4)';
+        console.log("do it")
+      }
+    } 
     }
+  
   },
 };
 </script>
@@ -152,6 +289,8 @@ export default {
   -webkit-user-select: none;
   user-select: none;
 }
+/* 选择联系人界面 ———————————————————————— */
+/* #region */
 /* 左侧列表 */
 .group {
   display: block;
@@ -283,7 +422,7 @@ export default {
   width: 18px;
   background-color: #a3a3a3;
 }
-#cancel:hover{
+#cancel:hover {
   background-color: #ec3e3e;
 }
 #cancel i {
@@ -308,12 +447,172 @@ export default {
   border: none;
   color: #409eff;
 }
+/* #endregion */
+/* 视频会议界面 ———————————————————————— */
+/* #region */
+/* 顶部菜单 */
+.top {
+  -webkit-app-region: drag;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  color: #fff;
+  background-color: #333;
+}
+.topTitle {
+  padding-left: 15px;
+}
+/* 视频区域 */
+.center {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  /* justify-content: flex-start; */
+  /* justify-content: space-between; */
+  flex-direction: row;
+  /* width: 880px; */
+  height: 440px;
+  background-color: #333;
+  /* overflow-y: scroll; */
+}
+.member {
+  flex: 1;
+   min-width: calc(100% / 4); 
+    /* max-width: calc(100% / 4);  */
+  /* float: left; */
+  /* width: 300px; */
+  /* height: 220px;  */
+  /* width: calc((100% - 10px) / 3);  */
+}
+.bg {
+  position: relative;
+}
+.loading {
+  position: absolute;
+  display: inline-block;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.dot {
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+  border-radius: 50%;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.5;
+  margin: 6px 5px;
+}
+.dot1 {
+  opacity: 0.8;
+  background-color: rgb(255, 255, 255);
+  animation: dotting 1.5s infinite step-start;
+}
+@keyframes dotting {
+  35% {
+    box-shadow: 23px 0 0 rgb(255, 255, 255);
+  }
+  70% {
+    box-shadow: 48px 0 0 rgb(255, 255, 255);
+  }
+  85% {
+    opacity: 0.6;
+  }
+}
+.member img {
+  width: 100%;
+  filter: blur(2px);
+}
+/* 底部 */
+.bottom {
+  position: absolute;
+  width: 100%;
+  height: 120px;
+  bottom: 0;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+}
+.bottomTitle {
+  width: 130px;
+  height: 20px;
+  margin: 10px auto;
+  font-size: 15px;
+}
+/* .bbtn {
+  /* width: 50vw; */
+/* height: 100px;  
+} */
+.bbtn span {
+  display: inline-block;
+  font-size: 12px;
+  width: 60px;
+  transform: translate(-10px, -7px);
+}
+.bbtn i {
+  font-size: 24px;
+}
+.add {
+  float: left;
+  margin: 0px 30px;
+  background-color: rgba(163, 160, 159, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+}
+.setting {
+  float: right;
+  margin: 0px 30px;
+  background-color: rgba(163, 160, 159, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+}
+.close {
+  display: inline-block;
+  background-color: #ff6565;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+}
+.mute {
+  display: inline-block;
+  background-color: rgba(163, 160, 159, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+  transform: translateX(-60px);
+}
+.camera {
+  display: inline-block;
+  background-color: rgba(163, 160, 159, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+  transform: translateX(60px);
+}
+/* #endregion */
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
   /* border-radius: 10px; */
   background: transparent;
 }
-
 ::-webkit-scrollbar {
   width: 8px;
 }

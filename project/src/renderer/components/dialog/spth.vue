@@ -45,9 +45,15 @@
     <div  v-else>
        <div class="time2">{{ time }}</div>
        <div class="bbtn2">
-         <div class="mute bmenu" @click="go">
-        <i class="iconfont icon-shexiangtou"></i>
-        <span>关闭摄像头</span>
+         <div id="camera" class="mute bmenu" @click="camera">
+           <div v-if="cameraStatus=='1'">
+               <i class="iconfont icon-shexiangtou"></i>
+              <span>关闭摄像头</span>
+           </div>
+          <div v-else >
+              <i class="iconfont icon-guanbishexiangtou" style="font-size:16px;color:black"></i>
+              <span>打开摄像头</span>
+          </div>
       </div>
       <div class="close bmenu" @click="close">
         <i class="iconfont icon-guaduan"></i>
@@ -66,7 +72,6 @@
 import { remote, ipcRenderer } from "electron";
 export default {
   name: "spth",
-
   props: [""],
   data() {
     return {
@@ -74,6 +79,7 @@ export default {
       time: "03:35",
       img: "",
       status: 0,
+      cameraStatus:1,
     };
   },
 
@@ -95,9 +101,9 @@ export default {
   beforeMount() {},
 
   mounted() {
-       setTimeout(()=>{
-      this.status=1
-    },3000)
+    setTimeout(() => {
+      this.status = 1;
+    }, 3000);
   },
 
   methods: {
@@ -112,6 +118,11 @@ export default {
         remote.getCurrentWindow().maximize();
         this.isMax = true;
       }
+    },
+    camera() {    
+      this.cameraStatus = !this.cameraStatus
+      let cam = document.getElementById("camera")
+      if(!this.cameraStatus){cam.style.backgroundColor="white"}else{cam.style.backgroundColor="#999"}
     },
     close() {
       remote.getCurrentWindow().hide();
@@ -199,9 +210,9 @@ img {
   white-space: nowrap;
 }
 .time {
-  position:absolute;
+  position: absolute;
   color: #fff;
-  left: 90px; 
+  left: 90px;
   margin: 15px auto;
   text-align: center;
   font-size: 14px;
@@ -215,11 +226,10 @@ img {
   background-color: #fff;
 }
 @media screen and (min-width: 1000px) {
-.me {
-  width: 200px;
-  height: 320px;
-}
- 
+  .me {
+    width: 200px;
+    height: 320px;
+  }
 }
 /* 底部 */
 .bbtn {
@@ -241,7 +251,6 @@ img {
   line-height: 40px;
   margin-bottom: 50px;
 }
-
 .close {
   -webkit-app-region: no-drag;
   display: block;
@@ -274,10 +283,10 @@ img {
   padding-left: 40px;
 }
 .time2 {
-  position:absolute;
+  position: absolute;
   color: #fff;
   width: 100px;
-  left: 50%; 
+  left: 50%;
   transform: translate(-50%);
   margin: 20px auto;
   text-align: center;

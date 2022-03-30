@@ -93,29 +93,6 @@
       <div id="drag" @mousedown="resize" @mouseup="resizeover"></div>
       <!-- 发送框 -->
       <div class="send" id="send">
-        <!-- 表情框 -->
-        <div class="brows" v-if="showBrow" @click.stop="showBrowWin">
-          <div class="brow">
-            <ul>
-              <li
-                v-for="c in brows[activeBrow].brow"
-                style="padding: 2px 2px"
-                v-html="c"
-                @click.stop="addBrow(c)"
-              ></li>
-            </ul>
-          </div>
-          <div class="select">
-            <ul>
-              <li
-                v-for="(c, index) in brows"
-                @click="activeBrow = index"
-                :style="activeBrow === index ? 'background-color:#fff' : ''"
-                v-html="c.icon"
-              ></li>
-            </ul>
-          </div>
-        </div>
         <!-- 发送框菜单栏 -->
         <div class="tool-bar">
           <el-tooltip content="图片发送" placement="top">
@@ -998,50 +975,7 @@ export default {
   float: right;
   margin-right: 15px;
 }
-/* //表情包 */
-.chatbody .send .brows {
-  position: absolute;
-  border-radius: 5px;
-  box-shadow: 1px 1px 10px #7f7f7f;
-  top: -290px;
-  left: 10px;
-  width: 400px;
-  height: 290px;
-  padding: 0 8px;
-  background-color: #fff;
-  border: 0.5px solid #bbbbbb;
-}
-.chatbody .send .brows .brow {
-  height: 210px;
-  padding-left: 5px;
-  margin-top: 20px;
-  overflow-y: auto;
-}
-.chatbody .send .brows .select ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.chatbody .send .brows .select ul li {
-  cursor: pointer;
-  padding: 10px 17.5px;
-}
-.chatbody .send .brows .select ul li:hover {
-  background: #f5f5f5;
-}
-.chatbody .send .brows ul {
-  padding: 5px 5px;
-  margin: 0;
-  list-style: none;
-}
-.chatbody .send .brows ul li {
-  cursor: default;
-  float: left;
-  font-size: large;
-}
-.chatbody .send .brows ul li:hover {
-  background-color: #e7e7e7;
-}
+
 /* 按钮 */
 .chatbody .send .btn {
   cursor: pointer;
@@ -1115,6 +1049,10 @@ export default {
 .chatbody #input .file .info p {
   margin: 0;
 }
+.tool-bar >>> .el-tooltip__popper .is-dark {
+  background: #d0cecd;
+}
+
 /* 滚动槽 */
 ::-webkit-scrollbar-track {
   /* border-radius: 10px; */

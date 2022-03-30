@@ -629,9 +629,7 @@ export default {
 }
 /* 列表 */
 .group .gul {
-
   height: 100%;
-
   overflow-y: hidden;
 }
 /* 搜索面板 */
@@ -642,7 +640,7 @@ export default {
 .group .gsearch2 {
   /* display: inline-block; */
   padding: 80px 0 0;
-   box-sizing: border-box;
+  box-sizing: border-box;
   width: 379px;
   height: 100%;
   position: fixed;
