@@ -240,6 +240,7 @@ export default {
     toMeeting() {
       this.status = 1;
       remote.getCurrentWindow().setContentSize(880, 600);
+      this.setSize();
     },
     //静音
     mute() {
@@ -261,23 +262,37 @@ export default {
         cam[0].style.backgroundColor = "rgba(163, 160, 159, 0.5)";
       }
     },
+    // 添加成员
     add() {
       this.status = 0;
     },
-  },
-  watch:{
-    checkList(){
-       if(this.checkList.length>4){
-         
-      let mem = document.getElementsByClassName("member")
-      for(let i=0;i<mem.length;i++){
-        // mem[i].style.maxWidth='calc(100% / 4)';
-        console.log("do it")
+    //设置视频成员盒子大小
+    setSize() {
+      switch (this.checkList.length) {
+        case 2:
+          return this.set("50%");
+          break;
+        case 3:
+          return this.set("33.3%");
+          break;
+        case 4:
+          return this.set("25%");
+          break;
+        default:
+          return this.set("25%");
+          break;
       }
-    } 
-    }
-  
+    },
+    set(e) {
+      setTimeout(() => {
+        let mem = document.getElementsByClassName("member");
+        for (let i = 0; i < mem.length; i++) {
+          mem[i].style.width = e;
+        }
+      }, 100);
+    },
   },
+  watch: {},
 };
 </script>
 <style  scoped>
@@ -286,6 +301,8 @@ export default {
   /* background-color: #f7f7f7; */
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  /* height: 100vh; */
   -webkit-user-select: none;
   user-select: none;
 }
@@ -458,31 +475,37 @@ export default {
   line-height: 40px;
   color: #fff;
   background-color: #333;
+  position: absolute;
+  top: 0;
 }
 .topTitle {
   padding-left: 15px;
 }
 /* 视频区域 */
 .center {
-  display: flex;
-  flex-wrap: wrap;
   width: 100%;
-  /* justify-content: flex-start; */
-  /* justify-content: space-between; */
-  flex-direction: row;
-  /* width: 880px; */
-  height: 440px;
+  position: absolute;
+  top: 40px;
+  bottom: 120px;
   background-color: #333;
-  /* overflow-y: scroll; */
+  /* overflow-y: overlay; */
+  overflow-y: scroll;
 }
 .member {
-  flex: 1;
-   min-width: calc(100% / 4); 
-    /* max-width: calc(100% / 4);  */
-  /* float: left; */
-  /* width: 300px; */
-  /* height: 220px;  */
-  /* width: calc((100% - 10px) / 3);  */
+  width: 25%;
+  /* flex: 1; 方案二*/
+  /* max-height: calc(100% / 4); */
+  float: left;
+}
+/* @media screen and (min-width : 1000px) { 
+  .member {
+    width: 20%;
+  }
+} */
+.member img {
+  width: 100%;
+  /* height: 100%; */
+  filter: blur(2px);
 }
 .bg {
   position: relative;
@@ -519,10 +542,7 @@ export default {
     opacity: 0.6;
   }
 }
-.member img {
-  width: 100%;
-  filter: blur(2px);
-}
+
 /* 底部 */
 .bottom {
   position: absolute;
