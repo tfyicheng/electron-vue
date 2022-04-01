@@ -37,61 +37,64 @@ export default {
   components: { leftbar, top, topmenu },
   methods: {
     //  功能小窗
-    dialogCenter() {
-      const childURL =
-        process.env.NODE_ENV === "development"
-          ? "http://localhost:9080" + "#/dialog"
-          : `file://${__dirname}/index.html#/dialog`;
-      //   // 判读是否已经存在子窗口 path.join("file://", __dirname, "../renderer/components/dialog/dialogCenter.vue");
-      //     if (childWindow) {
-      //       childWindow.hide();
-      //     } else {
-      //       childWindow = new BrowserWindow({
-      //         useContentSize: true,
-      //         		// modal: true,
-      //         height: 600,
-      //         width: 660,
-      //         resizable: true,
-      //         show: false,
-      //         frame: false,
-      //         // titleBarStyle:'hidden-inset',
-      //         // titleBarOverlay: true,
-      //         parent: remote.mainWindow,
-      //         webPreferences: {
-      //           webSecurity: false,
-      //         },
-      //       });
+//     dialogCenter() {
+//       const childURL =
+//         process.env.NODE_ENV === "development"
+//           ? "http://localhost:9080" + "#/dialog"
+//           : `file://${__dirname}/index.html#/dialog`;
+//       //   // 判读是否已经存在子窗口 path.join("file://", __dirname, "../renderer/components/dialog/dialogCenter.vue");
+//       //     if (childWindow) {
+//       //       childWindow.hide();
+//       //     } else {
+//       //       childWindow = new BrowserWindow({
+//       //         useContentSize: true,
+//       //         		// modal: true,
+//       //         height: 600,
+//       //         width: 660,
+//       //         resizable: true,
+//       //         show: false,
+//       //         frame: false,
+//       //         // titleBarStyle:'hidden-inset',
+//       //         // titleBarOverlay: true,
+//       //         parent: remote.mainWindow,
+//       //         webPreferences: {
+//       //           webSecurity: false,
+//       //         },
+//       //       });
 
-      //       childWindow.loadURL(childURL);
+//       //       childWindow.loadURL(childURL);
 
-      // }
+//       // }
 
-      childWindow2 = new BrowserWindow({
-        useContentSize: true,
-        // modal: true,
-        height: 600,
-        width: 660,
-        // resizable: false,//禁止改变主窗口大小，再设置大小就需要使用setContentSize
-        show: false,
-        frame: false,
-        // titleBarStyle:'hidden-inset',
-        // titleBarOverlay: true,
-        parent: remote.mainWindow,
-        webPreferences: {
-          webSecurity: false,
-        },
-      });
+//       childWindow2 = new BrowserWindow({
+//         useContentSize: true,
+//         // modal: true,
+//         height: 600,
+//         width: 660,
+//         resizable: false,//禁止改变主窗口大小，再设置大小就需要使用setContentSize
+//         show: false,
+//         frame: false,
+//         // titleBarStyle:'hidden-inset',
+//         // titleBarOverlay: true,
+//         parent: remote.mainWindow,
+//         webPreferences: {
+//           webSecurity: false,
+//         },
+//       });
 
-      childWindow2.loadURL(childURL);
-  
-      childWindow2.hookWindowMessage(278, function (e) {
-        childWindow2.setEnabled(false);
-        setTimeout(() => {
-          childWindow2.setEnabled(true);
-        }, 100);
-        return true;
-      });
-    },
+//       childWindow2.loadURL(childURL);
+//      childWindow2.on('close', (e) => {
+//         e.preventDefault();
+//   childWindow2.hide()
+// })
+//       childWindow2.hookWindowMessage(278, function (e) {
+//         childWindow2.setEnabled(false);
+//         setTimeout(() => {
+//           childWindow2.setEnabled(true);
+//         }, 100);
+//         return true;
+//       });
+//     },
   },
   beforeCreate() {
     // 调用主进程设置窗体
@@ -107,7 +110,7 @@ export default {
     this.$router.push("/sdcs");
     remote.getCurrentWindow().setMinimumSize(1130, 870); //设置最小宽高
 
-    this.dialogCenter();
+    // this.dialogCenter();
  
 
     //禁止页面缩放

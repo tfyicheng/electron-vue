@@ -115,7 +115,7 @@ export default {
 <style  scoped>
 .body {
   -webkit-app-region: drag;
-  background-color: rgb(212, 145, 155);
+  /* background-color: rgb(212, 145, 155); */
   width: 100%;
   height: 600px;
   -webkit-user-select: none;

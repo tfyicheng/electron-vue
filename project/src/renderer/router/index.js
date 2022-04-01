@@ -72,14 +72,15 @@ const router = new Router({
           path: '/sphy',
           name: 'sphy',
           component: require('@/components/dialog/sphy').default
+        }, {
+          path: '/drcs',
+          name: 'drcs',
+          component: require('@/components/dialog/drcs').default
         },
     {
       path: '/dialog',
       name: 'dialogCenter',
       component: require('@/components/dialog/dialogCenter').default,
-      children: [
-       
-      ]
     },
   ]
 })

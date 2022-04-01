@@ -13,7 +13,7 @@
         <!-- <h1>
             弹窗中心
         </h1> -->
-      <route-view></route-view>
+      <!-- <route-view   style="width: 300px;height:300px"/> -->
       </div>
 
     </div>

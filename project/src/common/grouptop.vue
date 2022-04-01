@@ -11,7 +11,7 @@
         @input="result($event)"
       ></el-input>
 
-      <div class="gtopp" title="创建群聊">
+      <div class="gtopp" title="创建群聊" @click="showdrcs">
         <i class="el-icon-plus"></i>
       </div>
     </div>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { remote, ipcRenderer } from "electron";
 export default {
   name: "grouptop",
   data() {
@@ -50,6 +51,10 @@ export default {
     result(e) {
       console.log(e);
     },
+    //创建群聊窗口
+    showdrcs(){
+      ipcRenderer.send("showdrcs");
+    },
   },
 };
 </script>
@@ -68,6 +73,7 @@ export default {
 .gtopp {
   display: inline-block;
   width: 23px;
+  cursor: pointer;
 }
 .gtop >>> .el-input {
   width: 290px;

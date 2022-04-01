@@ -1,7 +1,7 @@
 <template>
   <div class="body">
-    <!-- 选择联系人 -->
-    <div v-if="status == '0'">
+    <!-- 选择联系人  v-if="status == '0'"-->
+    <div v-show="!status">
       <!-- 左边选择框  @showResult="result"-->
       <div class="group">
         <grouptop></grouptop>
@@ -29,7 +29,7 @@
         <div class="contenttop">发起视频会议</div>
         <!-- 选择联系人 -->
         <div class="contentbox">
-          <div v-for="a in checkList" class="select">
+          <div v-for="a in checkList" class="select" >
             <img
               :src="
                 member.find((item) => {
@@ -64,8 +64,8 @@
         </div>
       </div>
     </div>
-    <!-- 发起会议 -->
-    <div v-else>
+    <!-- 发起会议 v-else -->
+    <div v-show="status">
       <!-- 顶部菜单 -->
       <div class="top">
         <div class="topTitle">视频会议</div>
@@ -212,6 +212,7 @@ export default {
   },
 
   methods: {
+    //选择联系人添加到数组
     handleCheckedChange(val) {
       // this.checkedList = val ? this.member.id : [];
       this.checkedList = val;
@@ -265,6 +266,7 @@ export default {
     // 添加成员
     add() {
       this.status = 0;
+      //  remote.getCurrentWindow().setContentSize(700, 480);
     },
     //设置视频成员盒子大小
     setSize() {
@@ -283,11 +285,13 @@ export default {
           break;
       }
     },
-    set(e) {
+    set(x,y) {
       setTimeout(() => {
         let mem = document.getElementsByClassName("member");
         for (let i = 0; i < mem.length; i++) {
-          mem[i].style.width = e;
+          mem[i].style.width = x;
+          mem[i].style.height = y;
+          console.log(mem[i])
         }
       }, 100);
     },
@@ -311,6 +315,7 @@ export default {
 /* 左侧列表 */
 .group {
   display: block;
+  z-index: 2;
   padding: 80px 0 0;
   box-sizing: border-box;
   width: 320px;
@@ -345,6 +350,7 @@ export default {
   height: 60px;
   margin: 0;
   width: 100%;
+  cursor: pointer;
 }
 .group .gul .el-checkbox img {
   position: absolute;
@@ -379,12 +385,12 @@ export default {
 }
 /* 右侧确认框 */
 .content {
-  /* display: inline-block;  */
-  left: 320px;
-  /* padding-left: 320px; */
-  position: relative;
+  padding-left: 320px;
+  position:relative;
   height: 100%;
-  width: 380px;
+  /* width: 100%; */
+  box-sizing: border-box;
+  /* overflow: hidden; */
   /* background-color: #f3f3f3; */
 }
 .content .contenttop {
@@ -400,8 +406,11 @@ export default {
   width: 100%;
 }
 .contentbox {
-  height: 320px;
-  margin: 10px 20px;
+  height: 70vh;
+  width: 100%;
+  padding: 5px 20px;
+  box-sizing: border-box;
+  /* margin: 5px 10px; */
   overflow: hidden;
 }
 .contentbox:hover {
