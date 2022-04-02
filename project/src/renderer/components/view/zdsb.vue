@@ -19,6 +19,7 @@
           type="success"
           icon="el-icon-time"
            style="width:100px"
+            @click="getTime"
           >获取时间</el-button
         >
         <el-button
@@ -181,6 +182,9 @@
 </template>
 
 <script>
+// import { remote,ipcRenderer } from "electron";
+const electron = window.require('electron')
+import path from 'path';
 import { copyFileSync } from "original-fs";
 // 导入拖拽事件
 import "../../../common/drag";
@@ -341,6 +345,47 @@ export default {
       this.fileName = "";
       this.$refs.upload.clearFiles();
     },
+    
+    //获取时间
+    getTime(){
+  console.log("ok")
+
+
+    const n =new electron.remote.Notification({
+        title:"title",
+        body:"body"
+    })
+    n.show()
+
+      //      let option = {
+      //           title: "你订阅的《海贼王》更新了",
+      //           body: "《海贼王》已更新至第852集",
+      //           icon: path.join('static/zd.png'),
+      // // href: 'https://jiweiv.cn'
+      //       };   
+      //       // 创建通知并保存
+      //       let hhwNotication = new window.Notification(option.title, option);
+      //          console.log(hhwNotication)
+      //       // 当通知被点击时, 用默认浏览器打开链接
+      //       hhwNotication.onclick= function(){
+      //           // shell.openExternal(option.href)
+      //           console.log("ok2")
+      //       }
+
+
+
+//       let notification = new Notification({
+//   title:"您收到新的消息",
+//   body: "此为消息的正文，点击查看消息",
+// });
+// notification.show();
+// notification.on("click", function() {
+//   alert("用户点击了系统消息");
+// });
+
+// ipcRenderer.send("shownotify")
+
+    }
   },
 };
 </script>

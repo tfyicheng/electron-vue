@@ -15,7 +15,6 @@
     "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
     "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
     "postinstall": ""
-   
   },
   "build": {
     "productName": "zhongduan",
@@ -23,7 +22,6 @@
     "directories": {
       "output": "build"
     },
-  
     "files": [
       "dist/electron/**/*"
     ],
@@ -47,7 +45,9 @@
     },
     "win": {
       "icon": "build/icons/icon.ico",
-      "target": ["portable"]  
+      "target": [
+        "portable"
+      ]
     },
     "linux": {
       "icon": "build/icons"
@@ -56,6 +56,7 @@
   "dependencies": {
     "axios": "^0.18.1",
     "element-ui": "^2.15.6",
+    "node-notifier": "^10.0.1",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",

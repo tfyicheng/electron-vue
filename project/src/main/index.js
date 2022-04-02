@@ -1,4 +1,5 @@
-import { app, BrowserWindow, Tray, Menu, ipcMain,dialog } from 'electron'
+import { app, BrowserWindow, Tray, Menu, ipcMain,dialog,Notification} from 'electron'
+import notifier from 'node-notifier'
 import path from 'path'  
 import '../renderer/store'
 // require('web-frame').setZoomLevelLimits(1, 1);
@@ -63,10 +64,10 @@ mainWindow.on('ready-to-show', () => {
   e.preventDefault()//阻止默认行为，一定要有
   dialog.showMessageBox({
     type: 'info',
-    title: 'Information',
+    title: '终端',
     cancelId:2,
     defaultId: 0,
-    message: '确定要关闭吗？',
+    message: '确定要退出吗？',
     buttons: ['最小化到托盘','直接退出']
   },(index)=>{
     if( index == 0) {
@@ -100,6 +101,37 @@ childWindow1 = new BrowserWindow({
 childWindow1.loadURL(childURL);
 childWindow1.on('ready-to-show', () => {
   mainWindow.show()
+
+  if (process.platform === 'win32') {
+    app.setAppUserModelId("com.example.yourapp");
+  }
+ // notification
+//  if (Notification.isSupported()){
+//   console.log('notification is suppoerted')
+  // new Notification({
+  //     title: '已成功导出文件',
+  //     body: `文件路径：`
+  // }).show()
+//   let myNotification = new Notification({
+//     // 通知的标题, 将在通知窗口的顶部显示
+//     title: 'Boss',
+//     // 通知的副标题, 显示在标题下面 macOS
+//     subtitle: '重要消息',
+//     // 通知的正文文本, 将显示在标题或副标题下面
+//     body: '@所有人 放假！！！',
+//     // false有声音，true没声音
+//     silent: false,
+//     // 通知的超时持续时间 'default' or 'never'
+//   timeoutType: 'default',
+//   })
+//   myNotification.show()
+//   myNotification.onclick = () => {
+//     console.log('通知被点击')
+//   }
+// }
+
+
+
 })
 childWindow1.on('close', (e) => {
   e.preventDefault();
@@ -166,7 +198,6 @@ childWindow2.hide()
 
 createTray()// 创建图标托盘 
 }
-
 
 
 app.on('ready', createWindow)
@@ -267,7 +298,56 @@ ipcMain.on('showdrcs', () => {
   childWindow1.show()
   childWindow1.center()
 })
+//显示系统通知
+ipcMain.on('shownotify', () => {
 
+  // notifier.notify({
+  //   title: '手动测试',
+  //   message: '你收到一条新的消息',
+  //   icon: path.join('static/zd.png'), // Absolute path (doesn't work on balloons)
+  //   sound: true, // Only Notification Center or Windows Toasters
+  //   wait: true // Wait with callback, until user action is taken against notification
+  // }, function (err, response) {
+  //   // Response is response from notification
+  // });
+  // notifier.on('click', function (notifierObject, options) {
+  //   // Triggers if `wait: true` and user clicks notification
+  //   notifier.notify('Message');//点击通知提醒，会再次调用消息通知，如果不需要，请注释掉此行
+  // });
+
+
+
+   if (Notification.isSupported()){
+  console.log('notification is suppoerted')
+
+  new Notification({
+      title: '已成功导出文件',
+      body: `文件路径：`
+  }).show()
+
+  // let myNotification = new Notification({
+  //   // 通知的标题, 将在通知窗口的顶部显示
+  //   title: 'Boss',
+  //   // 通知的副标题, 显示在标题下面 macOS
+  //   subtitle: '重要消息',
+  //   // 通知的正文文本, 将显示在标题或副标题下面
+  //   body: '@所有人 放假！！！',
+  //   // false有声音，true没声音
+  //   silent: false,
+  //   // 通知的超时持续时间 'default' or 'never'
+  // timeoutType: 'default',
+  // })
+  // myNotification.show()
+  // myNotification.onclick = () => {
+  //   console.log('通知被点击')
+  // }
+
+ 
+
+
+
+}
+})
 
 
 /**

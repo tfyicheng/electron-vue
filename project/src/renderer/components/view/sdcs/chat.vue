@@ -194,6 +194,7 @@ export default {
     };
   },
   mounted() {
+
     //  加上异步setTimeout，延迟获取dom的代码的执行
     this.$nextTick(() => {
       setTimeout(() => {
