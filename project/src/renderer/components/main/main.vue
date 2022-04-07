@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { remote } from "electron";
+import { remote,ipcRenderer,ipcMain } from "electron";
 const BrowserWindow = remote.BrowserWindow;
 import leftbar from "./leftbar.vue";
 import top from "./top.vue";
@@ -36,7 +36,8 @@ export default {
   name: "main",
   components: { leftbar, top, topmenu },
   methods: {
-    //  功能小窗
+
+// #region 功能小窗 
 //     dialogCenter() {
 //       const childURL =
 //         process.env.NODE_ENV === "development"
@@ -95,6 +96,9 @@ export default {
 //         return true;
 //       });
 //     },
+//#endregion
+
+
   },
   beforeCreate() {
     // 调用主进程设置窗体
@@ -106,6 +110,11 @@ export default {
     remote.getCurrentWindow().center(); //窗口居中
   },
   mounted() {
+
+ remote.ipcMain.on("toChat",(event, arg) => {
+    this.$router.push({ path: "/sdcs", query: { id:arg } });
+    remote.getCurrentWindow().show()
+})   
     // 挂载之后导航到指定页面
     this.$router.push("/sdcs");
     remote.getCurrentWindow().setMinimumSize(1130, 870); //设置最小宽高

@@ -14,8 +14,7 @@ const router = new Router({
       path: '/',
       name: 'login',
       component: require('@/components/login').default
-    },
-    {
+    }, {
       path: '/index',
       name: 'main',
       component: require('@/components/main/main').default,
@@ -72,15 +71,18 @@ const router = new Router({
           path: '/sphy',
           name: 'sphy',
           component: require('@/components/dialog/sphy').default
-        }, {
+    }, {
           path: '/drcs',
           name: 'drcs',
           component: require('@/components/dialog/drcs').default
-        },
-    {
+    }, {
       path: '/dialog',
       name: 'dialogCenter',
       component: require('@/components/dialog/dialogCenter').default,
+    }, {
+      path: '/notify',
+      name: 'notify',
+      component: require('@/components/dialog/notify').default,
     },
   ]
 })

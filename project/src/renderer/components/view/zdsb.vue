@@ -15,11 +15,11 @@
           @click="addForm"
           >添加</el-button
         >
-         <el-button
+        <el-button
           type="success"
           icon="el-icon-time"
-           style="width:100px"
-            @click="getTime"
+          style="width: 100px"
+          @click="getTime"
           >获取时间</el-button
         >
         <el-button
@@ -27,7 +27,6 @@
           icon="el-icon-search"
           style="float: right"
           v-model="input"
-          
           >搜索</el-button
         >
         <el-input
@@ -51,7 +50,6 @@
         }"
         :row-style="{ height: '61px' }"
         style="width: 100%"
-       
       >
         <!-- @selection-change="handleSelectionChange"tooltip-effect="dark" <el-table-column label="编号" type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column> -->
         <el-table-column label="编号" min-width="30%">
@@ -61,7 +59,7 @@
           <!-- 'data:image/jpeg;base64,' +   解码 -->
 
           <template slot-scope="scope">
-             <img width="60px" :src="scope.row.head" />
+            <img width="60px" :src="scope.row.head" />
           </template>
         </el-table-column>
         <el-table-column prop="name" label="用户名" min-width="40%">
@@ -73,7 +71,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            {{ scope.row.role ?"超级管理员" :  "普通用户" }}
+            {{ scope.row.role ? "超级管理员" : "普通用户" }}
           </template>
         </el-table-column>
         <el-table-column
@@ -85,7 +83,7 @@
         </el-table-column>
         <el-table-column prop="address" label="操作" min-width="30%">
           <template slot-scope="scope">
-            <a class="cz" >重置</a>
+            <a class="cz">重置</a>
             <a class="bj">编辑</a>
             <a v-show="scope.row.role === 0" class="sc">删除</a>
           </template>
@@ -120,7 +118,6 @@
                 style="display: none"
                 :limit="1"
                 ref="upload"
-               
                 :on-change="upChange"
                 class="upload-demo"
                 action=""
@@ -182,13 +179,14 @@
 </template>
 
 <script>
-// import { remote,ipcRenderer } from "electron";
-const electron = window.require('electron')
-import path from 'path';
+import { remote, ipcRenderer } from "electron";
+// const electron = window.require('electron')
+import path from "path";
 import { copyFileSync } from "original-fs";
 // 导入拖拽事件
 import "../../../common/drag";
 import ajax from "../../../common/ajax";
+import { setTimeout } from 'timers';
 export default {
   name: "ZDSB",
   data() {
@@ -204,22 +202,22 @@ export default {
           role: 1,
         },
         {
-          id:  "2",
-           time: "2016-05-03",
-          head: require("../../assets/tx.png"),
-          name: "admin",
-          role: 0,
-        },
-        {
-          id:  "3",
+          id: "2",
           time: "2016-05-03",
           head: require("../../assets/tx.png"),
           name: "admin",
           role: 0,
         },
         {
-         id:  "4",
-           time: "2016-05-03",
+          id: "3",
+          time: "2016-05-03",
+          head: require("../../assets/tx.png"),
+          name: "admin",
+          role: 0,
+        },
+        {
+          id: "4",
+          time: "2016-05-03",
           head: require("../../assets/tx.png"),
           name: "admin",
           role: 0,
@@ -252,8 +250,8 @@ export default {
       formLabelWidth: "120px",
     };
   },
-  beforeMount(){
-  //  this.gettableData()
+  beforeMount() {
+    //  this.gettableData()
   },
   methods: {
     // toggleSelection(rows) {
@@ -270,12 +268,15 @@ export default {
     // },
     //获取数据
     gettableData() {
-        this.$http.get(' http://localhost:3000/add').then((response)=>{
-    this.tableData=response.data;
-    console.log(response.data); 
-}).catch((response)=>{
-    console.log(response.data);   
-})
+      this.$http
+        .get(" http://localhost:3000/add")
+        .then((response) => {
+          this.tableData = response.data;
+          console.log(response.data);
+        })
+        .catch((response) => {
+          console.log(response.data);
+        });
     },
     // 添加用户弹框
     addForm() {
@@ -288,8 +289,8 @@ export default {
 
     // 上传头像链接
     uploadFile() {
-      this.$refs.upFile.$el.click();//实际点击upload组件
-       this.$refs.upload.clearFiles();
+      this.$refs.upFile.$el.click(); //实际点击upload组件
+      this.$refs.upload.clearFiles();
       // console.log(this.form.head);
     },
     //上传条件      因为跟auto-upload冲突所以要放到upchange中调用
@@ -333,10 +334,10 @@ export default {
     submit(from) {
       console.log(this.form.head);
       console.log(this.form.name);
-      this.$refs["form"].resetFields();//清空表单
-      this.dialogFormVisible = false;  //关闭弹窗
-      this.fileName = "";               //清空文件名
-      this.$refs.upload.clearFiles();   //清空列表
+      this.$refs["form"].resetFields(); //清空表单
+      this.dialogFormVisible = false; //关闭弹窗
+      this.fileName = ""; //清空文件名
+      this.$refs.upload.clearFiles(); //清空列表
     },
     // 取消提交
     cancel() {
@@ -345,47 +346,32 @@ export default {
       this.fileName = "";
       this.$refs.upload.clearFiles();
     },
-    
+
     //获取时间
-    getTime(){
-  console.log("ok")
+    getTime() {
+      console.log("ok");
+      //h5原生notication的api不起作用
+      // let option = {
+      //   title: "你订阅的《XXX》更新了",
+      //   body: "《xx》已更新",
+      //   icon: path.join("static/zd.png"),
+      //   // href: 'https://jiweiv.cn'
+      // };
+      // // 创建通知并保存
+      // let hhwNotication = new window.Notification(option.title, option);
+      // console.log(hhwNotication);
+      // // 当通知被点击时, 用默认浏览器打开链接
+      // hhwNotication.onclick = function () {
+      //   // shell.openExternal(option.href)
+      //   console.log("ok2");
+      // };
 
-
-    const n =new electron.remote.Notification({
-        title:"title",
-        body:"body"
-    })
-    n.show()
-
-      //      let option = {
-      //           title: "你订阅的《海贼王》更新了",
-      //           body: "《海贼王》已更新至第852集",
-      //           icon: path.join('static/zd.png'),
-      // // href: 'https://jiweiv.cn'
-      //       };   
-      //       // 创建通知并保存
-      //       let hhwNotication = new window.Notification(option.title, option);
-      //          console.log(hhwNotication)
-      //       // 当通知被点击时, 用默认浏览器打开链接
-      //       hhwNotication.onclick= function(){
-      //           // shell.openExternal(option.href)
-      //           console.log("ok2")
-      //       }
-
-
-
-//       let notification = new Notification({
-//   title:"您收到新的消息",
-//   body: "此为消息的正文，点击查看消息",
-// });
-// notification.show();
-// notification.on("click", function() {
-//   alert("用户点击了系统消息");
-// });
-
-// ipcRenderer.send("shownotify")
-
-    }
+      // ipcRenderer.send("shownotify");
+      // setTimeout(() => {
+         ipcRenderer.send("new-msg",'666')
+      // },600)
+     
+    },
   },
 };
 </script>
