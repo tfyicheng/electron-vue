@@ -2,6 +2,7 @@ import { app, BrowserWindow, Tray, Menu, ipcMain,dialog,Notification,screen} fro
 // import notifier from 'node-notifier'
 import path from 'path'  
 import '../renderer/store'
+const storage = require('electron-localstorage');
 // const process = require('process')
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 // require('web-frame').setZoomLevelLimits(1, 1);
@@ -107,7 +108,7 @@ childWindow1 = new BrowserWindow({
   show: false,
   frame: false,
   // titleBarStyle:'hidden-inset',
-  // titleBarOverlay: true,remote.
+  // titleBarOverlay: true,remote. 
   parent: mainWindow,
   webPreferences: {
     webSecurity: false,
@@ -120,6 +121,7 @@ childWindow1.on('ready-to-show', () => {
 childWindow1.on('close', (e) => {
   e.preventDefault();
 childWindow1.hide()
+storage.setItem("dialogStatus",0)
 })
 //屏蔽窗口菜单 
 childWindow1.hookWindowMessage(278, function (e) {

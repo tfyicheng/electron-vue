@@ -4,7 +4,12 @@
     <!-- 联系人名字 -->
     <div class="chattop">{{ chat.name }}</div>
     <!-- 会话窗口 -->
-    <div class="chatbody" v-if="chat !== null" @click="showBrow = false">
+    <div
+      v-loading="loading"
+      class="chatbody"
+      v-if="chat !== null"
+      @click="showBrow = false"
+    >
       <!-- 对话框 onselectstart="return false;"-->
       <div class="msg" id="msg">
         <ul>
@@ -22,9 +27,10 @@
                 v-else-if="c.type == 'voice'"
                 class="mevoice"
                 @contextmenu="menu(2, c)"
+                :style="{ width: widthPercent(c.content) }"
                 title="播放"
               >
-                <p>{{ c.content }}</p>
+                <p>{{ c.content }}"</p>
                 <i class="iconfont icon-saying"></i>
               </div>
               <div
@@ -63,11 +69,12 @@
               <div
                 v-else-if="c.type == 'voice'"
                 class="othervoice"
+                :style="{ width: widthPercent(c.content) }"
                 @contextmenu="menu(2, c)"
                 title="播放"
               >
                 <i class="iconfont icon-saying"></i>
-                <p>{{ c.content }}</p>
+                <p>{{ c.content }}"</p>
               </div>
               <div
                 v-else-if="c.type == 'file'"
@@ -191,10 +198,11 @@ export default {
       fileList: [],
       showBrow: false,
       activeBrow: 0,
+      loading: false,
     };
   },
   mounted() {
-
+    localStorage.setItem('dialogStatus', 0);
     //  加上异步setTimeout，延迟获取dom的代码的执行
     this.$nextTick(() => {
       setTimeout(() => {
@@ -208,21 +216,19 @@ export default {
   },
 
   methods: {
-    //回车键发送
-    // enter() {
-    //   console.log("w k s l");
-    //   document.onkeydown = cdk;
-    //   let inp = document.getElementById("input");
-    //   var that = this;
-    //   function cdk() {
-    //     if (inp.focus) {
-    //       if (event.keyCode == 13) {
-    //         event.preventDefault();
-    //         that.send();
-    //       }
-    //     }
-    //   }
-    // },
+    // 语音条长度随语音秒数变化
+    widthPercent(c) {
+      if (c < 60) {
+        if (c < 30) {
+          return 80 + c + "px";
+        } else {
+          return 100 + c + "px";
+        }
+      } else {
+        return 120 + c + "px";
+      }
+    },
+
     menu,
 
     // 功能小窗
@@ -268,11 +274,20 @@ export default {
 
     // 功能小窗
     dialog(type) {
-      console.log(type);
+      if(localStorage.getItem("dialogStatus") == 0){
+             console.log(type);
       //  定时发送目的是等待子窗口完成渲染才能监听数据
       setTimeout(() => {
         ipcRenderer.send("yydata", this.chat, type);
       }, 1000);
+      localStorage.setItem("dialogStatus",1)
+      }else {
+        this.$message({
+        message: "请先结束当前会话",
+        center: true,
+      });
+      }
+ 
     },
 
     //自动保存草稿
@@ -560,6 +575,19 @@ export default {
       },
     },
   },
+  computed: {
+    // 语音长度随语音秒数变化
+    // widthPercent() {
+    //           // 语音小于10秒 都返回最小长度15%
+    //   if (c < 2) {
+    //     return 3
+    //   }
+    //   if (c > 30) {
+    //     return 45
+    //   }
+    //   return c / 60 * 100
+    //   }
+  },
 };
 </script>
 
@@ -682,7 +710,7 @@ export default {
   transform: translateX(-25px);
   color: #7e7e7e;
   font-size: 17px;
-  margin: 0;
+  margin: 0 -15px;
 }
 .chatbody .msg ul li .content .mevoice i {
   float: right;

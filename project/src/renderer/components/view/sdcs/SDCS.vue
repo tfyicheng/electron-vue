@@ -32,7 +32,7 @@
     <!-- 会话窗口 -->
     <div v-show="select.groupId" class="content">
       <!-- 删除功能以v-show判断id隐藏 -->
-      <chat :chat="select" @send="send" v-show="hidden"></chat>
+      <chat :chat="select" @send="send" v-show="hidden" ref="child"></chat>
     </div>
     <!-- <chat class="chat"></chat> -->
   </div>
@@ -99,13 +99,43 @@ export default {
             },
             {
               isMe: true,
-              content: 6 + '"',
+              content: 27,
               time: new Date().getTime(),
               type: "voice",
             },
             {
               isMe: false,
-              content: 10 + '"',
+              content: 10,
+              time: new Date().getTime(),
+              type: "voice",
+            },{
+              isMe: false,
+              content: 4,
+              time: new Date().getTime(),
+              type: "voice",
+            },{
+              isMe: false,
+              content: 2,
+              time: new Date().getTime(),
+              type: "voice",
+            },{
+              isMe: false,
+              content: 60,
+              time: new Date().getTime(),
+              type: "voice",
+            },{
+              isMe: false,
+              content: 80,
+              time: new Date().getTime(),
+              type: "voice",
+            },{
+              isMe: true,
+              content: 180,
+              time: new Date().getTime(),
+              type: "voice",
+            },{
+              isMe: true,
+              content: 120,
               time: new Date().getTime(),
               type: "voice",
             },
@@ -188,7 +218,7 @@ export default {
             {
               isMe: false,
                name:"陈二发",
-              content: 10 + '"',
+              content: 10,
               time: new Date().getTime(),
               type: "voice",
             },
@@ -559,17 +589,22 @@ export default {
     },
     // 选择联系人
     selects(s) {
+      this.$refs.child.loading = true
       this.select = s, this.hidden = s.groupId;
       // this.$store.commit('setSelectSession', s) 暂时报错
-      const inp = document.getElementById("input");
+      
       this.$forceUpdate();
+      
       //自动滚动到底部
       setTimeout(() => {
         document.getElementById("msg").scrollTop =
           document.getElementById("msg").scrollHeight;
-      }, 100);
+          this.$refs.child.loading = false
+      }, 200);
+
       draft(s.groupId,this.endselectId);
       this.endselectId = this.select.groupId;
+      const inp = document.getElementById("input");
       this.setFocus(inp)
     },
     // 右键删除

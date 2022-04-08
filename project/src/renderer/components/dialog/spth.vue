@@ -126,6 +126,7 @@ export default {
     },
     close() {
       remote.getCurrentWindow().hide();
+      localStorage.setItem("dialogStatus",0)
     },
     go() {
       this.$router.push("/yyth");

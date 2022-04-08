@@ -179,6 +179,8 @@ export default {
     mainWindow.on('closed', () => {
       mainWindow = null
       }) 
+
+      localStorage.removeItem("dialogStatus");
     },
  
  },
