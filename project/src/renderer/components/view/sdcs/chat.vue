@@ -202,7 +202,7 @@ export default {
     };
   },
   mounted() {
-    localStorage.setItem('dialogStatus', 0);
+   
     //  加上异步setTimeout，延迟获取dom的代码的执行
     this.$nextTick(() => {
       setTimeout(() => {
@@ -274,13 +274,14 @@ export default {
 
     // 功能小窗
     dialog(type) {
-      if(localStorage.getItem("dialogStatus") == 0){
+      if(remote.getGlobal("sharedObject").dialogStatus == 0){
              console.log(type);
       //  定时发送目的是等待子窗口完成渲染才能监听数据
       setTimeout(() => {
         ipcRenderer.send("yydata", this.chat, type);
       }, 1000);
-      localStorage.setItem("dialogStatus",1)
+      // localStorage.setItem("dialogStatus",1) 主进程无法访问，改用global
+      remote.getGlobal("sharedObject").dialogStatus = 1
       }else {
         this.$message({
         message: "请先结束当前会话",
@@ -290,7 +291,7 @@ export default {
  
     },
 
-    //自动保存草稿
+    //自动保存草稿 
     autoSave(d) {
       let inp = document.getElementById("input");
       // 获取当前输入框的文本,判断是否有值

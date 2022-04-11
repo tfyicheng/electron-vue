@@ -236,7 +236,7 @@ export default {
       this.checkList = [];
       this.status = 0;
       remote.getCurrentWindow().setContentSize(700, 480);
-      localStorage.setItem('dialogStatus', 0);
+      remote.getGlobal("sharedObject").dialogStatus = 0
     },
     //发起会议
     toMeeting() {

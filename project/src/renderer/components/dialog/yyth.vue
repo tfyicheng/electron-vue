@@ -108,7 +108,7 @@ export default {
     },
     close() {
       remote.getCurrentWindow().hide();
-       localStorage.setItem("dialogStatus",0)
+      remote.getGlobal("sharedObject").dialogStatus = 0
     },
   },
 };

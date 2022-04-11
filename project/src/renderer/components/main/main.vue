@@ -110,7 +110,7 @@ export default {
     remote.getCurrentWindow().center(); //窗口居中
   },
   mounted() {
-
+ remote.getGlobal("sharedObject").dialogStatus = 0
  remote.ipcMain.on("toChat",(event, arg) => {
     this.$router.push({ path: "/sdcs", query: { id:arg } });
     remote.getCurrentWindow().show()

@@ -2,9 +2,9 @@ import { app, BrowserWindow, Tray, Menu, ipcMain,dialog,Notification,screen} fro
 // import notifier from 'node-notifier'
 import path from 'path'  
 import '../renderer/store'
-const storage = require('electron-localstorage');
-// const process = require('process')
+// import storage from 'electron-localstorage'
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
+global.sharedObject = {dialogStatus:0};//功能小窗状态
 // require('web-frame').setZoomLevelLimits(1, 1);
 // var webFrame = require('electron').webFrame; 
 // webFrame.setZoomFactor(2);
@@ -104,7 +104,7 @@ childWindow1 = new BrowserWindow({
   modal: true,
   height: 480,
   width: 700,
-  resizable: false,//禁止改变主窗口大小，再设置大小就需要使用setContentSize
+  resizable: false,//禁止改变主窗口大小，再设置大小就需要使用setContentSize 
   show: false,
   frame: false,
   // titleBarStyle:'hidden-inset',
@@ -121,7 +121,7 @@ childWindow1.on('ready-to-show', () => {
 childWindow1.on('close', (e) => {
   e.preventDefault();
 childWindow1.hide()
-storage.setItem("dialogStatus",0)
+
 })
 //屏蔽窗口菜单 
 childWindow1.hookWindowMessage(278, function (e) {
@@ -144,7 +144,7 @@ childWindow1.hookWindowMessage(278, function (e) {
     // }
 
 
-    // 多人测试窗口
+    // 会话功能窗口
     childWindow2 = new BrowserWindow({
       useContentSize: true,
       // modal: true,
@@ -166,7 +166,26 @@ childWindow1.hookWindowMessage(278, function (e) {
     })
    childWindow2.on('close', (e) => {
       e.preventDefault();
-childWindow2.hide()
+
+      dialog.showMessageBox({
+        type: 'none',
+        // title: '终端2',
+        message: '是否要关闭会话？',
+        buttons: ['确定','取消']
+      },(index)=>{
+        if( index == 0) {
+          e.preventDefault();		//阻止默认行为，一定要有
+          childWindow2.hide();	//调用 隐藏.getItem("dialogStatus")
+        //  storage.setItem("dialogStatus",9)//第三方仿localstorage的包
+        global.sharedObject.dialogStatus = 0
+        } else if(index == 1) {
+         
+        }
+      })
+
+
+
+// childWindow2.hide()
 })
 //屏蔽窗口菜单 
     childWindow2.hookWindowMessage(278, function (e) {
