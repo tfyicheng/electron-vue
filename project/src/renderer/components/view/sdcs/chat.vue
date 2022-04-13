@@ -26,7 +26,6 @@
               <div
                 v-else-if="c.type == 'voice'"
                 class="mevoice"
-                @contextmenu="menu(2, c)"
                 :style="{ width: widthPercent(c.content) }"
                 title="播放"
               >
@@ -36,16 +35,19 @@
               <div
                 v-else-if="c.type == 'file'"
                 class="mefile"
-                @contextmenu="menu(2, c)"
-                title="保存"
+                title="下载文件"
               >
                 <i class="el-icon-document"></i>
                 <p class="mefilename">{{ c.content.fileName }}</p>
                 <p class="mefilesize">{{ c.content.fileSize }}</p>
               </div>
-              <div v-else class="meimg" @contextmenu="menu(2, c)">
+              <div v-else class="meimg" >
                 <div class="imgbox">
-                  <i class="iconfont icon-xiazai" title="下载"></i>
+                  <i
+                    class="iconfont icon-xiazai"
+                    title="保存图片"
+                    @click="saveImg(c.content.imgsrc)"
+                  ></i>
                   <img :src="c.content.imgsrc" alt="" />
                 </div>
               </div>
@@ -70,7 +72,6 @@
                 v-else-if="c.type == 'voice'"
                 class="othervoice"
                 :style="{ width: widthPercent(c.content) }"
-                @contextmenu="menu(2, c)"
                 title="播放"
               >
                 <i class="iconfont icon-saying"></i>
@@ -79,16 +80,19 @@
               <div
                 v-else-if="c.type == 'file'"
                 class="otherfile"
-                @contextmenu="menu(2, c)"
-                title="保存"
+                title="下载文件"
               >
                 <i class="el-icon-document"></i>
                 <p class="otherfilename">{{ c.content.fileName }}</p>
                 <p class="otherfilesize">{{ c.content.fileSize }}</p>
               </div>
-              <div v-else class="otherimg" @contextmenu="menu(2, c)">
+              <div v-else class="otherimg">
                 <div class="imgbox">
-                  <i class="iconfont icon-xiazai" title="下载"></i>
+                  <i
+                    class="iconfont icon-xiazai"
+                    title="保存图片"
+                    @click="saveImg(c.content.imgsrc)"
+                  ></i>
                   <img :src="c.content.imgsrc" alt="" />
                 </div>
               </div>
@@ -102,11 +106,23 @@
       <div class="send" id="send">
         <!-- 发送框菜单栏 -->
         <div class="tool-bar">
+          <!-- 图片发送 -->
           <el-tooltip content="图片发送" placement="top">
-            <i
-              class="iconfont icon-tupian"
-              @click.stop="showBrow = !showBrow"
-            ></i>
+            <i class="iconfont icon-tupian" @click="uploadImg">
+              <!-- <el-upload
+                style="display: none"
+                :limit="1"
+                ref="upload"
+                :on-preview="handlePreview"
+                :on-change="upChange"
+                :auto-upload="false"
+                class="upload-demo"
+                action=""
+                :file-list="img"
+              >
+                <el-button size="small" type="primary" ref="upFile"></el-button>
+              </el-upload> -->
+            </i>
           </el-tooltip>
 
           <!-- 文件发送 -->
@@ -157,8 +173,8 @@
           @click="db"
           @contextmenu="menu(3)"
         >
-          <!-- 文件发送 -->
-          <div
+          <!-- 文件图标 -->
+          <!-- <div
             v-if="fileList.length > 0"
             class="file"
             contenteditable="false"
@@ -166,21 +182,22 @@
           >
             <i class="el-icon-close" @click.stop="fileList = []"></i>
             <i class="el-icon-document"></i>
-            <!--<div v-html="getFileImg(fileList[0].row)"></div>-->
+            <!--<div v-html="getFileImg(fileList[0].row)"></div>
             <div class="info">
               <p style="margin-bottom: 5px">{{ fileList[0].name }}</p>
               <p>{{ getSize(fileList[0].size) }}</p>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- 按钮 -->
-        <button class="btn" @click="send">发送</button>
+        <button class="btn" @click="sendbtn">发送</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+var fs = require("fs");
 import menu from "../../../../common/rightClick";
 import { remote, ipcRenderer } from "electron";
 const BrowserWindow = remote.BrowserWindow;
@@ -196,13 +213,13 @@ export default {
       sendHeight: 50,
       input: "",
       fileList: [],
+      img: null,
       showBrow: false,
       activeBrow: 0,
       loading: false,
     };
   },
   mounted() {
-   
     //  加上异步setTimeout，延迟获取dom的代码的执行
     this.$nextTick(() => {
       setTimeout(() => {
@@ -274,24 +291,23 @@ export default {
 
     // 功能小窗
     dialog(type) {
-      if(remote.getGlobal("sharedObject").dialogStatus == 0){
-             console.log(type);
-      //  定时发送目的是等待子窗口完成渲染才能监听数据
-      setTimeout(() => {
-        ipcRenderer.send("yydata", this.chat, type);
-      }, 1000);
-      // localStorage.setItem("dialogStatus",1) 主进程无法访问，改用global
-      remote.getGlobal("sharedObject").dialogStatus = 1
-      }else {
+      if (remote.getGlobal("sharedObject").dialogStatus == 0) {
+        console.log(type);
+        //  定时发送目的是等待子窗口完成渲染才能监听数据
+        setTimeout(() => {
+          ipcRenderer.send("yydata", this.chat, type);
+        }, 1000);
+        // localStorage.setItem("dialogStatus",1) 主进程无法访问，改用global
+        remote.getGlobal("sharedObject").dialogStatus = 1;
+      } else {
         this.$message({
-        message: "请先结束当前会话",
-        center: true,
-      });
+          message: "请先结束当前会话",
+          center: true,
+        });
       }
- 
     },
 
-    //自动保存草稿 
+    //自动保存草稿
     autoSave(d) {
       let inp = document.getElementById("input");
       // 获取当前输入框的文本,判断是否有值
@@ -313,27 +329,42 @@ export default {
       }
     },
 
-    //发送按钮
-    send() {
-      if (this.$refs.ip.innerHTML.length > 0) {
-        let msg = {
-          isMe: true,
-          content: this.$refs.ip.innerHTML,
-          time: new Date().getTime(),
-          type: "text",
-        };
-        this.$refs.ip.innerHTML = "";
-        this.$emit("send", msg, this.chat.groupId);
-      }
+    //发送操作
+    send(d) {
+      let msg = {
+        isMe: true,
+        content: d.content,
+        time: new Date().getTime(),
+        type: d.type,
+      };
+
+      this.$emit("send", msg, this.chat.groupId);
+
       //自动滚动到底部
       setTimeout(() => {
         document.getElementById("msg").scrollTop =
           document.getElementById("msg").scrollHeight;
       }, 100);
-      // 删除草稿箱
-      document.body.removeChild(document.getElementById(this.chat.groupId));
-      // console.log(this.chat.groupId)
     },
+
+    //发送按钮，默认发送文本消息
+    sendbtn() {
+      //如果有文本再发送
+      if (this.$refs.ip.innerHTML.length > 0) {
+        let b = {
+          type: "text",
+          content: this.$refs.ip.innerHTML,
+        };
+        this.send(b);
+        this.$refs.ip.innerHTML = ""; //清空输入框
+        // 删除草稿箱
+        document.body.removeChild(document.getElementById(this.chat.groupId));
+        // console.log(this.chat.groupId)
+        // console.log(this.fileList);
+      }
+    },
+
+    // 获取文件大小
     getSize(size) {
       if (size > 1024000) {
         return (size / 1024000).toFixed(2) + "MB";
@@ -343,10 +374,7 @@ export default {
         return size + "B";
       }
     },
-    showBrowWin() {
-      this.showBrow = true;
-      //this.$refs.ip.focus()
-    },
+
     foceEnd(id) {
       var range,
         doc = document.getElementById(id);
@@ -359,24 +387,19 @@ export default {
         range.select();
       }
     },
-    addBrow(br) {
-      this.$refs.ip.focus();
-      if (document.activeElement === document.getElementById("input")) {
-        this.insertHtml("<span>" + br + "</span>");
-      }
-      this.showBrow = false;
-      //this.foceEnd('input')
-    },
+
     getFileImg(row) {},
     db() {
       let a = window.getSelection();
       //a.selectAllChildren(document.getElementById('input'))
       console.log(a);
     },
+    // 打开文件夹路径
     openFile(row) {
       exec(row.path, {});
       //exec.exec(row.path, {})
     },
+
     handlePreview(file) {
       console.log(file);
       this.$refs.ip.innerHTML = "";
@@ -385,8 +408,94 @@ export default {
       this.fileList = fileList;
       console.log(file, fileList);
     },
+    // 发送文件
     uploadFile() {
       this.$refs.upFile.$el.click();
+    },
+    //发送图片
+    uploadImg() {
+      let that = this;
+      //调用electron进程打开系统对话框
+      let res = remote.dialog.showOpenDialog(
+        {
+          title: "选择图片",
+          // 默认打开的路径，比如这里默认打开下载文件夹
+          // defaultPath: app.getPath('downloads'),
+          buttonLabel: "确认",
+          // 限制能够选择的文件类型
+          filters: [
+            { name: "Images", extensions: ["jpg", "png", "gif"] },
+            // { name: 'Movies', extensions: ['mkv', 'avi', 'mp4'] },
+            // { name: 'Custom File Type', extensions: ['as'] },
+            // { name: 'All Files', extensions: ['*'] },
+          ],
+          properties: ["openfile"], //"multiSelections"多选
+        },
+        (res) => {
+          // 选择文件之后的处理
+          if (res != undefined) {
+            // 如果不是点取消按钮
+            //限制图片大小
+            fs.stat(res[0], function (err, stat) {
+              if (err) {
+                console.log(err);
+              } else {               
+                // console.log("isFile: " + stat.isFile()); // 是否是文件:               
+                // console.log("isDirectory: " + stat.isDirectory());// 是否是目录:               
+                // console.log("size: " + stat.size);// 文件大小:单位byte               
+                // console.log("birth time: " + stat.birthtime);// 创建时间, Date对象:               
+                // console.log("modified time: " + stat.mtime);// 修改时间, Date对象:
+                if (stat.size > 512000) {
+                  that.$message.error({ message: "图片超出0.5M" });
+                } else {
+                  that.img = fs.readFileSync(res[0], "base64"); // 图片转 base64
+                  let data = {
+                    type: "img",
+                    content: {
+                      imgsrc: "data:image/png;base64," + that.img,
+                    },
+                  };
+                  that.send(data);
+                  // this.img = null;
+                  // console.log(this.img);
+                }
+              }
+            });
+          } else {
+            console.log("你选择了取消按钮");
+          }
+        }
+      );
+    },
+    //保存图片
+    saveImg(i) {
+      // console.log(i)
+      let that = this;
+      let base64 = i.replace(/^data:image\/\w+;base64,/, "");
+      let dataBuffer = new Buffer(base64, "base64");
+      //调用electron进程打开系统对话框
+      let res = remote.dialog.showSaveDialog({
+        title: "保存图片",
+        // 保存的文件名
+        // defaultPath: "66",
+        buttonLabel: "确认",
+        // 限制保存的文件类型
+        filters: [
+          { name: "Images", extensions: ["jpg", "png", "gif"] },
+          // { name: 'Movies', extensions: ['mkv', 'avi', 'mp4'] },
+          // { name: 'Custom File Type', extensions: ['as'] },
+          // { name: 'All Files', extensions: ['*'] },
+        ],
+      });
+      //点击取消时
+      if (!res) return;
+      fs.writeFile(res, dataBuffer, function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          that.$message.success({ message: "保存成功" });
+        }
+      });
     },
     // 拖拽条功能
     resize(ev) {
@@ -543,6 +652,7 @@ export default {
     //     }
     //   });
     // },
+
     insertHtml(html) {
       var sel = window.getSelection(),
         range;

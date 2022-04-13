@@ -180,7 +180,6 @@
 
 <script>
 import { remote, ipcRenderer } from "electron";
-// const electron = window.require('electron')
 import path from "path";
 import { copyFileSync } from "original-fs";
 // 导入拖拽事件

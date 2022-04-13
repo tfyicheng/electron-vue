@@ -1,5 +1,6 @@
 import { app, BrowserWindow, Tray, Menu, ipcMain,dialog,Notification,screen} from 'electron'
 // import notifier from 'node-notifier'
+// import fs from "fs" 
 import path from 'path'  
 import '../renderer/store'
 // import storage from 'electron-localstorage'
@@ -9,7 +10,7 @@ global.sharedObject = {dialogStatus:0};//功能小窗状态
 // var webFrame = require('electron').webFrame; 
 // webFrame.setZoomFactor(2);
      
-/**    
+/**   
  * Set `__static` path to static files in production    
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */   
@@ -41,8 +42,9 @@ const winURL = process.env.NODE_ENV === 'development'
           ? "http://localhost:9080" + "#/notify"
           : `file://${__dirname}/index.html#/notify`;
 
+
    
-//#region  窗体
+//#region  窗体 
 function createWindow() {
   /**  
    * Initial window options
@@ -54,7 +56,9 @@ function createWindow() {
     width: 300,
     frame: false,
     // resizable: false,   
-    show: false
+    show: false,
+    title:"终端",
+    icon: path.join(__static, './zd.ico'),
   })
   
   mainWindow.loadURL(winURL)
@@ -81,8 +85,9 @@ mainWindow.on('ready-to-show', () => {
   dialog.showMessageBox({
     type: 'info',
     title: '终端',
-    cancelId:2,
+    cancelId:2, //关闭按钮的id
     defaultId: 0,
+    noLink:true,  //取消上下排列
     message: '确定要退出吗？',
     buttons: ['最小化到托盘','直接退出']
   },(index)=>{
@@ -115,9 +120,6 @@ childWindow1 = new BrowserWindow({
   },
 });
 childWindow1.loadURL(childURL);
-childWindow1.on('ready-to-show', () => {
-  mainWindow.show()
-})
 childWindow1.on('close', (e) => {
   e.preventDefault();
 childWindow1.hide()
@@ -144,7 +146,7 @@ childWindow1.hookWindowMessage(278, function (e) {
     // }
 
 
-    // 会话功能窗口
+    // 会话功能窗口 
     childWindow2 = new BrowserWindow({
       useContentSize: true,
       // modal: true,
@@ -153,39 +155,36 @@ childWindow1.hookWindowMessage(278, function (e) {
       resizable: false,//禁止改变主窗口大小，再设置大小就需要使用setContentSize
       show: false,
       frame: false,
+      title:"会话",
+      icon: path.join(__static, './drcs.ico'),
       // titleBarStyle:'hidden-inset',
       // titleBarOverlay: true,remote.
-      // parent: mainWindow,
+      // parent: mainWindow, 
       webPreferences: {
         webSecurity: false,
       },
     });
     childWindow2.loadURL(child2URL);
-    childWindow2.on('ready-to-show', () => {
-      mainWindow.show()
-    })
    childWindow2.on('close', (e) => {
       e.preventDefault();
 
       dialog.showMessageBox({
-        type: 'none',
-        // title: '终端2',
+        type: 'info',
+        title: '会话',
+        noLink:true,
         message: '是否要关闭会话？',
         buttons: ['确定','取消']
       },(index)=>{
         if( index == 0) {
           e.preventDefault();		//阻止默认行为，一定要有
           childWindow2.hide();	//调用 隐藏.getItem("dialogStatus")
-        //  storage.setItem("dialogStatus",9)//第三方仿localstorage的包
+        //  storage.setItem("dialogStatus",9)//第三方模拟localstorage的包
         global.sharedObject.dialogStatus = 0
         } else if(index == 1) {
          
         }
       })
 
-
-
-// childWindow2.hide()
 })
 //屏蔽窗口菜单 
     childWindow2.hookWindowMessage(278, function (e) {
@@ -227,9 +226,6 @@ childWindow1.hookWindowMessage(278, function (e) {
     // childWindow3.setAlwaysOnTop(true);//窗口置顶
     childWindow3.webContents.closeDevTools();//关闭开发者工具
     childWindow3.loadURL(child3URL);
-    childWindow3.on('ready-to-show', () => {
-      mainWindow.show()
-    })
    childWindow3.on('close', (e) => {
       e.preventDefault();
 childWindow3.hide()
@@ -282,7 +278,7 @@ app.on('activate', () => {
 const createTray = () => {
   // trayIcon = path.join(__dirname, './');
   trayIcon = path.join(__static, './');
-  tray = new Tray(path.join(trayIcon, 'zd.png'));
+  tray = new Tray(path.join(trayIcon, 'zd.ico'));
   // tray = new Tray(path.join(__static,'./zd.png'))
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -292,7 +288,7 @@ const createTray = () => {
     },
     {
       label: '退出', click: function () {
-        app.quit()
+          app.exit()          
       }
 
     },
@@ -322,14 +318,14 @@ const trayInit = () => {
   if (null !== timer) {
     clearInterval(timer)
     timer = null
-    tray.setImage(path.join(trayIcon, 'zd.png'))
+    tray.setImage(path.join(trayIcon, 'zd.ico'))
   }
 } 
 //图标闪烁
 const trayFlashing = () => {
   timer = setInterval(function () {
     if (show) {
-      tray.setImage(path.join(trayIcon, 'zd.png'))
+      tray.setImage(path.join(trayIcon, 'zd.ico'))
     } else {
       tray.setImage(path.join(trayIcon, 'zd2.png'))
     }

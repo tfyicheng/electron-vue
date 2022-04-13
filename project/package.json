@@ -17,7 +17,7 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "zhongduan",
+    "productName": "终端",
     "appId": "com.example.yourapp",
     "directories": {
       "output": "build"
