@@ -182,7 +182,7 @@
 import { remote, ipcRenderer } from "electron";
 import path from "path";
 import { copyFileSync } from "original-fs";
-// 导入拖拽事件
+// 导入拖拽插件
 import "../../../common/drag";
 import ajax from "../../../common/ajax";
 import { setTimeout } from 'timers';

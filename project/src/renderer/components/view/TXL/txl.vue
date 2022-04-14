@@ -139,6 +139,10 @@ export default {
           img: require("../../../assets/tx.png"),
           name: "Admin",
           Id: 0,
+          info:{
+            tel:"123456",
+            add:"北京市",
+          },
         },
       ],
       groups: [
@@ -189,11 +193,19 @@ export default {
           img: require("../../../assets/tx.png"),
           name: "999999999999999999999999999999999999999",
           Id: 5,
+           info:{
+            tel:"3256",
+            add:"厦市",
+          },
         },
         {
           img: require("../../../assets/tx.png"),
           name: "陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发陈一发",
-          Id: 6,
+          Id: 6, 
+           info:{
+            tel:"3453556",
+            add:"广州市",
+          },
         },
         {
           img: require("../../../assets/tx.png"),

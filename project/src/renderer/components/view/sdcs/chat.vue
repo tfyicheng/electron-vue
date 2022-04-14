@@ -32,16 +32,24 @@
                 <p>{{ c.content }}"</p>
                 <i class="iconfont icon-saying"></i>
               </div>
-              <div
-                v-else-if="c.type == 'file'"
-                class="mefile"
-                title="下载文件"
-              >
+              <div v-else-if="c.type == 'file'" class="mefile" title="下载文件">
                 <i class="el-icon-document"></i>
                 <p class="mefilename">{{ c.content.fileName }}</p>
                 <p class="mefilesize">{{ c.content.fileSize }}</p>
               </div>
-              <div v-else class="meimg" >
+              <div v-else-if="c.type == 'video'" class="mevideo">
+                <video
+                  width="100%"
+                  height="100%"
+                  :poster="c.content.videoimg?c.content.videoimg:thimg"
+                  style="object-fit: cover"
+                  controls="controls"
+                  :src="c.content.videosrc"
+                >
+                  不支持该视频播放
+                </video>
+              </div>
+              <div v-else class="meimg">
                 <div class="imgbox">
                   <i
                     class="iconfont icon-xiazai"
@@ -86,6 +94,18 @@
                 <p class="otherfilename">{{ c.content.fileName }}</p>
                 <p class="otherfilesize">{{ c.content.fileSize }}</p>
               </div>
+              <div v-else-if="c.type == 'video'" class="othervideo">
+                <video
+                  width="100%"
+                  height="100%"
+                  :poster="c.content.videoimg?c.content.videoimg:thImg"
+                  style="object-fit: cover"
+                  controls="controls"
+                  :src="c.content.videosrc"
+                >
+                  不支持该视频播放
+                </video>
+              </div>
               <div v-else class="otherimg">
                 <div class="imgbox">
                   <i
@@ -108,21 +128,7 @@
         <div class="tool-bar">
           <!-- 图片发送 -->
           <el-tooltip content="图片发送" placement="top">
-            <i class="iconfont icon-tupian" @click="uploadImg">
-              <!-- <el-upload
-                style="display: none"
-                :limit="1"
-                ref="upload"
-                :on-preview="handlePreview"
-                :on-change="upChange"
-                :auto-upload="false"
-                class="upload-demo"
-                action=""
-                :file-list="img"
-              >
-                <el-button size="small" type="primary" ref="upFile"></el-button>
-              </el-upload> -->
-            </i>
+            <i class="iconfont icon-tupian" @click="uploadImg"> </i>
           </el-tooltip>
 
           <!-- 文件发送 -->
@@ -154,6 +160,27 @@
 
           <el-tooltip content="语音发送" placement="top">
             <i class="iconfont icon-yuyin" @click="dialog(3)"></i>
+          </el-tooltip>
+          <!-- :on-preview="handlePreview"  -->
+          <el-tooltip content="视频发送" placement="top">
+            <i class="iconfont icon-shipin1" @click="uploadVideo">
+              <el-upload
+                style="display: none"
+                :limit="1"
+                ref="upvideoload"
+                :on-change="upVideoChange"
+                :auto-upload="false"
+                class="upload-demo"
+                action=""
+                :file-list="fileList"
+              >
+                <el-button
+                  size="small"
+                  type="primary"
+                  ref="upVideo"
+                ></el-button>
+              </el-upload>
+            </i>
           </el-tooltip>
 
           <el-tooltip content="视频会议" placement="top">
@@ -217,6 +244,7 @@ export default {
       showBrow: false,
       activeBrow: 0,
       loading: false,
+      thImg:require("../../../assets/th.jpg"),
     };
   },
   mounted() {
@@ -375,20 +403,22 @@ export default {
       }
     },
 
-    foceEnd(id) {
-      var range,
-        doc = document.getElementById(id);
-      if (doc.setSelectionRange) {
-        doc.focus();
-        doc.setSelectionRange(doc.value.length, doc.value.length);
-      } else {
-        range = doc.createTextRange();
-        range.collapse(false);
-        range.select();
-      }
-    },
+    //光标自动跳到最后
+    // foceEnd(id) {
+    //   var range,
+    //     doc = document.getElementById(id);
+    //   if (doc.setSelectionRange) {
+    //     doc.focus();
+    //     doc.setSelectionRange(doc.value.length, doc.value.length);
+    //   } else {
+    //     range = doc.createTextRange();
+    //     range.collapse(false);
+    //     range.select();
+    //   }
+    // },
 
     getFileImg(row) {},
+
     db() {
       let a = window.getSelection();
       //a.selectAllChildren(document.getElementById('input'))
@@ -400,18 +430,23 @@ export default {
       //exec.exec(row.path, {})
     },
 
+    //点击已上传文件链接时的钩子，可以通过file.response拿到服务器返回的数据
     handlePreview(file) {
       console.log(file);
       this.$refs.ip.innerHTML = "";
     },
+
+    //文件状态改变的钩子，添加成功失败都会调用
     upChange(file, fileList) {
       this.fileList = fileList;
       console.log(file, fileList);
     },
+
     // 发送文件
     uploadFile() {
       this.$refs.upFile.$el.click();
     },
+
     //发送图片
     uploadImg() {
       let that = this;
@@ -439,11 +474,11 @@ export default {
             fs.stat(res[0], function (err, stat) {
               if (err) {
                 console.log(err);
-              } else {               
-                // console.log("isFile: " + stat.isFile()); // 是否是文件:               
-                // console.log("isDirectory: " + stat.isDirectory());// 是否是目录:               
-                // console.log("size: " + stat.size);// 文件大小:单位byte               
-                // console.log("birth time: " + stat.birthtime);// 创建时间, Date对象:               
+              } else {
+                // console.log("isFile: " + stat.isFile()); // 是否是文件:
+                // console.log("isDirectory: " + stat.isDirectory());// 是否是目录:
+                // console.log("size: " + stat.size);// 文件大小:单位byte
+                // console.log("birth time: " + stat.birthtime);// 创建时间, Date对象:
                 // console.log("modified time: " + stat.mtime);// 修改时间, Date对象:
                 if (stat.size > 512000) {
                   that.$message.error({ message: "图片超出0.5M" });
@@ -467,6 +502,7 @@ export default {
         }
       );
     },
+
     //保存图片
     saveImg(i) {
       // console.log(i)
@@ -496,6 +532,72 @@ export default {
           that.$message.success({ message: "保存成功" });
         }
       });
+    },
+
+    //发送视频
+    uploadVideo() {
+      this.$refs.upVideo.$el.click(); //实际点击upVideo按钮
+      this.$refs.upvideoload.clearFiles();
+    },
+
+    //上传视频条件      因为跟auto-upload冲突所以要放到upchange中调用
+    beforeUpload(file) {
+      const isType = file.type === "video/mp4";
+      const isLt10M = file.size / 1024 / 1024 < 10; //100M大小
+      // const size = files.size / 1024 / 1024  //文件大小单位为M,(做限制条件用)
+      if (!isType) {
+        this.$message.error("上传视频只能是 mp4 格式!");
+        this.$refs.upvideoload.clearFiles(); //不符合条件之后要清空上传缓存里的列表文件
+      }
+      if (!isLt10M) {
+        this.$message.error("上传视频大小不能超过 10MB!");
+        this.$refs.upvideoload.clearFiles();
+      }
+      return isType && isLt10M;
+    },
+    //上传触发事件
+    upVideoChange(file, fileList) {
+      //  console.log(file)  //上传的文件对象
+      let that = this;
+      let event = event || window.event;
+      var file = event.target.files[0]; //在event中获取文件对象
+      // var file2 = file.raw   // 因为被element包装过，upload获取的file对象要在下一层中获取文件对象
+      //判断一次条件并同时调用一次
+      if (this.beforeUpload(file)) {
+        //创建文件对象
+        let reader = new FileReader();
+        //调用api获取特殊格式的文件对象，从里面获取base64
+        reader.readAsDataURL(file);
+        //读取文件对象函数，完成时执行，在里面执行操作
+        reader.onload = function (e) {
+          console.log(e); //转化后的文件对象
+          let video = document.createElement("video");
+          video.setAttribute("src", e.target.result);
+          video.setAttribute("controls", "controls");
+          video.setAttribute("width", 250); //设置大小，如果不设置，下面的canvas就要按需设置
+          video.setAttribute("height", 150);
+          video.currentTime = 7; //视频时长，一定要设置，不然大概率白屏
+          video.addEventListener("loadeddata", function () {
+            let canvas = document.createElement("canvas"),
+              width = video.width, //canvas的尺寸和图片一样
+              height = video.height;
+            canvas.width = width; //画布大小，默认为视频宽高
+            canvas.height = height;
+            canvas.getContext("2d").drawImage(video, 0, 0, width, height); //绘制canvas
+            let dataURL = canvas.toDataURL("image/png"); //转换为base64
+            // console.log(dataURL)
+            video.setAttribute("poster", dataURL); //设置为视频封面
+            let data = {
+              type: "video",
+              content: {
+                videoimg: dataURL,
+                videosrc: e.target.result,
+              },
+            };
+            that.send(data);
+          });
+        };
+      }
     },
     // 拖拽条功能
     resize(ev) {
@@ -1004,6 +1106,7 @@ export default {
   border-right-color: transparent;
   border-bottom-color: transparent;
 }
+/* other图片内容 */
 .chatbody .msg ul li .content .otherimg {
   /* position: relative; */
   max-width: 50%;
@@ -1047,7 +1150,47 @@ export default {
   border-left-color: transparent;
   border-bottom-color: transparent;
 }
-
+/* me视频内容 */
+.chatbody .msg ul li .content .mevideo {
+  max-width: 50%;
+  float: right;
+  margin-right: 65px;
+  /* height: 180px; */
+  width: 250px;
+}
+.chatbody .msg ul li .content .mevideo::after {
+  content: "";
+  position: absolute;
+  right: 49px;
+  top: 8px;
+  width: 0;
+  height: 0;
+  z-index: 5;
+  border: 8px solid #f3f3f3;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+/* other视频内容 */
+.chatbody .msg ul li .content .othervideo {
+  max-width: 50%;
+  float: left;
+  margin-left: 15px;
+  /* height: 180px; */
+  width: 250px;
+}
+.chatbody .msg ul li .content .othervideo::after {
+  content: "";
+  position: absolute;
+  left: 49px;
+  top: 8px;
+  width: 0;
+  height: 0;
+  border: 8px solid #f3f3f3;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
 /* me对话框小三角 */
 .chatbody .msg ul li .content .me-img::after {
   content: "";

@@ -69,6 +69,24 @@ export default {
               time: new Date().getTime(),
               type: "text",
             },
+             {
+              isMe: true,
+              content: {
+                videosrc:"https://www.w3schools.com/html/movie.mp4",
+                videoimg:"",
+              },
+              time: new Date().getTime(),
+              type: "video",
+            },
+             {
+              isMe:false,
+              content: {
+                videosrc:"http://vfx.mtime.cn/Video/2021/07/10/mp4/210710095541348171.mp4",
+                videoimg:"",
+              },
+              time: new Date().getTime(),
+              type: "video",
+            },
           ],
           groupId: 1,
           unRead: 20,

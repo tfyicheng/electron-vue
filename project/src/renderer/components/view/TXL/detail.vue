@@ -12,7 +12,7 @@
         <div v-for="m in detail.member">
           <div class="member">
             <img :src="m.img" alt="" />
-            <p>{{ m.name }}</p>
+            <p >{{ m.name }}</p>
           </div>
         </div>
         <div v-show="detail.Id !== 0">
@@ -25,10 +25,10 @@
           <img :src="detail.img" alt="" />
           <p>{{ detail.name }}</p>
           <el-descriptions class="persondetail" title="" direction="horizontal" :column="1" >  
-            <el-descriptions-item label="手机号"
-              >18100000000</el-descriptions-item
+            <el-descriptions-item label="手机号" 
+              > <div class="edit" @dblclick="edit($event)" title="双击编辑" v-text="detail.info.tel"></div></el-descriptions-item
             >
-            <el-descriptions-item label="居住地">苏州市</el-descriptions-item>
+            <el-descriptions-item label="居住地"><div class="edit" @dblclick="edit($event)" title="双击编辑" v-text="detail.info.add"></div></el-descriptions-item>
             <el-descriptions-item label="备注">
               <el-tag size="small">普通用户</el-tag>
             </el-descriptions-item>
@@ -65,6 +65,33 @@ export default {
     // 跳转到会话
     send(id){
             this.$emit("send", id);      
+    },
+    //编辑
+    edit(e) {
+      let element = e.target
+        let oldhtml = element.innerHTML;
+        //创建新的input元素
+        let newobj = document.createElement('input');
+        //为新增元素添加类型
+        newobj.type = 'text';
+        //为新增元素添加value值
+        newobj.value = oldhtml;
+        //为新增元素添加光标离开事件
+        newobj.onblur = function() {
+          //当触发时判断新增元素值是否为空或者是否和原值相等，为空则不修改，并返回原有值
+            element.innerHTML = this.value == oldhtml||this.value == "" ? oldhtml : this.value;
+        //执行修改操作           
+            console.log(this.value)
+            
+        }
+        //设置该标签的子节点为空
+        element.innerHTML = '';
+        //添加该标签的子节点，input对象
+        element.appendChild(newobj);
+         //设置获得光标
+        newobj.focus();
+        //设置选择文本的内容或设置光标位置（两个参数：start,end；start为开始位置，end为结束位置；如果开始位置和结束位置相同则就是光标位置）
+        newobj.setSelectionRange(oldhtml.length, oldhtml.length);
     }
   },
   watch: {},
@@ -140,17 +167,22 @@ export default {
 }
 .personcard p {
   /* width: 80px; */
+  font-size: 25px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .personcard >>> .persondetail .el-descriptions__body{
+  font-size: 15px;
      border-top: 1px solid #ddd;
      border-bottom: 1px solid #ddd;
     background-color: #f3f3f3;
 }
 .personcard >>> .persondetail .el-descriptions__body .el-descriptions-row{
     height: 60px;
+}
+.edit {
+  cursor: pointer;
 }
 /* 发消息按钮 */
 .send {
