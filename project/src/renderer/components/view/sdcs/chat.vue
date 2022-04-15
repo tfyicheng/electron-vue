@@ -14,9 +14,10 @@
       <div class="msg" id="msg">
         <ul>
           <!-- style="min-height: 100px" v-html="c.content"-->
-          <li v-for="c in chat.msgs">
+          <li v-for="(c,index) in chat.msgs" :key="index">
             <!-- 我的消息 -->
             <div v-if="c.isMe" class="content" style="min-height: 55px">
+              <p class="messTime" v-show="getTime(c.time,index)">{{getTime(c.time)}}</p>
               <div
                 v-if="c.type == 'text'"
                 class="metext"
@@ -26,7 +27,7 @@
               <div
                 v-else-if="c.type == 'voice'"
                 class="mevoice"
-                :style="{ width: widthPercent(c.content) }"
+                :style="{ width: voiceWidth(c.content) }"
                 title="播放"
               >
                 <p>{{ c.content }}"</p>
@@ -41,7 +42,7 @@
                 <video
                   width="100%"
                   height="100%"
-                  :poster="c.content.videoimg?c.content.videoimg:thimg"
+                  :poster="c.content.videoimg?c.content.videoimg:thImg"
                   style="object-fit: cover"
                   controls="controls"
                   :src="c.content.videosrc"
@@ -65,6 +66,7 @@
             </div>
             <!-- 对方消息 -->
             <div v-else class="content">
+               <p class="messTime" v-show="getTime(c.time)">{{getTime(c.time)}}</p>
               <div class="other-img">
                 <img v-if="!c.name" :src="chat.img" width="50" height="50" />
                 <img v-else :src="c.head" width="50" height="50" />
@@ -79,7 +81,7 @@
               <div
                 v-else-if="c.type == 'voice'"
                 class="othervoice"
-                :style="{ width: widthPercent(c.content) }"
+                :style="{ width: voiceWidth(c.content) }"
                 title="播放"
               >
                 <i class="iconfont icon-saying"></i>
@@ -161,7 +163,7 @@
           <el-tooltip content="语音发送" placement="top">
             <i class="iconfont icon-yuyin" @click="dialog(3)"></i>
           </el-tooltip>
-          <!-- :on-preview="handlePreview"  -->
+
           <el-tooltip content="视频发送" placement="top">
             <i class="iconfont icon-shipin1" @click="uploadVideo">
               <el-upload
@@ -224,14 +226,13 @@
 </template>
 
 <script>
-var fs = require("fs");
+let fs = require("fs");
 import menu from "../../../../common/rightClick";
 import { remote, ipcRenderer } from "electron";
 const BrowserWindow = remote.BrowserWindow;
 // const  { BrowserWindow }  =  require ( '@electron/remote' )
 const path = require("path");
 // let childWindow = null;
-
 export default {
   name: "chat",
   props: ["chat"],
@@ -252,7 +253,7 @@ export default {
     this.$nextTick(() => {
       setTimeout(() => {
         // this.enter();
-        console.log("89");
+        console.log("work");
         this.drag();
         this.paste();
         // this.setPasteImg();
@@ -262,7 +263,7 @@ export default {
 
   methods: {
     // 语音条长度随语音秒数变化
-    widthPercent(c) {
+    voiceWidth(c) {
       if (c < 60) {
         if (c < 30) {
           return 80 + c + "px";
@@ -355,6 +356,9 @@ export default {
           el.innerText = inp.innerText;
         }
       }
+      console.log(this)
+      //通过事件总线更新消息列表
+      this.$bus.$emit('updraft');
     },
 
     //发送操作
@@ -365,7 +369,7 @@ export default {
         time: new Date().getTime(),
         type: d.type,
       };
-
+      //子组件发送给父组件
       this.$emit("send", msg, this.chat.groupId);
 
       //自动滚动到底部
@@ -373,6 +377,8 @@ export default {
         document.getElementById("msg").scrollTop =
           document.getElementById("msg").scrollHeight;
       }, 100);
+      console.log(this.chat.msgs[this.chat.msgs.length - 2].time)
+      //  this.getTime(this.chat.) 
     },
 
     //发送按钮，默认发送文本消息
@@ -725,6 +731,26 @@ export default {
         false
       );
     },
+    //时间戳标签 单位毫秒
+    getTime(nt,index) {
+      let lastTime 
+      let NowTime 
+      // this.$bus.$on("lastTime",(value)=>{
+      //   t = value
+      //     console.log(t)
+      // })
+
+       console.log(index)
+      lastTime = this.chat.msgs[this.chat.msgs.length - 2].time
+      if((nt-lastTime)>6000){
+         NowTime  = new Date(nt).toLocaleTimeString();
+         return  NowTime.substring(0, NowTime.length - 3)
+      }else{
+        return "";
+      }
+
+    },
+
     // setPasteImg() {
     //   document.addEventListener("paste", function (event) {
     //     if (!document.activeElement === document.getElementById("input")) {
@@ -870,13 +896,15 @@ export default {
   width: 100%;
 }
 .chatbody .msg ul li .content .other-img {
-  float: left;
+  /* float: left; */
+    position: absolute;
+  right: left;
 }
 .chatbody .msg ul li .content .other {
   padding: 15px 10px 20px 10px;
   float: left;
   max-width: 50%;
-  margin-left: 15px;
+  margin-left: 65px;
   background-color: #fff;
   font-size: 15px;
   border-radius: 2px;
@@ -885,6 +913,19 @@ export default {
 .chatbody .msg ul li .content .me-img {
   position: absolute;
   right: 0;
+}
+/* 消息时间 */
+.chatbody .msg ul li .messTime {
+  width: 60px;
+  margin: 10px auto;
+  left: 50%; 
+  top: -50px;
+ transform: translateX(-50%); 
+ background-color: rgba(78, 73, 72, 0.2);
+  font-size: 12px;
+  text-align: center;
+  border-radius: 8%;
+  color: #fff;
 }
 /* 文本内容 */
 .chatbody .msg ul li .content .metext {
@@ -941,14 +982,12 @@ export default {
 .chatbody .msg ul li .content .membername::after {
   content: "";
   position: absolute;
-  left: 49px;
+  left: 50px;
   top: 8px;
-  width: 0;
-  height: 0;
-  border: 8px solid #f3f3f3;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
+  z-index: 5;
+  width: 15px;
+  height: 55px;
+  background-color: #f3f3f3;
 }
 /* others语音内容 */
 .chatbody .msg ul li .content .othervoice {
@@ -958,7 +997,7 @@ export default {
   width: 80px;
   line-height: 55px;
   height: 55px;
-  margin-left: 15px;
+  margin-left: 65px;
   background-color: #fff;
   font-size: 15px;
   border-radius: 2px;
@@ -1002,15 +1041,19 @@ export default {
 .chatbody .msg ul li .content .mefile::after {
   content: "";
   position: absolute;
-  right: 49px;
+  right: 51px;
   top: 8px;
-  width: 0;
+  z-index: 5;
+  width: 15px;
+  height: 55px;
+  background-color: #f3f3f3;
+    /* width: 0; 跟时间标签冲突改用长柱
   height: 0;
   z-index: 5;
   border: 8px solid #ffffff;
   border-top-color: transparent;
   border-right-color: transparent;
-  border-bottom-color: transparent;
+  border-bottom-color: transparent; */
 }
 .chatbody .msg ul li .content .mefile i {
   float: right;
@@ -1034,7 +1077,7 @@ export default {
 .chatbody .msg ul li .content .otherfile {
   max-width: 50%;
   float: left;
-  margin-left: 15px;
+  margin-left: 65px;
   width: 225px;
   /* line-height: 70px; */
   height: 70px;
@@ -1061,6 +1104,16 @@ export default {
   margin: 10px;
   font-size: 12px;
   color: #7e7e7e;
+}
+.chatbody .msg ul li .content .otherfile::after{
+  content: "";
+  position: absolute;
+  left: 50px;
+  top: 8px;
+  z-index: 5;
+  width: 15px;
+  height: 55px;
+  background-color: #f3f3f3;
 }
 /* me图片内容 */
 .chatbody .msg ul li .content .meimg {
@@ -1096,22 +1149,19 @@ export default {
 .chatbody .msg ul li .content .meimg::after {
   content: "";
   position: absolute;
-  right: 49px;
+  right: 50px;
   top: 8px;
-  width: 0;
-  height: 0;
   z-index: 5;
-  border: 8px solid #f3f3f3;
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
+  width: 15px;
+  height: 55px;
+  background-color: #f3f3f3;
 }
 /* other图片内容 */
 .chatbody .msg ul li .content .otherimg {
   /* position: relative; */
   max-width: 50%;
   float: left;
-  margin-left: 15px;
+  margin-left: 65px;
   /* height: 180px; */
   width: 250px;
 }
@@ -1141,14 +1191,12 @@ export default {
 .chatbody .msg ul li .content .otherimg::after {
   content: "";
   position: absolute;
-  left: 49px;
+  left: 50px;
   top: 8px;
-  width: 0;
-  height: 0;
-  border: 8px solid #f3f3f3;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
+  z-index: 5;
+  width: 15px;
+  height: 55px;
+  background-color: #f3f3f3;
 }
 /* me视频内容 */
 .chatbody .msg ul li .content .mevideo {
@@ -1161,35 +1209,30 @@ export default {
 .chatbody .msg ul li .content .mevideo::after {
   content: "";
   position: absolute;
-  right: 49px;
+  right: 50px;
   top: 8px;
-  width: 0;
-  height: 0;
   z-index: 5;
-  border: 8px solid #f3f3f3;
-  border-top-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: transparent;
+  width: 15px;
+  height: 55px;
+  background-color: #f3f3f3;
 }
 /* other视频内容 */
 .chatbody .msg ul li .content .othervideo {
   max-width: 50%;
   float: left;
-  margin-left: 15px;
+  margin-left: 65px;
   /* height: 180px; */
   width: 250px;
 }
 .chatbody .msg ul li .content .othervideo::after {
   content: "";
   position: absolute;
-  left: 49px;
+  left: 50px;
   top: 8px;
-  width: 0;
-  height: 0;
-  border: 8px solid #f3f3f3;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
+  z-index: 5;
+  width: 15px;
+  height: 55px;
+  background-color: #f3f3f3;
 }
 /* me对话框小三角 */
 .chatbody .msg ul li .content .me-img::after {

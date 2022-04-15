@@ -6,8 +6,8 @@
     <div class="group">
       <!-- 列表搜索栏 -->
       <grouptop @showResult="result"></grouptop>
-     
-       <!-- 联系人列表    onselectstart="return false;"不能选中取消全选-->    
+
+      <!-- 联系人列表    onselectstart="return false;"不能选中取消全选-->
       <div v-if="search" class="gul" onselectstart="return false;">
         <ul>
           <li
@@ -23,10 +23,10 @@
           </li>
         </ul>
       </div>
-       <!-- 搜索面板 -->
-       <div v-else class="gsearch"></div> 
-        <!--搜索面板 方案二 -->
-        <!-- <div v-show="!search" style="display:none;" class="gsearch2"></div>    -->
+      <!-- 搜索面板 -->
+      <div v-else class="gsearch"></div>
+      <!--搜索面板 方案二 -->
+      <!-- <div v-show="!search" style="display:none;" class="gsearch2"></div>    -->
     </div>
 
     <!-- 会话窗口 -->
@@ -47,14 +47,15 @@ window.addEventListener("contextmenu", function (e) {
 import chat from "./chat.vue";
 import grouptop from "../../../../common/grouptop.vue";
 import list from "./list.vue";
-import draft from "../../../../common/draft";//草稿箱功能
+import draft from "../../../../common/draft"; //草稿箱功能
+
 export default {
   components: { grouptop, chat, list },
   data() {
     return {
-      search:1,
-      select:{ groupId:null},
-      endselectId:null,
+      search: 1,
+      select: { groupId: null },
+      endselectId: null,
       hidden: 1,
       haha: require("../../../assets/tx.png"),
       groups: [
@@ -66,30 +67,31 @@ export default {
             {
               isMe: true,
               content: "哈哈哈哈",
-              time: new Date().getTime(),
+              time: 1650014801278,
               type: "text",
             },
-             {
+            {
               isMe: true,
               content: {
-                videosrc:"https://www.w3schools.com/html/movie.mp4",
-                videoimg:"",
+                videosrc: "https://www.w3schools.com/html/movie.mp4",
+                videoimg: "",
               },
               time: new Date().getTime(),
               type: "video",
             },
-             {
-              isMe:false,
+            {
+              isMe: false,
               content: {
-                videosrc:"http://vfx.mtime.cn/Video/2021/07/10/mp4/210710095541348171.mp4",
-                videoimg:"",
+                videosrc:
+                  "http://vfx.mtime.cn/Video/2021/07/10/mp4/210710095541348171.mp4",
+                videoimg: "",
               },
-              time: new Date().getTime(),
+              time: 1650014801278,
               type: "video",
             },
           ],
           groupId: 1,
-          unRead: 20,
+          unRead: 0,
         },
         {
           img: require("../../../assets/tx.png"),
@@ -126,32 +128,38 @@ export default {
               content: 10,
               time: new Date().getTime(),
               type: "voice",
-            },{
+            },
+            {
               isMe: false,
               content: 4,
               time: new Date().getTime(),
               type: "voice",
-            },{
+            },
+            {
               isMe: false,
               content: 2,
               time: new Date().getTime(),
               type: "voice",
-            },{
+            },
+            {
               isMe: false,
               content: 60,
               time: new Date().getTime(),
               type: "voice",
-            },{
+            },
+            {
               isMe: false,
               content: 80,
               time: new Date().getTime(),
               type: "voice",
-            },{
+            },
+            {
               isMe: true,
               content: 180,
               time: new Date().getTime(),
               type: "voice",
-            },{
+            },
+            {
               isMe: true,
               content: 120,
               time: new Date().getTime(),
@@ -185,19 +193,21 @@ export default {
               },
               time: new Date().getTime(),
               type: "file",
-            },{
+            },
+            {
               isMe: true,
               content: {
-                imgsrc:require("../../../assets/tx.png"),
+                imgsrc: require("../../../assets/tx.png"),
                 // imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
               },
               time: new Date().getTime(),
               type: "img",
-            },{
+            },
+            {
               isMe: false,
               content: {
                 // imgsrc:"https://picsum.photos/400/500?random=1",
-                imgsrc:require("../../../assets/500.jpg"),
+                imgsrc: require("../../../assets/500.jpg"),
               },
               time: new Date().getTime(),
               type: "img",
@@ -213,8 +223,8 @@ export default {
           msgs: [
             {
               isMe: false,
-              name:"王力宏",
-              head:require("../../../assets/tx.png"),
+              name: "王力宏",
+              head: require("../../../assets/tx.png"),
               content: "今天是部门培训会议，你什么时候过来吖",
               time: new Date().getTime(),
               type: "text",
@@ -227,7 +237,7 @@ export default {
             },
             {
               isMe: false,
-               name:"陈一发",
+              name: "陈一发",
               content:
                 "今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖",
               time: new Date().getTime(),
@@ -235,25 +245,26 @@ export default {
             },
             {
               isMe: false,
-               name:"陈二发",
+              name: "陈二发",
               content: 10,
               time: new Date().getTime(),
               type: "voice",
             },
             {
               isMe: false,
-               name:"火红的萨日朗",
+              name: "火红的萨日朗",
               content: {
                 fileName: "开会资料.pdf",
                 fileSize: "2MB",
               },
               time: new Date().getTime(),
               type: "file",
-            },{
+            },
+            {
               isMe: false,
-                name:"萨日朗",
+              name: "萨日朗",
               content: {
-                imgsrc:require("../../../assets/tx.png"),
+                imgsrc: require("../../../assets/tx.png"),
                 // imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
               },
               time: new Date().getTime(),
@@ -458,16 +469,17 @@ export default {
           ],
           groupId: 10,
           unRead: 5,
-        }, {
+        },
+        {
           img: require("../../../assets/tx.png"),
-          name: "王力宏55",     
+          name: "王力宏55",
           msgs: [
             {
               isMe: false,
               content: "今天是部门培训会议，你什么时候过来吖6666",
               time: new Date().getTime(),
               type: "text",
-            }
+            },
           ],
           groupId: 90,
           unRead: 5,
@@ -484,7 +496,7 @@ export default {
             },
             {
               isMe: true,
-              content:"ok",
+              content: "ok",
               time: new Date().getTime(),
               type: "text",
             },
@@ -547,7 +559,7 @@ export default {
             },
             {
               isMe: true,
-              content: 7 + '"',
+              content: 7,
               time: new Date().getTime(),
               type: "voice",
             },
@@ -559,43 +571,41 @@ export default {
       ],
     };
   },
-  beforeMount(){
-  },
+  beforeMount() {},
   mounted() {
-     this.tochat();
-    //  console.log(this.$route.query.id)   
+    this.tochat();
+    //  console.log(this.$route.query.id)
   },
   beforeDestroy() {
-    //  this.select=s 
+    //  this.select=s
     //页面销毁之前提交保留的数据
-    this.$store.commit('saveId',this.select.groupId)
+    this.$store.commit("saveId", this.select.groupId);
     //  console.log(this.select.groupId)
- 
   },
 
-//挂载后和更新前被调用的。但如果该组件中没有使用缓存，也就是没被<keep-alive>包裹，activated不起作用
-  // activated(){ 
-  //     this.$nextTick(()=>{   
-  //         this.tochat();                
+  //挂载后和更新前被调用的。但如果该组件中没有使用缓存，也就是没被<keep-alive>包裹，activated不起作用
+  // activated(){
+  //     this.$nextTick(()=>{
+  //         this.tochat();
   //     })
   // },
 
   // 只执行一次
   // created(){
-  //     this.$nextTick(()=>{   
+  //     this.$nextTick(()=>{
   //          setTimeout(() => {
   //          this.select={ groupId:null};
-  //     },100);                
-  //     })     
+  //     },100);
+  //     })
   // },
   methods: {
     // 跳转到聊天  刚开始没有数据要先给属性赋值空，不然bug ┭┮﹏┭┮
-    tochat(){
+    tochat() {
       // console.log( this.$route.query.id)
-       this.select = this.groups.find((item)=>{
-		          return item.groupId  == this.$route.query.id ;
-		      })|| { groupId:null};
-      this.selects(this.select)
+      this.select = this.groups.find((item) => {
+        return item.groupId == this.$route.query.id;
+      }) || { groupId: null };
+      this.selects(this.select);
     },
     // 发送信息
     send(content, groupId) {
@@ -607,23 +617,23 @@ export default {
     },
     // 选择联系人
     selects(s) {
-      this.$refs.child.loading = true
-      this.select = s, this.hidden = s.groupId;
+      this.$refs.child.loading = true;
+      (this.select = s), (this.hidden = s.groupId);
       // this.$store.commit('setSelectSession', s) 暂时报错
-      
+
       this.$forceUpdate();
-      
+
       //自动滚动到底部
       setTimeout(() => {
         document.getElementById("msg").scrollTop =
           document.getElementById("msg").scrollHeight;
-          this.$refs.child.loading = false
+        this.$refs.child.loading = false;
       }, 200);
 
-      draft(s.groupId,this.endselectId);
+      draft(s.groupId, this.endselectId);
       this.endselectId = this.select.groupId;
       const inp = document.getElementById("input");
-      this.setFocus(inp)
+      this.setFocus(inp);
     },
     // 右键删除
     del(e) {
@@ -641,20 +651,20 @@ export default {
     },
     // 设置光标在文本最后
     setFocus(el) {
-    el.focus();
-    var range = document.createRange();
-    range.selectNodeContents(el);
-    range.collapse(false);
-    var sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-},
+      el.focus();
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    },
 
     //打开搜索面板
-    result(e){
-      this.search=e
-      console.log("面板"+e)
-    }
+    result(e) {
+      this.search = e;
+      console.log("面板" + e);
+    },
   },
   watch: {},
 };
@@ -666,8 +676,8 @@ export default {
   background-color: #f3f3f3;
 }
 .group {
-   padding: 80px 0 0;
-   box-sizing: border-box;
+  padding: 80px 0 0;
+  box-sizing: border-box;
   width: 380px;
   /* z-index: 999; */
   /* display: inline-block; */

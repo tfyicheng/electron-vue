@@ -12,18 +12,29 @@
           <img :src="group.img" width="48" height="48" />
         </el-badge>
       </div>
-      <!-- 内容 -->
+      <!-- 消息 -->
       <div class="content">
         <p>{{ group.name }}
               <span class="time">
                 {{ getTime(group.msgs) }}
             </span>
         </p>
+        <!-- 最新消息预览 -->
         <div class="ctip">
-             <span v-show="group.unRead !== undefined && group.unRead > 0"
+             <span style="color:red" v-show="group.unRead !== undefined && group.unRead > 0"
           >[{{ group.unRead }}条]</span
-        >
-        <span style="font-size: 12px">{{ subMsg(group.msgs) }}</span>
+        > 
+        <div class="cNews" v-if="getdraft(group.groupId)">
+              <div style="color:red"> 草稿：{{getdraftContent(group.groupId)}}</div>
+        </div>
+        <div class="cNews" v-else>
+            <div v-if="group.msgs[group.msgs.length - 1].type=='video'">[ 视频 ]</div>
+           <div v-else-if="group.msgs[group.msgs.length - 1].type=='img'">[ 图片 ]</div>
+           <div v-else-if="group.msgs[group.msgs.length - 1].type=='voice'">[ 语音 ]</div>
+           <div v-else-if="group.msgs[group.msgs.length - 1].type=='file'">[ 文件 ]</div>
+           <div v-else>{{ subMsg(group.msgs) }}</div>
+        </div>
+
         </div>
        
       </div>
@@ -46,35 +57,60 @@ export default {
 
   beforeMount() {},
 
-  mounted() {},
+  mounted() {
+    //间隔性更新
+    // setInterval(()=>{
+    //     this.$forceUpdate()
+    // },300)
+    
+    //通过事件总线获取更新指示
+    this.$bus.$on('updraft',() => {
+        this.$forceUpdate()
+     })
+  },
 
   methods: {
+    //获取草稿箱
+    getdraft(id){
+            if(document.getElementById(id))
+            return true
+    },
+    //获取草稿箱内容
+    getdraftContent(id){
+            if(document.getElementById(id))
+            return this.subStr(document.getElementById(id).innerHTML,17)
+    },
+    //展示最后一条消息
     subMsg(msg) {
       if (msg !== undefined && msg !== null && msg.length > 0) {
-        return this.subStr(this.filterHtml(msg[msg.length - 1].content));
+        return this.subStr(this.filterHtml(msg[msg.length - 1].content),20);
       } else {
         return "";
       }
     },
-    subStr(msg) {
+    //省略号代替超出文本
+    subStr(msg,num) {
       if (msg !== undefined && msg !== null) {
         if (msg.length > 10) {
-          return msg.substring(0, 20) + "...";
+          return msg.substring(0, num) + "...";
         }
         return msg;
       } else {
         return "";
       }
     },
+    //获取最后一条消息的时间转化格式
     getTime(t) {
       if (t !== undefined && t !== null && t.length > 0) {
         let time = new Date(t[t.length - 1].time).toLocaleTimeString();
         time = time.substring(0, time.length - 3);
+        // this.$bus.$emit("lastTime",t[t.length - 1].time)
         return time;
       } else {
         return "";
       }
     },
+    //去格式
     filterHtml(m) {
       if (m !== undefined && m !== null && m.length > 0) {
         let msg = m.replace(/<\/?[^>]*>/g, ""); //去除HTML Tag
@@ -100,6 +136,9 @@ export default {
    
     
   },
+  watch:{
+
+  }
 };
 </script>
 <style  scoped>
@@ -114,7 +153,7 @@ export default {
 p {
   color: black;
   margin: 1px 0;
-  font-size: 15px;
+  font-size: 16px;
   width: 200px;
     overflow: hidden;
   text-overflow: ellipsis;
@@ -135,8 +174,12 @@ p {
   top: 20px;
 }
 .ctip {
-    margin-top: 7px;
+    margin-top: 9px;
     font-size: 12px;
     width:290px;
+}
+.cNews {
+  display: inline-block;
+
 }
 </style>

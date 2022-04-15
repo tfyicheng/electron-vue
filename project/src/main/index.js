@@ -22,7 +22,7 @@ let mainWindow, tray = null, trayIcon = null
 let childWindow1 = null;
 let childWindow2 = null;
 let childWindow3 = null;
-// 主窗口
+// 主窗口 
 const winURL = process.env.NODE_ENV === 'development' 
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`;

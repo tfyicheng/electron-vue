@@ -12,6 +12,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
+Vue.prototype.$bus=new Vue();
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
