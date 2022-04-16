@@ -86,7 +86,7 @@ export default {
                   "http://vfx.mtime.cn/Video/2021/07/10/mp4/210710095541348171.mp4",
                 videoimg: "",
               },
-              time: 1650014801278,
+              time: 1650072313,
               type: "video",
             },
           ],
@@ -209,7 +209,7 @@ export default {
                 // imgsrc:"https://picsum.photos/400/500?random=1",
                 imgsrc: require("../../../assets/500.jpg"),
               },
-              time: new Date().getTime(),
+              time: 1648779615,
               type: "img",
             },
           ],
@@ -226,13 +226,13 @@ export default {
               name: "王力宏",
               head: require("../../../assets/tx.png"),
               content: "今天是部门培训会议，你什么时候过来吖",
-              time: new Date().getTime(),
+              time: 1574741563000,
               type: "text",
             },
             {
               isMe: true,
               content: "我现在马上过来",
-              time: new Date().getTime(),
+              time: 1649470815000,
               type: "text",
             },
             {
@@ -240,14 +240,14 @@ export default {
               name: "陈一发",
               content:
                 "今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖",
-              time: new Date().getTime(),
+              time: 1650025215,
               type: "text",
             },
             {
               isMe: false,
               name: "陈二发",
               content: 10,
-              time: new Date().getTime(),
+              time: 1649989215,
               type: "voice",
             },
             {
@@ -257,7 +257,7 @@ export default {
                 fileName: "开会资料.pdf",
                 fileSize: "2MB",
               },
-              time: new Date().getTime(),
+              time: 1650039615,
               type: "file",
             },
             {
@@ -267,7 +267,7 @@ export default {
                 imgsrc: require("../../../assets/tx.png"),
                 // imgsrc:"https://fakeimg.pl/625x375/F44336/FFF/?font=noto&text=%E5%8D%A2%E5%85%88%E7%94%9F"
               },
-              time: new Date().getTime(),
+              time: 1650075227,
               type: "img",
             },
           ],
@@ -276,26 +276,26 @@ export default {
         },
         {
           img: require("../../../assets/tx.png"),
-          name: "王力宏99999999999999999999999999999999999999999999",
+          name: "王力宏今天是部门培训会议，你什么时候过来吖",
           type: "group",
           msgs: [
             {
               isMe: false,
               content: "今天是部门培训会议，你什么时候过来吖",
-              time: new Date().getTime(),
+              time: "2022-04-14 19:00",
               type: "text",
             },
             {
               isMe: true,
               content: "我现在马上过来",
-              time: new Date().getTime(),
+              time: "2021-04-14 11:00",
               type: "text",
             },
             {
               isMe: false,
               content:
                 "今天部门有一个非常重要的会议，领导也会出席，你什么时候过来吖",
-              time: new Date().getTime(),
+              time: "2021-04-15 11:00",
               type: "text",
             },
           ],
@@ -694,6 +694,7 @@ export default {
 .group .gul {
   height: 100%;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 /* 搜索面板 */
 .group .gsearch {

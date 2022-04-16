@@ -11,13 +11,18 @@
       @click="showBrow = false"
     >
       <!-- 对话框 onselectstart="return false;"-->
-      <div class="msg" id="msg">
-        <ul>
+      <div class="msg " id="msg"  >
+       
+        <p class="loadMess" v-if="loadMess">加载中<i class="el-icon-loading"></i></p>
+        <p class="loadMess" v-if="noMore">没有更多了</p>
+         <p class="loadMess" >上拉加载更多</p>
+        <ul 
+        >
           <!-- style="min-height: 100px" v-html="c.content"-->
-          <li v-for="(c,index) in chat.msgs" :key="index">
+          <li v-for="c in chat.msgs" >
             <!-- 我的消息 -->
             <div v-if="c.isMe" class="content" style="min-height: 55px">
-              <p class="messTime" v-show="getTime(c.time,index)">{{getTime(c.time)}}</p>
+              <p class="messTime" v-show="getTime(c.time)">{{getTime(c.time)}}</p>
               <div
                 v-if="c.type == 'text'"
                 class="metext"
@@ -227,6 +232,7 @@
 
 <script>
 let fs = require("fs");
+import {timeFormat} from "../../../../common/formatDate";
 import menu from "../../../../common/rightClick";
 import { remote, ipcRenderer } from "electron";
 const BrowserWindow = remote.BrowserWindow;
@@ -246,6 +252,13 @@ export default {
       activeBrow: 0,
       loading: false,
       thImg:require("../../../assets/th.jpg"),
+       num: 1,
+      count: [],
+      list:this.chat.msgs,
+      loading: false,
+      noMore:false,
+      loadMess:false,
+      totalPage: "",
     };
   },
   mounted() {
@@ -256,12 +269,48 @@ export default {
         console.log("work");
         this.drag();
         this.paste();
+        this.loadMessage();
         // this.setPasteImg();
       }, 3000);
     });
   },
 
   methods: {
+
+    loadMessage(){
+        
+                    document.getElementById("msg").addEventListener('scroll', (e) => {
+                //这里的2秒钟定时是为了避免滑动频繁，节流
+                setTimeout(() => {
+                  //如果当前页数等于总页数，加载完成
+                    // if(1){
+                    //     this.noMore=true;
+                    //     console.log(this.list)
+                    //     return;
+                    // }
+                    //滑到顶部时触发下次数据加载
+                    if (e.target.scrollTop == 0) {
+                        //将scrollTop置为10以便下次滑到顶部
+                        e.target.scrollTop = 10;
+                        //加载数据
+                        
+                        this.loadMess=true
+                         this.noMore= false
+                        // this.initData();
+
+                        //这里的定时是为了在列表渲染之后才使用scrollTo。
+                        setTimeout(() => {
+                           this.loadMess=false
+                           this.noMore= true
+                            // e.target.scrollTo(0, this.scrollHeight - 30);//-30是为了露出最新加载的一行数据
+                        }, 1000);
+                    }
+
+                }, 500);
+            });
+    },
+
+ 
     // 语音条长度随语音秒数变化
     voiceWidth(c) {
       if (c < 60) {
@@ -732,7 +781,7 @@ export default {
       );
     },
     //时间戳标签 单位毫秒
-    getTime(nt,index) {
+    getTime(nt) {
       let lastTime 
       let NowTime 
       // this.$bus.$on("lastTime",(value)=>{
@@ -740,11 +789,12 @@ export default {
       //     console.log(t)
       // })
 
-       console.log(index)
+      //  console.log(index)
       lastTime = this.chat.msgs[this.chat.msgs.length - 2].time
-      if((nt-lastTime)>6000){
+      if(nt){
          NowTime  = new Date(nt).toLocaleTimeString();
-         return  NowTime.substring(0, NowTime.length - 3)
+        //  return  NowTime.substring(0, NowTime.length - 3)
+          return timeFormat(nt)
       }else{
         return "";
       }
@@ -815,17 +865,6 @@ export default {
     },
   },
   computed: {
-    // 语音长度随语音秒数变化
-    // widthPercent() {
-    //           // 语音小于10秒 都返回最小长度15%
-    //   if (c < 2) {
-    //     return 3
-    //   }
-    //   if (c > 30) {
-    //     return 45
-    //   }
-    //   return c / 60 * 100
-    //   }
   },
 };
 </script>
@@ -916,16 +955,19 @@ export default {
 }
 /* 消息时间 */
 .chatbody .msg ul li .messTime {
-  width: 60px;
-  margin: 10px auto;
-  left: 50%; 
-  top: -50px;
- transform: translateX(-50%); 
- background-color: rgba(78, 73, 72, 0.2);
+  width: 160px;
+  margin: 15px auto;
+ /* background-color: rgba(78, 73, 72, 0.2); */
   font-size: 12px;
   text-align: center;
   border-radius: 8%;
-  color: #fff;
+  /* color: #fff; */
+}
+.loadMess{
+    width: 160px;
+  margin: 10px auto;
+   text-align: center;
+   color: #7e7e7e;
 }
 /* 文本内容 */
 .chatbody .msg ul li .content .metext {
@@ -986,7 +1028,7 @@ export default {
   top: 8px;
   z-index: 5;
   width: 15px;
-  height: 55px;
+  height: 65px;
   background-color: #f3f3f3;
 }
 /* others语音内容 */
@@ -1045,7 +1087,7 @@ export default {
   top: 8px;
   z-index: 5;
   width: 15px;
-  height: 55px;
+  height: 65px;
   background-color: #f3f3f3;
     /* width: 0; 跟时间标签冲突改用长柱
   height: 0;
@@ -1112,7 +1154,7 @@ export default {
   top: 8px;
   z-index: 5;
   width: 15px;
-  height: 55px;
+  height: 65px;
   background-color: #f3f3f3;
 }
 /* me图片内容 */
@@ -1153,7 +1195,7 @@ export default {
   top: 8px;
   z-index: 5;
   width: 15px;
-  height: 55px;
+  height: 65px;
   background-color: #f3f3f3;
 }
 /* other图片内容 */
@@ -1195,7 +1237,7 @@ export default {
   top: 8px;
   z-index: 5;
   width: 15px;
-  height: 55px;
+  height: 65px;
   background-color: #f3f3f3;
 }
 /* me视频内容 */
@@ -1213,7 +1255,7 @@ export default {
   top: 8px;
   z-index: 5;
   width: 15px;
-  height: 55px;
+  height: 65px;
   background-color: #f3f3f3;
 }
 /* other视频内容 */
@@ -1231,7 +1273,7 @@ export default {
   top: 8px;
   z-index: 5;
   width: 15px;
-  height: 55px;
+  height: 65px;
   background-color: #f3f3f3;
 }
 /* me对话框小三角 */

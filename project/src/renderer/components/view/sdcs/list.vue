@@ -43,6 +43,8 @@
 </template>
 
 <script>
+//时间转化
+import {timeFormat} from "../../../../common/formatDate";
 // 导入右键菜单
   import menu from '../../../../common/rightClick'
 export default {
@@ -102,10 +104,9 @@ export default {
     //获取最后一条消息的时间转化格式
     getTime(t) {
       if (t !== undefined && t !== null && t.length > 0) {
-        let time = new Date(t[t.length - 1].time).toLocaleTimeString();
-        time = time.substring(0, time.length - 3);
-        // this.$bus.$emit("lastTime",t[t.length - 1].time)
-        return time;
+        // let time = new Date(t[t.length - 1].time);
+        // time = time.substring(0, time.length - 3);
+        return timeFormat(t[t.length - 1].time);
       } else {
         return "";
       }
@@ -155,6 +156,7 @@ p {
   margin: 1px 0;
   font-size: 16px;
   width: 200px;
+  /* width: 100%; */
     overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -163,7 +165,8 @@ p {
   position: absolute;
   font-size: smaller;
   font-size: 12px;
-  right: 5px;
+  right: 1px;
+  top: -15px;
   color:#a3a3a3;
   /* top: 5px; */
 }

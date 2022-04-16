@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Tray, Menu, ipcMain,dialog,Notification,screen} from 'electron'
 // import notifier from 'node-notifier'
-// import fs from "fs" 
+// import fs from "fs"
 import path from 'path'  
 import '../renderer/store'
 // import storage from 'electron-localstorage'
@@ -10,7 +10,7 @@ global.sharedObject = {dialogStatus:0};//功能小窗状态
 // var webFrame = require('electron').webFrame; 
 // webFrame.setZoomFactor(2);
      
-/**   
+/**  
  * Set `__static` path to static files in production    
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */   
@@ -22,7 +22,7 @@ let mainWindow, tray = null, trayIcon = null
 let childWindow1 = null;
 let childWindow2 = null;
 let childWindow3 = null;
-// 主窗口 
+// 主窗口
 const winURL = process.env.NODE_ENV === 'development' 
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`;
@@ -49,7 +49,7 @@ function createWindow() {
   /**  
    * Initial window options
    */       
-  // 主窗口  
+  // 主窗口 
   mainWindow = new BrowserWindow({
     height: 372,
     useContentSize: true,
