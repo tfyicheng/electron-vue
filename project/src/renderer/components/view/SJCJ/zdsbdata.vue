@@ -5,14 +5,14 @@
       <!-- 顶部菜单 -->
       <div class="mainmenu">
          <el-button type="warning" icon="el-icon-upload">导出</el-button>
-         <el-button type="danger" icon="el-icon-delete">删除</el-button>
+         <el-button type="danger" icon="el-icon-delete" @click="deleteT">删除</el-button>
                   <el-button type="primary" icon="el-icon-search"style="float:right">搜索</el-button>
          <el-input v-model="input" placeholder="关键词"style="float:right" clearable></el-input>
 
       </div>
       <!-- 主体表格 -->
         <el-table
-        stripe="ture"
+        stripe
           ref="multipleTable"
           :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           tooltip-effect="dark"
@@ -48,7 +48,7 @@
           </el-table-column>
         </el-table>
            <!-- 分页器 -->
-         <div style="text-align: center;margin-top: 30px;">       
+     <div style="text-align: center;margin-top: 30px;">       
       <el-pagination
         background
         layout="prev, pager, next"
@@ -81,7 +81,7 @@ export default {
            direction:1,
            status:1,
         },{
-          number:1,        
+          number:2,        
           name: "任务一",
           type: "语音",
           startdate: "2016-05-03",
@@ -90,7 +90,7 @@ export default {
            direction:1,
            status:0,
         },{
-          number:1,        
+          number:3,        
           name: "任务一",
           type: "语音",
           startdate: "2016-05-03",
@@ -133,6 +133,17 @@ export default {
       current_change(currentPage){
         this.currentPage = currentPage;
   },
+      //删除
+    deleteT() {
+      // console.log(this.$refs.multipleTable.selection[1].number)
+      for(let i=0;i<this.$refs.multipleTable.selection.length;i++){
+          for(let t=0;t<this.tableData.length;t++){
+                if(this.tableData[t].number === this.$refs.multipleTable.selection[i].number){
+                    this.tableData.splice(t,1)
+                }
+          }
+      }
+    }
 }
 }
 </script>

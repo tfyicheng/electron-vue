@@ -49,7 +49,7 @@
           height: '61px',
         }"
         :row-style="{ height: '61px' }"
-        style="width: 100%"
+         style="width: 100%;height:70vh;"
       >
         <!-- @selection-change="handleSelectionChange"tooltip-effect="dark" <el-table-column label="编号" type="selection" width="55"label-class-name="DisabledSelection"> </el-table-column> -->
         <el-table-column label="编号" min-width="30%">
@@ -71,7 +71,7 @@
           show-overflow-tooltip
         >
           <template slot-scope="scope">
-            {{ scope.row.role ? "超级管理员" : "普通用户" }}
+            {{ scope.row.region ? "超级管理员" : "普通用户" }}
           </template>
         </el-table-column>
         <el-table-column
@@ -84,8 +84,8 @@
         <el-table-column prop="address" label="操作" min-width="30%">
           <template slot-scope="scope">
             <a class="cz">重置</a>
-            <a class="bj">编辑</a>
-            <a v-show="scope.row.role === 0" class="sc">删除</a>
+            <a class="bj"@click="edit(scope.row.id)">编辑</a>
+            <a v-show="scope.row.region === 0" class="sc" @click="deleteT(scope.row.id)">删除</a>
           </template>
         </el-table-column>
       </el-table>
@@ -93,6 +93,17 @@
       <!-- <div style="margin-top: 20px">
         <el-button @click="toggleSelection()">取消选择</el-button>
       </div> -->
+
+           <!-- 分页器 -->
+     <div style="text-align: center;margin-top: 30px;">       
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="total"
+        @current-change="current_change">
+      </el-pagination>
+    </div>
+
       <!-- 添加信息弹窗  v-model="form.head"     -->
       <el-dialog
         v-dialogDrag
@@ -129,7 +140,7 @@
             <!--  :on-preview="handlePreview":file-list="form.head"  "true"=  :before-upload="beforeUpload"  -->
           </div>
           <el-form-item
-            label="活动名称"
+            label="用户名"
             :label-width="formLabelWidth"
             prop="name"
           >
@@ -144,9 +155,9 @@
             :label-width="formLabelWidth"
             prop="region"
           >
-            <el-select v-model="form.region" placeholder="请选择">
-              <el-option label="超级管理员" value="root"></el-option>
-              <el-option label="普通用户" value="admin"></el-option>
+            <el-select v-model="form.region"  placeholder="请选择">
+              <el-option label="超级管理员" value="1" ></el-option>
+              <el-option label="普通用户" value="0" ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item
@@ -194,32 +205,32 @@ export default {
       fileName: "",
       tableData: [
         {
-          id: "1",
+          id: 1,
           time: "2016-05-03",
           head: require("../../assets/tx.png"),
           name: "admin",
-          role: 1,
+          region: 1,
         },
         {
-          id: "2",
+          id: 2,
           time: "2016-05-03",
           head: require("../../assets/tx.png"),
-          name: "admin",
-          role: 0,
+          name: "admin2",
+          region: 0,
         },
         {
-          id: "3",
+          id: 3,
           time: "2016-05-03",
           head: require("../../assets/tx.png"),
-          name: "admin",
-          role: 0,
+          name: "admin3",
+          region: 0,
         },
         {
-          id: "4",
+          id: 4,
           time: "2016-05-03",
           head: require("../../assets/tx.png"),
-          name: "admin",
-          role: 0,
+          name: "admin4",
+          region: 0,
         },
       ],
       // tableData:[
@@ -247,6 +258,9 @@ export default {
         password: "",
       },
       formLabelWidth: "120px",
+       total: 20,
+        pagesize:8,
+        currentPage:1
     };
   },
   beforeMount() {
@@ -331,16 +345,35 @@ export default {
 
     // 提交
     submit(from) {
-      console.log(this.form.head);
-      console.log(this.form.name);
-      this.$refs["form"].resetFields(); //清空表单
+      console.log(this.form.id);
+      //根据id来判断是修改还是编辑  一种情况是没有id根据是否存在判断，一种是自己定义id再判断
+      // for(let i;i<this.tableData.length;i++){
+      //           if(this.tableData[i].id===this.form.id){
+      //         }else{
+      //         }
+      // }
+
+      if(this.form.id){
+                for(let i;i<this.tableData.length;i++){
+                if(this.tableData[i].id===this.form.id){
+                  this.tableData[i].name = this.form.name
+              }
+      }
+      }else{
+          this.form.id=this.tableData[this.tableData.length-1].id+1
+          this.tableData.push(this.form)
+      }
+
+      this.form = {}      
+      // this.$refs["form"].resetFields(); //清空表单 跟this.form={}冲突
       this.dialogFormVisible = false; //关闭弹窗
       this.fileName = ""; //清空文件名
       this.$refs.upload.clearFiles(); //清空列表
     },
     // 取消提交
     cancel() {
-      this.$refs.form.resetFields();
+       this.form = {}    
+      // this.$refs.form.resetFields();
       this.dialogFormVisible = false;
       this.fileName = "";
       this.$refs.upload.clearFiles();
@@ -371,6 +404,29 @@ export default {
       // },600)
      
     },
+
+    //编辑
+    edit(e){         
+	 this.form = this.tableData.find((item)=>{
+	      return item.id === e;
+		      });
+          console.log(this.form)
+          console.log(this.tableData)
+          this.dialogFormVisible=true;
+    },
+
+    //删除
+    deleteT(e) {
+                for(let t=0;t<this.tableData.length;t++){
+                if(this.tableData[t].id === e){
+                    this.tableData.splice(t,1)
+                }
+          }
+    },
+      //分页器
+          current_change(currentPage){
+        this.currentPage = currentPage;
+  },
   },
 };
 </script>

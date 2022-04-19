@@ -10,6 +10,7 @@
     <el-tab-pane label="终端设备" name="first"><zdsbdata/></el-tab-pane>
     <el-tab-pane label="电台设备" name="second"><dtsbdata/></el-tab-pane>
     <el-tab-pane label="电台射频" name="third"><dtspdata/></el-tab-pane>
+      <!-- <el-tab-pane label="test" name="fourth"><Test/></el-tab-pane> -->
   </el-tabs>
  
   </div>
@@ -19,8 +20,9 @@
 import Dtsbdata from './dtsbdata.vue'
 import Dtspdata from './dtspdata.vue'
 import zdsbdata from './zdsbdata.vue'
+import Test from './test.vue'
 export default {
-  components: { zdsbdata, Dtsbdata, Dtspdata },
+  components: { zdsbdata, Dtsbdata, Dtspdata,Test },
      data() {
     return {
        activeName: 'first'

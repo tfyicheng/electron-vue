@@ -11,18 +11,20 @@
       @click="showBrow = false"
     >
       <!-- 对话框 onselectstart="return false;"-->
-      <div class="msg " id="msg"  >
-       
-        <p class="loadMess" v-if="loadMess">加载中<i class="el-icon-loading"></i></p>
+      <div class="msg" id="msg">
+        <p class="loadMess" v-if="loadMess">
+          加载中<i class="el-icon-loading"></i>
+        </p>
         <p class="loadMess" v-if="noMore">没有更多了</p>
-         <p class="loadMess" >上拉加载更多</p>
-        <ul 
-        >
+        <p class="loadMess">上拉加载更多</p>
+        <ul>
           <!-- style="min-height: 100px" v-html="c.content"-->
-          <li v-for="c in chat.msgs" >
+          <li v-for="c in chat.msgs">
             <!-- 我的消息 -->
             <div v-if="c.isMe" class="content" style="min-height: 55px">
-              <p class="messTime" v-show="getTime(c.time)">{{getTime(c.time)}}</p>
+              <p class="messTime" v-show="getTime(c.time)">
+                {{ getTime(c.time) }}
+              </p>
               <div
                 v-if="c.type == 'text'"
                 class="metext"
@@ -47,7 +49,7 @@
                 <video
                   width="100%"
                   height="100%"
-                  :poster="c.content.videoimg?c.content.videoimg:thImg"
+                  :poster="c.content.videoimg ? c.content.videoimg : thImg"
                   style="object-fit: cover"
                   controls="controls"
                   :src="c.content.videosrc"
@@ -71,7 +73,9 @@
             </div>
             <!-- 对方消息 -->
             <div v-else class="content">
-               <p class="messTime" v-show="getTime(c.time)">{{getTime(c.time)}}</p>
+              <p class="messTime" v-show="getTime(c.time)">
+                {{ getTime(c.time) }}
+              </p>
               <div class="other-img">
                 <img v-if="!c.name" :src="chat.img" width="50" height="50" />
                 <img v-else :src="c.head" width="50" height="50" />
@@ -105,7 +109,7 @@
                 <video
                   width="100%"
                   height="100%"
-                  :poster="c.content.videoimg?c.content.videoimg:thImg"
+                  :poster="c.content.videoimg ? c.content.videoimg : thImg"
                   style="object-fit: cover"
                   controls="controls"
                   :src="c.content.videosrc"
@@ -232,7 +236,7 @@
 
 <script>
 let fs = require("fs");
-import {timeFormat} from "../../../../common/formatDate";
+import { timeFormat } from "../../../../common/formatDate";
 import menu from "../../../../common/rightClick";
 import { remote, ipcRenderer } from "electron";
 const BrowserWindow = remote.BrowserWindow;
@@ -251,17 +255,43 @@ export default {
       showBrow: false,
       activeBrow: 0,
       loading: false,
-      thImg:require("../../../assets/th.jpg"),
-       num: 1,
+      thImg: require("../../../assets/th.jpg"),
+      num: 1,
       count: [],
-      list:this.chat.msgs,
+      monilist: [
+        {
+          isMe: true,
+          content: "111哈哈哈哈",
+          time: 1650014801278,
+          type: "text",
+        },
+        {
+          isMe: true,
+          content: "2222哈哈哈哈",
+          time: 1650014801278,
+          type: "text",
+        },
+        {
+          isMe: false,
+          content: {
+            // imgsrc:"https://picsum.photos/400/500?random=1",
+            imgsrc: require("../../../assets/500.jpg"),
+          },
+          time: 1648779615,
+          type: "img",
+        },
+      ],
       loading: false,
-      noMore:false,
-      loadMess:false,
+      noMore: false,
+      loadMess: false,
       totalPage: "",
     };
   },
+  beforeMount(){
+  
+  },
   mounted() {
+      console.log()
     //  加上异步setTimeout，延迟获取dom的代码的执行
     this.$nextTick(() => {
       setTimeout(() => {
@@ -276,41 +306,47 @@ export default {
   },
 
   methods: {
+    // 上拉加载记录
+    loadMessage() {
+      let msg = document.getElementById("msg");
+      msg.addEventListener("scroll", (e) => {
+        //这里的2秒钟定时是为了避免滑动频繁，节流
+        setTimeout(() => {
+          //如果当前页数等于总页数，不再加载 
+          if (0) {
+            this.noMore = true;
+            return;
+          }
 
-    loadMessage(){
-        
-                    document.getElementById("msg").addEventListener('scroll', (e) => {
-                //这里的2秒钟定时是为了避免滑动频繁，节流
-                setTimeout(() => {
-                  //如果当前页数等于总页数，加载完成
-                    // if(1){
-                    //     this.noMore=true;
-                    //     console.log(this.list)
-                    //     return;
-                    // }
-                    //滑到顶部时触发下次数据加载
-                    if (e.target.scrollTop == 0) {
-                        //将scrollTop置为10以便下次滑到顶部
-                        e.target.scrollTop = 10;
-                        //加载数据
-                        
-                        this.loadMess=true
-                         this.noMore= false
-                        // this.initData();
-
-                        //这里的定时是为了在列表渲染之后才使用scrollTo。
-                        setTimeout(() => {
-                           this.loadMess=false
-                           this.noMore= true
-                            // e.target.scrollTo(0, this.scrollHeight - 30);//-30是为了露出最新加载的一行数据
-                        }, 1000);
-                    }
-
-                }, 500);
-            });
+          //滑到顶部时触发下次数据加载 （滑到顶部&&loadMess等于false&&当前页数不等于总页数
+          if (e.target.scrollTop == 0) {
+            // //将scrollTop置为10以便下次滑到顶部
+            e.target.scrollTop = 10;
+            //获取原先高度
+            let hei = e.target.scrollHeight - e.target.scrollTop;
+            //加载数据
+            this.getMess();
+         
+            //模拟
+            setTimeout(() => {
+              this.loadMess = false;
+                   //减去多出的高度使记录保持在原先位置
+              e.target.scrollTop = e.target.scrollHeight - hei;
+              
+            }, 300);
+          }
+        }, 500);
+      });
     },
 
- 
+    // 获取记录
+    getMess() {
+      this.loadMess = true;
+      this.noMore = false;
+      console.log(this.chat.msgs);
+      this.chat.msgs.unshift(...this.monilist);
+    },
+
     // 语音条长度随语音秒数变化
     voiceWidth(c) {
       if (c < 60) {
@@ -405,9 +441,9 @@ export default {
           el.innerText = inp.innerText;
         }
       }
-      console.log(this)
+      console.log(this);
       //通过事件总线更新消息列表
-      this.$bus.$emit('updraft');
+      this.$bus.$emit("updraft");
     },
 
     //发送操作
@@ -426,8 +462,6 @@ export default {
         document.getElementById("msg").scrollTop =
           document.getElementById("msg").scrollHeight;
       }, 100);
-      console.log(this.chat.msgs[this.chat.msgs.length - 2].time)
-      //  this.getTime(this.chat.) 
     },
 
     //发送按钮，默认发送文本消息
@@ -782,23 +816,22 @@ export default {
     },
     //时间戳标签 单位毫秒
     getTime(nt) {
-      let lastTime 
-      let NowTime 
+      let lastTime;
+      let NowTime;
       // this.$bus.$on("lastTime",(value)=>{
       //   t = value
       //     console.log(t)
       // })
 
       //  console.log(index)
-      lastTime = this.chat.msgs[this.chat.msgs.length - 2].time
-      if(nt){
-         NowTime  = new Date(nt).toLocaleTimeString();
+      lastTime = this.chat.msgs[this.chat.msgs.length - 2].time;
+      if (nt) {
+        NowTime = new Date(nt).toLocaleTimeString();
         //  return  NowTime.substring(0, NowTime.length - 3)
-          return timeFormat(nt)
-      }else{
+        return timeFormat(nt);
+      } else {
         return "";
       }
-
     },
 
     // setPasteImg() {
@@ -864,8 +897,7 @@ export default {
       },
     },
   },
-  computed: {
-  },
+  computed: {},
 };
 </script>
 
@@ -936,7 +968,7 @@ export default {
 }
 .chatbody .msg ul li .content .other-img {
   /* float: left; */
-    position: absolute;
+  position: absolute;
   right: left;
 }
 .chatbody .msg ul li .content .other {
@@ -957,17 +989,17 @@ export default {
 .chatbody .msg ul li .messTime {
   width: 160px;
   margin: 15px auto;
- /* background-color: rgba(78, 73, 72, 0.2); */
+  /* background-color: rgba(78, 73, 72, 0.2); */
   font-size: 12px;
   text-align: center;
   border-radius: 8%;
   /* color: #fff; */
 }
-.loadMess{
-    width: 160px;
+.loadMess {
+  width: 160px;
   margin: 10px auto;
-   text-align: center;
-   color: #7e7e7e;
+  text-align: center;
+  color: #7e7e7e;
 }
 /* 文本内容 */
 .chatbody .msg ul li .content .metext {
@@ -1089,7 +1121,7 @@ export default {
   width: 15px;
   height: 65px;
   background-color: #f3f3f3;
-    /* width: 0; 跟时间标签冲突改用长柱
+  /* width: 0; 跟时间标签冲突改用长柱
   height: 0;
   z-index: 5;
   border: 8px solid #ffffff;
@@ -1147,7 +1179,7 @@ export default {
   font-size: 12px;
   color: #7e7e7e;
 }
-.chatbody .msg ul li .content .otherfile::after{
+.chatbody .msg ul li .content .otherfile::after {
   content: "";
   position: absolute;
   left: 50px;

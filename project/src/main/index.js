@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Tray, Menu, ipcMain,dialog,Notification,screen} from 'electron'
 // import notifier from 'node-notifier'
-// import fs from "fs"
-import path from 'path'  
+// import fs from "fs"  
+import path from 'path' 
 import '../renderer/store'
 // import storage from 'electron-localstorage'
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
@@ -9,8 +9,8 @@ global.sharedObject = {dialogStatus:0};//功能小窗状态
 // require('web-frame').setZoomLevelLimits(1, 1);
 // var webFrame = require('electron').webFrame; 
 // webFrame.setZoomFactor(2);
-     
-/**  
+       
+/**     
  * Set `__static` path to static files in production    
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */   

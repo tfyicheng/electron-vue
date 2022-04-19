@@ -2,11 +2,10 @@
   <!-- 联系人列表 -->
   <div class="cp-group" @contextmenu="menu(1,group.groupId)">
     <div>
-      <!-- 头像 -->
+      <!-- 头像     && group.type === 'group' :value="group.unRead"-->
       <div class="img">
         <el-badge
-          :is-dot="group.unRead > 0 && group.type === 'group'"
-          :value="group.unRead"
+          :is-dot="group.unRead > 0 "     
           :hidden="0 === group.unRead"
         >
           <img :src="group.img" width="48" height="48" />
